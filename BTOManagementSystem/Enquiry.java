@@ -1,7 +1,5 @@
 package BTOManagementSystem;
 
-import BTOManagementSystem.Applicant.Applicant;
-
 public class Enquiry {
     private String content;
     private String reply;

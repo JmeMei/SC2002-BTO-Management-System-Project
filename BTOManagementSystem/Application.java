@@ -1,7 +1,5 @@
 package BTOManagementSystem;
 
-import BTOManagementSystem.Applicant.Applicant;
-
 public class Application {
     private Applicant applicant;
     private Project project;

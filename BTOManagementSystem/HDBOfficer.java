@@ -2,8 +2,6 @@ package BTOManagementSystem;
 
 import com.apple.eawt.Application;
 
-import BTOManagementSystem.Applicant.Applicant;
-
 public class HDBOfficer {
     private Project handledProject;
 

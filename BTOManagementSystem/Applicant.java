@@ -1,10 +1,6 @@
-package BTOManagementSystem.Applicant;
+package BTOManagementSystem;
 
 import java.util.*;
-
-import BTOManagementSystem.Application;
-import BTOManagementSystem.Enquiry;
-import BTOManagementSystem.Project;
 
 public class Applicant extends User {
     private Application application;
@@ -15,12 +11,18 @@ public class Applicant extends User {
         enquiries = new ArrayList<>();
     }
 
-    public boolean canApply(Project project) {
+    //Controller
+    /*
+     *     
+     *  public boolean canApply(Project project) {
         if (application != null && !application.isWithdrawn()) return false;
         if (maritalStatus.equals("Single") && age >= 35 && project.hasFlatType("2-Room")) return true;
         if (maritalStatus.equals("Married") && age >= 21) return true;
         return false;
     }
+     * 
+     */
+
 
     public void apply(Project project, String flatType) {
         application = new Application(this, project, flatType);
