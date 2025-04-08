@@ -1,15 +1,24 @@
-package BTOManagementSystem;
+package BTOManagementSystem.Model;
 public abstract class User {
+    protected String name;
     protected String nric;
     protected String password;
     protected int age;
     protected String maritalStatus;
+    protected String role;
 
-    public User(String nric, int age, String maritalStatus) {
+    public User(String name, String nric, int age, String maritalStatus, String role) {
+        this.name = name;
         this.nric = nric;
         this.age = age;
         this.maritalStatus = maritalStatus;
         this.password = "password"; // default
+        this.role = role;
+
+    }
+
+    public String name(){
+        return name;
     }
     
     public String getNric() {
@@ -22,5 +31,9 @@ public abstract class User {
 
     public String getMaritalStatus() {
         return maritalStatus;
+    }
+
+    public String getRole(){
+        return role;
     }
 }

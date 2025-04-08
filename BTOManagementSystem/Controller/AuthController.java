@@ -6,7 +6,7 @@ import java.util.Map;
 import BTOManagementSystem.Applicant;
 import BTOManagementSystem.HDBManager;
 import BTOManagementSystem.HDBOfficer;
-import BTOManagementSystem.User;
+import BTOManagementSystem.Model.User;
 
 //	Handles login, password changes, loading users
 public class AuthController {

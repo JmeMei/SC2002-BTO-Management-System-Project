@@ -1,6 +1,8 @@
 package BTOManagementSystem;
 import java.util.*;
 
+import BTOManagementSystem.Model.User;
+
 public class Main {
     private static Map<String, User> userMap = new HashMap<>(); // NRIC → User
     private static Scanner scanner = new Scanner(System.in);

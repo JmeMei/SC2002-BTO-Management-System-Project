@@ -2,6 +2,8 @@ package BTOManagementSystem;
 
 import java.util.*;
 
+import BTOManagementSystem.Model.User;
+
 public class Applicant extends User {
     private Application application;
     private List<Enquiry> enquiries;

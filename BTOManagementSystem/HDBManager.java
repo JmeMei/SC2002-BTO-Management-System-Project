@@ -1,6 +1,8 @@
 package BTOManagementSystem;
 import java.util.*;
 
+import BTOManagementSystem.Model.User;
+
 public class HDBManager extends User {
     private List<Project> createdProjects;
 
