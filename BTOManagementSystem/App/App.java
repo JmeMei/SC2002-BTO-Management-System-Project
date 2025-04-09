@@ -1,8 +1,7 @@
 package BTOManagementSystem.App;
 
 import Authentication.AccountManager;
-import Model.Shared.User;
-import Model.MenuFactory;
+import Model.User;
 import View.UserMainView;
 import Util.ExcelLoader;
 
@@ -19,11 +18,11 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         int option = 0;
 
-        // Load users and project data from Excel
-        ExcelLoader loader = new ExcelLoader();
-        List<User> userList = loader.loadUsers("ApplicantList.xlsx", "OfficerList.xlsx", "ManagerList.xlsx");
+        //Account manager handles the login and 
         AccountManager accountManager = new AccountManager(userList);
 
+
+        
         while (option != 3) {
             System.out.println("===== Welcome to BTO Management System =====");
             System.out.println("1. Login with NRIC");
@@ -53,6 +52,8 @@ public class App {
                     if (user != null) {
                         UserMainView mainMenu = MenuFactory.getMainView(user);
                         mainMenu.menu(nric);
+
+
                     } else {
                         System.out.println("Invalid NRIC or password. Try again.");
                     }
