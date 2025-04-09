@@ -13,7 +13,7 @@ import BTOManagementSystem.Model.*;
 
 public class ViewController {
 
-
+    //This is where we will split to the respective roles.
     public static void handleMenuOptions(User user){
         switch(user.getRole()){
             case "Applicant":

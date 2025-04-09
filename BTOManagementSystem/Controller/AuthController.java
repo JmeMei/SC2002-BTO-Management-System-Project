@@ -32,8 +32,6 @@ public class AuthController {
                 if (userNRIC.equals(NRIC) && userPassword.equals(password)) {
                     System.out.println("Login successful, welcome back " + userName);
                     return new User(userName, userNRIC, userAge, userPassword, userMaritalStatus, userRole);
-                    // Create and return a new User object here if needed
-                    // return new User(userName, userNRIC, userAge, userMaritalStatus, userPassword, userRole);
                 }
             }
 
