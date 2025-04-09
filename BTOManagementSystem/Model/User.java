@@ -1,4 +1,5 @@
 package BTOManagementSystem.Model;
+
 public class User {
     protected String name;
     protected String nric;
@@ -7,8 +8,7 @@ public class User {
     protected String maritalStatus;
     protected String role;
 
-    //return new User(userName, userNRIC, userAge, userMaritalStatus, userPassword, userRole);
-    public User(String name, String nric, int age, String password, String maritalStatus, String role) {
+    public User(String name, String nric, int age, String password,String maritalStatus, String role) {
         this.name = name;
         this.nric = nric;
         this.age = age;
