@@ -1,4 +1,4 @@
-package BTOManagementSystem.Controller;
+package BTOManagementSystem.View;
 
 public class ViewApplicant {
 

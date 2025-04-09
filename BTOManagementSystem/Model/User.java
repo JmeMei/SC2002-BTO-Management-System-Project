@@ -1,5 +1,5 @@
 package BTOManagementSystem.Model;
-public abstract class User {
+public class User {
     protected String name;
     protected String nric;
     protected String password;
@@ -36,4 +36,9 @@ public abstract class User {
     public String getRole(){
         return role;
     }
+
+    public static String getPasswordForUser(String username){
+        return "password";
+    }
+
 }
