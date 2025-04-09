@@ -8,19 +8,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import BTOManagementSystem.Model.Session;
 import BTOManagementSystem.View.LoginPromptView;
 import BTOManagementSystem.Model.*;
 
 public class ViewController {
 
 
-    public static void handleMenuOptions(){
-        User curruser = Session.getSessionUser();
+    public static void handleMenuOptions(User user){
+        switch(user.getRole()){
+            case "Applicant":
+                System.out.println("Applicant menu");
+                break;
+            case "Manager":
+                System.out.println("Manager menu");
+                break;
+            case "Officer":
+                System.out.println("Officer menu");
+                break;
+            default:
+                System.out.println("Unknown user role");
+                break;
 
-        //if curruser.getrole == aplicant
-
-        System.out.println("1. Apply for BTO");
+        }
 
     }
     

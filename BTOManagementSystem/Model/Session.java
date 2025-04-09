@@ -9,7 +9,7 @@ public class Session {
     public static void updateSession(String NRIC){
 
         
-        currentUser = new User("John doe","T1234567A",20,"Married","Applicant");
+        //currentUser = new User("John doe","T1234567A",20,"Married","Applicant");
 
     }
 

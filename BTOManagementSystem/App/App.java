@@ -1,6 +1,5 @@
 package BTOManagementSystem.App;
 
-import java.util.Scanner;
 import BTOManagementSystem.View.LoginPromptView;
 
 /**

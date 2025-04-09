@@ -4,7 +4,8 @@ import java.util.*;
 
 import BTOManagementSystem.Controller.AuthController;
 import BTOManagementSystem.Controller.ViewController;
-import BTOManagementSystem.View.*;
+import BTOManagementSystem.Model.User;
+
 
 public class LoginPromptView {
 
@@ -14,15 +15,22 @@ public class LoginPromptView {
         String NRIC = scanner.nextLine().toUpperCase();
 
         System.out.print("Enter your password: ");
-        String password = scanner.nextLine().toUpperCase();
-        
-        User user = AuthController.Authenticate(NRIC,  password);
+        String password = scanner.nextLine();
+        User authenticatedUser = AuthController.Authenticate(NRIC, password);
+
+        if (authenticatedUser != null) {
+            AuthenticationSuccess(authenticatedUser);
+        } else {
+            // Optional: Add retry logic here
+            display(); // Recursive call to retry login
+        }
+
     }
 
-    public static void AuthenticationSucess(){
+    public static void AuthenticationSuccess(User user){
 
         System.out.println("Login Successful!");
-        ViewController.handleMenuOptions();
+        ViewController.handleMenuOptions(user);
 
     }
 }
