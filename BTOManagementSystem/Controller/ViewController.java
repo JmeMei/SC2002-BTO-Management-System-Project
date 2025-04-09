@@ -16,7 +16,6 @@ public class ViewController {
 
 
     public static void handleMenuOptions(){
-
         User curruser = Session.getSessionUser();
 
         //if curruser.getrole == aplicant

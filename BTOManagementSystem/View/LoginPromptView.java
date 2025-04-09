@@ -4,18 +4,19 @@ import java.util.*;
 
 import BTOManagementSystem.Controller.AuthController;
 import BTOManagementSystem.Controller.ViewController;
-
+import BTOManagementSystem.View.*;
 
 public class LoginPromptView {
 
     public static void display(){
         System.out.print("Enter your NRIC: ");
         Scanner scanner = new Scanner(System.in);
-        String nric = scanner.nextLine().toUpperCase();
+        String NRIC = scanner.nextLine().toUpperCase();
 
         System.out.print("Enter your password: ");
         String password = scanner.nextLine().toUpperCase();
-        AuthController.Authenticate("s", "s");
+        
+        User user = AuthController.Authenticate(NRIC,  password);
     }
 
     public static void AuthenticationSucess(){
