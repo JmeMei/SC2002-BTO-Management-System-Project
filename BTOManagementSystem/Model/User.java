@@ -13,7 +13,7 @@ public class User {
         this.nric = nric;
         this.age = age;
         this.maritalStatus = maritalStatus;
-        this.password = "password"; // default
+        this.password = password; // default
         this.role = role;
 
     }
@@ -38,8 +38,8 @@ public class User {
         return role;
     }
 
-    public static String getPasswordForUser(String username){
-        return "password";
+    public String getPassword(String NRIC){
+        return password;
     }
 
 }

@@ -31,7 +31,8 @@ public class AuthController {
 
                 if (userNRIC.equals(NRIC) && userPassword.equals(password)) {
                     System.out.println("Login successful, welcome back " + userName);
-                    return new User(userName, userNRIC, userAge, userPassword, userMaritalStatus, userRole);
+                    //return back to LoginPromptView
+                    return new User(userName, userNRIC, userAge, userPassword, userMaritalStatus, userRole); //Model
                 }
             }
 

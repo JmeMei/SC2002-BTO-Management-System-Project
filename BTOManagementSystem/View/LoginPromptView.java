@@ -16,21 +16,15 @@ public class LoginPromptView {
 
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
+        //AuthController will return the User authenticated
         User authenticatedUser = AuthController.Authenticate(NRIC, password);
 
         if (authenticatedUser != null) {
-            AuthenticationSuccess(authenticatedUser);
+            ViewController.handleMenuOptions(authenticatedUser); //go to their respective views
         } else {
             // Optional: Add retry logic here
             display(); // Recursive call to retry login
         }
-
-    }
-
-    public static void AuthenticationSuccess(User user){
-
-        System.out.println("Login Successful!");
-        ViewController.handleMenuOptions(user);
 
     }
 }
