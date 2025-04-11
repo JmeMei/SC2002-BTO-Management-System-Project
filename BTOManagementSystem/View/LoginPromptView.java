@@ -9,7 +9,7 @@ import BTOManagementSystem.Model.User;
 
 public class LoginPromptView {
 
-    public static void display(){
+    public static void displayLogInMenu(){
         System.out.print("Enter your NRIC: ");
         Scanner scanner = new Scanner(System.in);
         String NRIC = scanner.nextLine().toUpperCase();
@@ -22,8 +22,7 @@ public class LoginPromptView {
         if (authenticatedUser != null) {
             ViewController.handleMenuOptions(authenticatedUser); //go to their respective views
         } else {
-            // Optional: Add retry logic here
-            display(); // Recursive call to retry login
+            displayLogInMenu(); // Recursive call to retry login
         }
 
     }

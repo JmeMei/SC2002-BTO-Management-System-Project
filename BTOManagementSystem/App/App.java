@@ -9,7 +9,7 @@ import BTOManagementSystem.View.LoginPromptView;
 public class App {
     
     public static void main(String[] args) {
-         LoginPromptView.display();
+         LoginPromptView.displayLogInMenu();
     }
 }
 

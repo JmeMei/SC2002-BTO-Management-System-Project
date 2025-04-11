@@ -3,6 +3,7 @@ package BTOManagementSystem.View;
 import java.util.Scanner;
 
 import BTOManagementSystem.App.App;
+import BTOManagementSystem.Controller.PasswordController;
 import BTOManagementSystem.Model.User;
 
 public class ApplicantView {
@@ -11,16 +12,17 @@ public class ApplicantView {
     public void showMenu(User user) { //Upcasting
         int option = 0;
 
-        while (option != 7) {
-            System.out.println("Welcome, " + user.getName());
+        while (option != 8) {
+            //System.out.println("Welcome, " + user.getName());
             System.out.println("\n=== Applicant Dashboard ===");
             System.out.println("1. View Available Projects");
             System.out.println("2. Apply for a Project");
             System.out.println("3. View My Application");
             System.out.println("4. Withdraw My Application");
             System.out.println("5. Enquiry Management");
-            System.out.println("6. Logout");
-            System.out.println("7. Exit");
+            System.out.println("6. Change Password");
+            System.out.println("7. Logout");
+            System.out.println("8. Exit");
             System.out.print("Enter your option: ");
 
             String input = scanner.nextLine(); // safer than nextInt()
@@ -48,10 +50,24 @@ public class ApplicantView {
                     manageEnquiries(user);
                     break;
                 case 6:
-                    App.main(null);
-                    //System.out.println("Logging out...");
+                    System.out.print("Enter the new password: ");
+                    String newPassword = scanner.nextLine();
+                    boolean success = PasswordController.changePassword(user.getNric(), newPassword);
+
+                    if (success) {
+                        System.out.print("Password updated. Please log in again.\n");
+                        App.main(null);
+                        return; // Exit menu to force re-login
+                    } else {
+                        System.out.println("Failed to update password."); //May happen if the FILE_PATH is wrong
+                        //showMenu();
+                    }
                     break;
                 case 7:
+                    System.out.println(user.getName() + " logging out...");
+                    App.main(null);
+                    break;
+                case 8:
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");
