@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import BTOManagementSystem.View.ApplicantView;
 import BTOManagementSystem.View.LoginPromptView;
 import BTOManagementSystem.Model.*;
 
@@ -17,7 +18,8 @@ public class ViewController {
     public static void handleMenuOptions(User user){
         switch(user.getRole()){
             case "Applicant":
-                System.out.println("Applicant menu");
+                ApplicantView view = new ApplicantView();
+                view.showMenu(user);
                 break;
             case "Manager":
                 System.out.println("Manager menu");
