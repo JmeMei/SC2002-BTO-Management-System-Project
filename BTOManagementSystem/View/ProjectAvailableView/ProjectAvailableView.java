@@ -2,6 +2,8 @@ package BTOManagementSystem.View.ProjectAvailableView;
 
 import BTOManagementSystem.Model.TwoRoom;
 
+import java.util.List;
+
 public class ProjectAvailableView {
     /*
      *   private String projectName;
@@ -16,12 +18,18 @@ public class ProjectAvailableView {
      private int visibility;
      */
 
-    public void fullDisplay(TwoRoom twoRoom){
-        System.out.println("ProjectName/Neighbourhood/Price/OpeningDate/ClosingDate");
-        System.out.println(twoRoom.getProjectName());
-        System.out.println(twoRoom.getNeighborhood());
-        System.out.println(twoRoom.getPriceType1());
-        System.out.println(twoRoom.getOpeningDate());
-        System.out.println(twoRoom.getClosingDate());
+    public void fullDisplay(List<TwoRoom> twoRooms){
+        // headers for data
+        System.out.printf("%-20s %-20s %-20s %-20s %-20s\n",
+                "Project Name", "Neighborhood", "Price", "Opening Date", "Closing Date");
+
+        // Seperator
+        System.out.println("=".repeat(96));
+
+        // iterate through two rooms
+        for(TwoRoom twoRoom : twoRooms) {
+            System.out.printf("%-20s %-20s %-20s %-20s %-20s\n",
+                    twoRoom.getProjectName(), twoRoom.getNeighborhood(), twoRoom.getPriceType1(), twoRoom.getOpeningDate(), twoRoom.getClosingDate());
+        }
     }
 }

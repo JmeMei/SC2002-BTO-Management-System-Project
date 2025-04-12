@@ -19,13 +19,11 @@ import BTOManagementSystem.Model.TwoRoom;
 
 public class ApplicationController {
     private TwoRoomDAO twoRoomDAO;
-    private ProjectAvailableView projectAvailableView; 
-    private TwoRoom twoRoom;
+    private ProjectAvailableView projectAvailableView;
     
     public ApplicationController(){
         this.twoRoomDAO = new TwoRoomDAO();
         this.projectAvailableView = new ProjectAvailableView();
-        this.twoRoom = new TwoRoom();
     }
     
     public void displayAvailableProjects(User user) {
@@ -41,8 +39,8 @@ public class ApplicationController {
         System.out.println("\nYou are eligible for:");
         if (canApplyForTwoRoom && !canApplyForThreeRoom) {
             System.out.println("- 2-Room flats only");
-            twoRoom = twoRoomDAO.loadAvailable2TwoRooms();
-            projectAvailableView.fullDisplay(twoRoom);
+            List<TwoRoom> twoRooms = twoRoomDAO.loadAvailable2TwoRooms();
+            projectAvailableView.fullDisplay(twoRooms);
         } else if (canApplyForTwoRoom && canApplyForThreeRoom) {
             System.out.println("- 2-Room flats");
             System.out.println("- 3-Room flats");

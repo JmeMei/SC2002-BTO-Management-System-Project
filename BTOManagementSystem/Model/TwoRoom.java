@@ -17,10 +17,18 @@ public class TwoRoom {
     public TwoRoom(String projectName2, String neighborhood2, int numberOfUnits, double price, String openingDate2,
             String closingDate2, String manager2, int officerSlot2, String officer, int visibility2) {
         //TODO Auto-generated constructor stub
+        this.projectName = projectName2;
+        this.neighborhood = neighborhood2;
+        this.numUnitsType1 = numberOfUnits;
+        this.priceType1 = price;
+        this.openingDate = openingDate2;
+        this.closingDate = closingDate2;
+        this.manager = manager2;
+        this.officerSlot = officerSlot2;
+        this.officers = officer;
+        this.visibility = visibility2;
     }
-    public TwoRoom() {
-        //TODO Auto-generated constructor stub
-    }
+
     public String getProjectName() {
         return projectName;
     }

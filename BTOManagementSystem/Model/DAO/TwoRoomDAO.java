@@ -5,7 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 import BTOManagementSystem.Model.TwoRoom;
@@ -13,8 +15,8 @@ import BTOManagementSystem.Model.TwoRoom;
 public class TwoRoomDAO {
     private static final String FILE_PATH = "BTOManagementSystem/Data/2Room.csv";
 
-    public TwoRoom loadAvailable2TwoRooms(){ //for Date
-        TwoRoom record = null;
+    public List<TwoRoom> loadAvailable2TwoRooms(){ //for Date
+        List<TwoRoom> records = new ArrayList<>();
 
         try(BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))){
             String line;
@@ -61,15 +63,15 @@ public class TwoRoomDAO {
             // private int visibility;
 
                 if(numberOfUnits != 0 && visibility == 1) {
-                    record = new TwoRoom(projectName, neighborhood, numberOfUnits, price, 
-                                         openingDate, closingDate, manager, 
-                                         officerSlot, officer, visibility);
+                    TwoRoom record = new TwoRoom(projectName, neighborhood, numberOfUnits, price,
+                            openingDate, closingDate, manager,
+                            officerSlot, officer, visibility);
+                    records.add(record);
                 }
             }
-            return record;
         } catch(IOException e){
             System.err.println("Error loading TwoRoom.csv: " + e.getMessage());
         }
-        return record; //return null i the tworrom csv is not found.
+        return records; //return null i the tworrom csv is not found.
     }
 }

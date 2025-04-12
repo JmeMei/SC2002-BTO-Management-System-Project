@@ -1,5 +1,7 @@
 package BTOManagementSystem.View;
 
+import BTOManagementSystem.Model.Roles.HDBOfficer;
+
 import java.util.Scanner;
 
 public class HDBOfficerView {
