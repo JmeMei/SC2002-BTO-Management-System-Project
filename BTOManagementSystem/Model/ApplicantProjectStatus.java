@@ -2,13 +2,13 @@ package BTOManagementSystem.Model;
 
 import java.util.Date;
 
-public class Application {
+public class ApplicantProjectStatus {
     private String applicantNric;
     private String projectName;
     private String flatType;
     private Date applicationDate;
     
-    public Application(String applicantNric, String projectName, String flatType, Date applicationDate) {
+    public ApplicantProjectStatus(String applicantNric, String projectName, String flatType, Date applicationDate) {
         this.applicantNric = applicantNric;
         this.projectName = projectName;
         this.flatType = flatType;

@@ -2,34 +2,40 @@ package BTOManagementSystem.Model.Roles;
 
 import BTOManagementSystem.Model.User;
 
+//Name,NRIC,Age,Marital Status,Password,Project Name,Type, Application Status, Enquiry, Reply
+
 public class Applicant extends User{
-    private String projectApplied;
+    private String projectName;
+    private String Type;
     private String applicationStatus;
     private String enquiry;
     private String reply;
 
-    public Applicant(String name, String nric, int age, String password, String maritalStatus) {
-        super(name, nric, age, password, maritalStatus, "Applicant");
+    public Applicant(String name, String nric, int age, String maritalStatus, String password) {
+        super(name, nric, age, maritalStatus, password, "Applicant");
 
         // Default values if not yet applied
-        this.projectApplied = "";
+        this.projectName = "";
         this.applicationStatus = "";
         this.enquiry = "";
         this.reply = "";
     }
-
-    // === Application Info ===
-
-    //Project Applied
-    public String getProjectApplied() {
-        return projectApplied;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setProjectApplied(String projectApplied) {
-        this.projectApplied = projectApplied;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
-    //Application Status
+    public String getType() {
+        return Type;
+    }
+
+    public void setType(String type) {
+        Type = type;
+    }
+
     public String getApplicationStatus() {
         return applicationStatus;
     }
@@ -38,7 +44,6 @@ public class Applicant extends User{
         this.applicationStatus = applicationStatus;
     }
 
-    // Enquiry
     public String getEnquiry() {
         return enquiry;
     }
@@ -47,19 +52,15 @@ public class Applicant extends User{
         this.enquiry = enquiry;
     }
 
-    //Reply
     public String getReply() {
         return reply;
     }
 
-    //Applicant should not be able to reply
-    // public void setReply(String reply) {
-    //     this.reply = reply;
-    // }
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
 
     // === Helper ===
-    public boolean hasApplied() {
-        return projectApplied != null && !projectApplied.isEmpty();
-    }
+    //public boolean hasApplied() {return projectApplied != null && !projectApplied.isEmpty();}
 
 }

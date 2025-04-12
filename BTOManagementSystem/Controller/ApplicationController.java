@@ -13,14 +13,17 @@ import java.util.Map;
 
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.User;
-import BTOManagementSystem.Model.Application;
+import BTOManagementSystem.Model.ApplicantProjectStatus;
 
 public class ApplicationController {
+
+    
+
     // Update this path to your actual CSV file location
     private static final String PROJECTS_FILE_PATH = "src/BTOManagementSystem/Data/projects.csv"; 
     private static List<Project> projects = null;
     // Map to store user applications (NRIC -> Application)
-    private static Map<String, Application> userApplications = new HashMap<>();
+    private static Map<String, ApplicantProjectStatus> userApplications = new HashMap<>();
     
     public static void displayAvailableProjects(User user) {
         // Load projects if not already loaded
