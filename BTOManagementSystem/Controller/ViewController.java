@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import BTOManagementSystem.Model.*;
 public class ViewController {
 
     //This is where we will split to the respective roles.
-    public static void handleMenuOptions(User user){
+    public static void handleMenuOptions(User user) throws ParseException{
         switch(user.getRole()){
             case "Applicant":
                 ApplicantView view = new ApplicantView();

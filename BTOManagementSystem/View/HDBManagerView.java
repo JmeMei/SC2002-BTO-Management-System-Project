@@ -3,7 +3,7 @@ package BTOManagementSystem.View;
 import java.util.Scanner;
 
 public class HDBManagerView {
-    rivate static final Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void showMenu(HDBManager manager) {
         int option = 0;

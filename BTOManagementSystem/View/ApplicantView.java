@@ -1,5 +1,6 @@
 package BTOManagementSystem.View;
 
+import java.text.ParseException;
 import java.util.Scanner;
 
 import BTOManagementSystem.App.App;
@@ -10,7 +11,7 @@ import BTOManagementSystem.Model.User;
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
 
-    public void showMenu(User user) { //Applicant view has a user
+    public void showMenu(User user) throws ParseException { //Applicant view has a user
         int option = 0;
 
         while (option != 8) {
@@ -36,7 +37,7 @@ public class ApplicantView {
 
             switch (option) {
                 case 1:
-                    ApplicationController.displayAvailableProjects(user);
+                    viewAvailableProjects(user);
                     break;
                 case 2:
                     applyForProject(user);
@@ -77,12 +78,12 @@ public class ApplicantView {
     }
 
     // Dummy implementations to be replaced with real logic
-    private static void viewAvailableProjects(User user) {
-        System.out.println("[DEBUG] Viewing available projects...");
+    private static void viewAvailableProjects(User user) throws ParseException {
+        System.out.println("Based on your profile: ");
         System.out.println("Your age is: " + user.getAge());
         System.out.println("Your marital status is: " + user.getMaritalStatus());
-
-        
+        ApplicationController applicationController = new ApplicationController();
+        applicationController.displayAvailableProjects(user);
         // Call controller to fetch and display projects
     }
 

@@ -3,6 +3,7 @@ package BTOManagementSystem.Model;
 import java.util.Date;
 
 public class ThreeRoom {
+
      private String projectName;
      private String neighborhood;
      private int numUnitsType2;
@@ -13,6 +14,20 @@ public class ThreeRoom {
      private int officerSlot;
      private String officers;
      private int visibility;
+
+     public ThreeRoom(String projectName, String neighborhood, int numUnitsType2, double priceType2, Date openingDate,
+     Date closingDate, String manager, int officerSlot, String officers, int visibility) {
+        this.projectName = projectName;
+        this.neighborhood = neighborhood;
+        this.numUnitsType2 = numUnitsType2;
+        this.priceType2 = priceType2;
+        this.openingDate = openingDate;
+        this.closingDate = closingDate;
+        this.manager = manager;
+        this.officerSlot = officerSlot;
+        this.officers = officers;
+        this.visibility = visibility;
+    }
 
     public String getProjectName() {
         return projectName;

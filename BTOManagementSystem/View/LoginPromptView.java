@@ -1,5 +1,6 @@
 package BTOManagementSystem.View;
 
+import java.text.ParseException;
 import java.util.*;
 
 import BTOManagementSystem.Controller.AuthController;
@@ -20,7 +21,12 @@ public class LoginPromptView implements ILoginView{
         User authenticatedUser = AuthController.Authenticate(NRIC, password);
 
         if (authenticatedUser != null) {
-            ViewController.handleMenuOptions(authenticatedUser); //go to their respective views
+            try {
+                ViewController.handleMenuOptions(authenticatedUser);
+            } catch (ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } //go to their respective views
         } else {
             displayLogInMenu(); // Recursive call to retry login
         }

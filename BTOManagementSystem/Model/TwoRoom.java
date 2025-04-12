@@ -7,13 +7,20 @@ public class TwoRoom {
     private String neighborhood;
     private int numUnitsType1;
     private double priceType1;
-    private Date openingDate;
-    private Date closingDate;
+    private String openingDate;
+    private String closingDate;
     private String manager;
     private int officerSlot;
     private String officers;
     private int visibility;
 
+    public TwoRoom(String projectName2, String neighborhood2, int numberOfUnits, double price, String openingDate2,
+            String closingDate2, String manager2, int officerSlot2, String officer, int visibility2) {
+        //TODO Auto-generated constructor stub
+    }
+    public TwoRoom() {
+        //TODO Auto-generated constructor stub
+    }
     public String getProjectName() {
         return projectName;
     }
@@ -38,16 +45,16 @@ public class TwoRoom {
     public void setPriceType1(double priceType1) {
         this.priceType1 = priceType1;
     }
-    public Date getOpeningDate() {
+    public String getOpeningDate() {
         return openingDate;
     }
-    public void setOpeningDate(Date openingDate) {
+    public void setOpeningDate(String openingDate) {
         this.openingDate = openingDate;
     }
-    public Date getClosingDate() {
+    public String getClosingDate() {
         return closingDate;
     }
-    public void setClosingDate(Date closingDate) {
+    public void setClosingDate(String closingDate) {
         this.closingDate = closingDate;
     }
     public String getManager() {
