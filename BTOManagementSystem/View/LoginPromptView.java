@@ -7,9 +7,9 @@ import BTOManagementSystem.Controller.ViewController;
 import BTOManagementSystem.Model.User;
 
 
-public class LoginPromptView {
+public class LoginPromptView implements ILoginView{
 
-    public static void displayLogInMenu(){
+    public void displayLogInMenu(){
         System.out.print("Enter your NRIC: ");
         Scanner scanner = new Scanner(System.in);
         String NRIC = scanner.nextLine().toUpperCase();

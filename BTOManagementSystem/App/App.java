@@ -1,5 +1,6 @@
 package BTOManagementSystem.App;
 
+import BTOManagementSystem.View.ILoginView;
 import BTOManagementSystem.View.LoginPromptView;
 
 /**
@@ -9,7 +10,9 @@ import BTOManagementSystem.View.LoginPromptView;
 public class App {
     
     public static void main(String[] args) {
-         LoginPromptView.displayLogInMenu();
+         // Using the interface type ILoginView
+         LoginPromptView loginView = new LoginPromptView();
+        loginView.displayLogInMenu();
     }
 }
 

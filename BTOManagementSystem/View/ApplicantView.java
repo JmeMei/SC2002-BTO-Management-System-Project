@@ -9,7 +9,7 @@ import BTOManagementSystem.Model.User;
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
 
-    public void showMenu(User user) { //Upcasting
+    public void showMenu(User user) { //Applicant view has a user
         int option = 0;
 
         while (option != 8) {
@@ -78,6 +78,10 @@ public class ApplicantView {
     // Dummy implementations to be replaced with real logic
     private static void viewAvailableProjects(User user) {
         System.out.println("[DEBUG] Viewing available projects...");
+        System.out.println("Your age is: " + user.getAge());
+        System.out.println("Your marital status is: " + user.getMaritalStatus());
+
+        
         // Call controller to fetch and display projects
     }
 
