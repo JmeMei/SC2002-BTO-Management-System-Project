@@ -1,28 +1,18 @@
 package BTOManagementSystem.Controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import BTOManagementSystem.Model.User;
-import BTOManagementSystem.Model.DAO.TwoRoomDAO;
+import BTOManagementSystem.Model.DAO.RoomDAO;
 import BTOManagementSystem.View.ProjectAvailableView.ProjectAvailableView;
-import BTOManagementSystem.Model.ApplicantProjectStatus;
-import BTOManagementSystem.Model.TwoRoom;
+import BTOManagementSystem.Model.Room;
 
 public class ApplicationController {
-    private TwoRoomDAO twoRoomDAO;
+    private RoomDAO roomDAO;
     private ProjectAvailableView projectAvailableView;
     
     public ApplicationController(){
-        this.twoRoomDAO = new TwoRoomDAO();
+        this.roomDAO = new RoomDAO();
         this.projectAvailableView = new ProjectAvailableView();
     }
     
@@ -39,11 +29,15 @@ public class ApplicationController {
         System.out.println("\nYou are eligible for:");
         if (canApplyForTwoRoom && !canApplyForThreeRoom) {
             System.out.println("- 2-Room flats only");
-            List<TwoRoom> twoRooms = twoRoomDAO.loadAvailable2TwoRooms();
-            projectAvailableView.fullDisplay(twoRooms);
+            List<Room> rooms = roomDAO.loadAvailableTwoRooms();
+            projectAvailableView.fullDisplay(rooms);
         } else if (canApplyForTwoRoom && canApplyForThreeRoom) {
             System.out.println("- 2-Room flats");
-            System.out.println("- 3-Room flats");
+            List<Room> tworooms = roomDAO.loadAvailableTwoRooms();
+            projectAvailableView.fullDisplay(tworooms);
+            System.out.println("\n- 3-Room flats");
+            List<Room> threerooms = roomDAO.loadAvailableThreeRooms();
+            projectAvailableView.fullDisplay(threerooms);
         }
         
         if (!canApplyForTwoRoom && !canApplyForThreeRoom) {

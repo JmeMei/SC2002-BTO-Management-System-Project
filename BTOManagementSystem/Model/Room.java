@@ -1,8 +1,8 @@
 package BTOManagementSystem.Model;
 
-import java.util.Date;
+import BTOManagementSystem.Model.DAO.FlatType;
 
-public class TwoRoom {
+public class Room {
     private String projectName;
     private String neighborhood;
     private int numUnitsType1;
@@ -13,10 +13,10 @@ public class TwoRoom {
     private int officerSlot;
     private String officers;
     private int visibility;
+    private FlatType flatType;
 
-    public TwoRoom(String projectName2, String neighborhood2, int numberOfUnits, double price, String openingDate2,
-            String closingDate2, String manager2, int officerSlot2, String officer, int visibility2) {
-        //TODO Auto-generated constructor stub
+    public Room(String projectName2, String neighborhood2, int numberOfUnits, double price, String openingDate2,
+                String closingDate2, String manager2, int officerSlot2, String officer, int visibility2, FlatType flatType) {
         this.projectName = projectName2;
         this.neighborhood = neighborhood2;
         this.numUnitsType1 = numberOfUnits;
@@ -27,6 +27,7 @@ public class TwoRoom {
         this.officerSlot = officerSlot2;
         this.officers = officer;
         this.visibility = visibility2;
+        this.flatType = flatType;
     }
 
     public String getProjectName() {
@@ -89,6 +90,11 @@ public class TwoRoom {
     public void setVisibility(int visibility) {
         this.visibility = visibility;
     }
-
+    public FlatType getFlatType() {
+        return flatType;
+    }
+    public void setFlatType( FlatType flatType) {
+        this.visibility = visibility;
+    }
     
 }
