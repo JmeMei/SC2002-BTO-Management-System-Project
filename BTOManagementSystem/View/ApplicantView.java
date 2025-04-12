@@ -3,6 +3,7 @@ package BTOManagementSystem.View;
 import java.util.Scanner;
 
 import BTOManagementSystem.App.App;
+import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.PasswordController;
 import BTOManagementSystem.Model.User;
 
@@ -35,7 +36,7 @@ public class ApplicantView {
 
             switch (option) {
                 case 1:
-                    viewAvailableProjects(user);
+                    ApplicationController.displayAvailableProjects(user);
                     break;
                 case 2:
                     applyForProject(user);
