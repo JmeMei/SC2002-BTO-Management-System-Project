@@ -38,8 +38,8 @@ public class User {
         return role;
     }
 
-    public String getPassword(String NRIC){
-        return password;
-    }
+    // public String getPassword(String NRIC){
+    //     return password;
+    // }
 
 }
