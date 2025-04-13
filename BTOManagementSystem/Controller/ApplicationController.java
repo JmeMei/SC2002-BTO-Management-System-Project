@@ -8,6 +8,8 @@ import BTOManagementSystem.View.ProjectAvailableView.ProjectAvailableView;
 import BTOManagementSystem.Model.Room;
 
 public class ApplicationController {
+    //ApplicationController “has a” TwoRoomDAO
+    //ApplicationController “has a” ProjectAvailableView
     private RoomDAO roomDAO;
     private ProjectAvailableView projectAvailableView;
     
