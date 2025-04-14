@@ -5,7 +5,7 @@ import java.util.List;
 import BTOManagementSystem.Model.DAO.Enum.*;
 
 public class Room {
-    private int ID;
+    private int ProjectID;
     private String projectName;
     private String neighborhood;
     private int numUnitsType;
@@ -18,9 +18,9 @@ public class Room {
     private int visibility;
     private FlatType flatType;
 
-    public Room(int ID, String projectName2, String neighborhood2, int numberOfUnits, double price, String openingDate2,
+    public Room(int ProjectID, String projectName2, String neighborhood2, int numberOfUnits, double price, String openingDate2,
                 String closingDate2, String manager2, int officerSlot2, List<String> officer, int visibility2, FlatType flatType) {
-        this.ID = ID;
+        this.ProjectID = ProjectID;
         this.projectName = projectName2;
         this.neighborhood = neighborhood2;
         this.numUnitsType = numberOfUnits;
@@ -34,12 +34,11 @@ public class Room {
         this.flatType = flatType;
     }
 
-    public int getID() {
-        return ID;
+    public int getProjectID() {
+        return ProjectID;
     }
-
-    public void setID(int iD) {
-        ID = iD;
+    public void setProjectID(int ProjectID) {
+        this.ProjectID = ProjectID;
     }
     public double getPriceType() {
         return priceType;

@@ -3,38 +3,41 @@ package BTOManagementSystem.Model.Roles;
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 
-//Name,NRIC,Age,Marital Status,Password,Project Name,Type, Application Status, Enquiry, Reply
-
+//APPLICANT IS CONNECTED TO APPLICANTPROJECTSTATS.CSV
+//Name,NRIC,Age,Marital Status,Password,role,ProjectID, Application Status, Enquiry, Reply
 public class Applicant extends User{
-    private String projectName;
-    private String Type;
-    private ApplicationStatus applicationStatus;
-    private String enquiry;
-    private String reply;
+    public int ProjectID;
+    public ApplicationStatus applicationStatus;
+    public String Enquiry;
+    public String Reply;
 
-    public Applicant(String name, String nric, int age, String maritalStatus, String password) {
-        super(name, nric, age, maritalStatus, password, "Applicant");
+    public Applicant(String name, String nric, int age, String password, String maritalStatus, String role,
+            int projectID, ApplicationStatus applicationStatus, String enquiry, String reply) {
+        super(name, nric, age, password, maritalStatus, role);
+        ProjectID = projectID;
+        this.applicationStatus = applicationStatus;
+        Enquiry = enquiry;
+        Reply = reply;
+    }
 
-        // Default values if not yet applied
-        this.projectName = "";
+    //If there are missing parameters, it assigned default
+    //this if for AuthController.
+    public Applicant(String name, String nric, int age, String password, String maritalStatus) {
+        // Default role is "Applicant"
+        super(name, nric, age, password, maritalStatus, "Applicant");
+        // Set defaults
+        this.ProjectID = -1;
         this.applicationStatus = ApplicationStatus.NA;
-        this.enquiry = "";
-        this.reply = "";
+        this.Enquiry = "";
+        this.Reply = "";
     }
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    
+    public int getProjectID() {
+        return ProjectID;
     }
 
-    public String getType() {
-        return Type;
-    }
-
-    public void setType(String type) {
-        Type = type;
+    public void setProjectID(int projectID) {
+        ProjectID = projectID;
     }
 
     public ApplicationStatus getApplicationStatus() {
@@ -46,22 +49,18 @@ public class Applicant extends User{
     }
 
     public String getEnquiry() {
-        return enquiry;
+        return Enquiry;
     }
 
     public void setEnquiry(String enquiry) {
-        this.enquiry = enquiry;
+        Enquiry = enquiry;
     }
 
     public String getReply() {
-        return reply;
+        return Reply;
     }
 
     public void setReply(String reply) {
-        this.reply = reply;
+        Reply = reply;
     }
-
-    // === Helper ===
-    //public boolean hasApplied() {return projectApplied != null && !projectApplied.isEmpty();}
-
 }

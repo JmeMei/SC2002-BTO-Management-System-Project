@@ -35,18 +35,17 @@ public class AuthController {
 
                     //return proper object to LoginPromptView
                     switch (userRole) {
-                    case "Manager" -> {
-                        return new HDBManager(userName, userNRIC, userAge, userPassword, userMaritalStatus);
+                        case "Manager" -> {
+                            return new HDBManager(userName, userNRIC, userAge, userPassword, userMaritalStatus);
                         }
-                    case "Applicant" -> {
-                        System.out.print("is it here");
-                        return new Applicant(userName, userNRIC, userAge, userPassword, userMaritalStatus);
+                        case "Applicant" -> {
+                            return new Applicant(userName, userNRIC, userAge, userPassword, userMaritalStatus);
                         }
-                    case "Officer" -> {
-                        return new HDBOfficer(userName, userNRIC, userAge, userPassword, userMaritalStatus);
+                        case "Officer" -> {
+                            return new HDBOfficer(userName, userNRIC, userAge, userPassword, userMaritalStatus);
                         }
-                    default -> {
-                        return new User(userName, userNRIC, userAge, userPassword, userMaritalStatus, userRole);
+                        default -> {
+                            return new User(userName, userNRIC, userAge, userPassword, userMaritalStatus, userRole);
                         }
                     }
                 }
