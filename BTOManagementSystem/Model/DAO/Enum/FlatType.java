@@ -1,4 +1,4 @@
-package BTOManagementSystem.Model.DAO;
+package BTOManagementSystem.Model.DAO.Enum;
 
 public enum FlatType {
     TWOROOM,

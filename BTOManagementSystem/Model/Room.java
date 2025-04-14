@@ -1,6 +1,6 @@
 package BTOManagementSystem.Model;
 
-import BTOManagementSystem.Model.DAO.FlatType;
+import BTOManagementSystem.Model.DAO.Enum.*;
 
 public class Room {
     private String projectName;

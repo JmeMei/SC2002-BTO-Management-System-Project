@@ -8,6 +8,7 @@ import java.util.List;
 
 
 import BTOManagementSystem.Model.Room;
+import BTOManagementSystem.Model.DAO.Enum.*;
 
 public class RoomDAO {
     private static final String FILE_PATH = "BTOManagementSystem/Data/Room.csv";
@@ -48,17 +49,6 @@ public class RoomDAO {
                 String officer      = values[8].trim();
                 int visibility      = Integer.parseInt(values[9].trim());
                 FlatType flatType = (values[10].equals("3-Room")) ? FlatType.THREEROOM : FlatType.TWOROOM;
-
-            //             private String projectName;
-            // private String neighborhood;
-            // private int numUnitsType1;
-            // private double priceType1;
-            // private Date openingDate;
-            // private Date closingDate;
-            // private String manager;
-            // private int officerSlot;
-            // private String officers;
-            // private int visibility;
 
                 if(numberOfUnits != 0 && visibility == 1 && flatType == FlatType.TWOROOM) {
                     Room record = new Room(projectName, neighborhood, numberOfUnits, price,
