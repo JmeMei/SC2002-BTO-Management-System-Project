@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import BTOManagementSystem.Model.Room;
 import BTOManagementSystem.Model.DAO.Enum.*;
@@ -25,33 +26,35 @@ public class RoomDAO {
                     isHeader = false;
                     continue;
                 }
-                //String[] values = line.split(",", -1);
                 // Use regex to avoid splitting commas that are inside quotes.
                 String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-
-                // if (values.length < 10) {
-                //     System.out.println("Skipping line with insufficient data: " + line);
-                //     continue;
-                // }
-
+                //String[] values = line.split(",");
+                
                 // Parse required columns (assuming columns are as described above)
-                String projectName  = values[0].trim();
-                String neighborhood = values[1].trim();
-                int numberOfUnits   = Integer.parseInt(values[2].trim()); // <= might throw NumberFormatException if invalid
-                double price        = Double.parseDouble(values[3].trim());
+                int ID = Integer.parseInt(values[0].trim());
+                String projectName  = values[1].trim();
+                String neighborhood = values[2].trim();
+                int numberOfUnits   = Integer.parseInt(values[3].trim()); // <= might throw NumberFormatException if invalid
+                double price        = Double.parseDouble(values[4].trim());
                 // SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
                 // Date openingDate = sdf.parse(values[4].trim());
                 // Date closingDate = sdf.parse(values[5].trim());
-                String openingDate = values[4].trim();
-                String closingDate = values[5].trim();
-                String manager      = values[6].trim();
-                int officerSlot     = values[7].trim().isEmpty() ? 0 : Integer.parseInt(values[7].trim());
-                String officer      = values[8].trim();
-                int visibility      = Integer.parseInt(values[9].trim());
-                FlatType flatType = (values[10].equals("3-Room")) ? FlatType.THREEROOM : FlatType.TWOROOM;
+                String openingDate = values[5].trim();
+                String closingDate = values[6].trim();
+                String manager      = values[7].trim();
+                int officerSlot     = values[8].trim().isEmpty() ? 0 : Integer.parseInt(values[8].trim());
+                String rawOfficerList  = values[9].replaceAll("^\"|\"$", "").trim(); // "Daniel,Emily" => Daniel,Emily
+                List<String> officer = Arrays.stream(rawOfficerList.split(","))
+                             .map(String::trim)
+                             .collect(Collectors.toList());
+                int visibility      = Integer.parseInt(values[10].trim());
+                FlatType flatType = (values[11].equals("3-Room")) ? FlatType.THREEROOM : FlatType.TWOROOM;
+                
+                //***FOR DEBUGGING, YOU CAN PRINT EVERYTHING FIRST***//
+                //System.out.println(Arrays.toString(values));
 
                 if(numberOfUnits != 0 && visibility == 1 && flatType == FlatType.TWOROOM) {
-                    Room record = new Room(projectName, neighborhood, numberOfUnits, price,
+                    Room record = new Room(ID,projectName, neighborhood, numberOfUnits, price,
                             openingDate, closingDate, manager,
                             officerSlot, officer, visibility, flatType);
                     records.add(record);
@@ -75,44 +78,36 @@ public class RoomDAO {
                     isHeader = false;
                     continue;
                 }
-                //String[] values = line.split(",", -1);
+
                 // Use regex to avoid splitting commas that are inside quotes.
                 String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-
-                // if (values.length < 10) {
-                //     System.out.println("Skipping line with insufficient data: " + line);
-                //     continue;
-                // }
+                //String[] values = line.split(",");
 
                 // Parse required columns (assuming columns are as described above)
-                String projectName  = values[0].trim();
-                String neighborhood = values[1].trim();
-                int numberOfUnits   = Integer.parseInt(values[2].trim()); // <= might throw NumberFormatException if invalid
-                double price        = Double.parseDouble(values[3].trim());
+                int ID = Integer.parseInt(values[0].trim());
+                String projectName  = values[1].trim();
+                String neighborhood = values[2].trim();
+                int numberOfUnits   = Integer.parseInt(values[3].trim()); // <= might throw NumberFormatException if invalid
+                double price        = Double.parseDouble(values[4].trim());
                 // SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
                 // Date openingDate = sdf.parse(values[4].trim());
                 // Date closingDate = sdf.parse(values[5].trim());
-                String openingDate = values[4].trim();
-                String closingDate = values[5].trim();
-                String manager      = values[6].trim();
-                int officerSlot     = values[7].trim().isEmpty() ? 0 : Integer.parseInt(values[7].trim());
-                String officer      = values[8].trim();
-                int visibility      = Integer.parseInt(values[9].trim());
-                FlatType flatType = (values[10].equals("3-Room")) ? FlatType.THREEROOM : FlatType.TWOROOM;
+                String openingDate = values[5].trim();
+                String closingDate = values[6].trim();
+                String manager      = values[7].trim();
+                int officerSlot     = values[8].trim().isEmpty() ? 0 : Integer.parseInt(values[8].trim());
+                String rawOfficerList  = values[9].replaceAll("^\"|\"$", "").trim(); // "Daniel,Emily" => Daniel,Emily
+                List<String> officer = Arrays.stream(rawOfficerList.split(","))
+                             .map(String::trim)
+                             .collect(Collectors.toList());
+                int visibility      = Integer.parseInt(values[10].trim());
+                FlatType flatType = (values[11].equals("3-Room")) ? FlatType.THREEROOM : FlatType.TWOROOM;
 
-                //             private String projectName;
-                // private String neighborhood;
-                // private int numUnitsType1;
-                // private double priceType1;
-                // private Date openingDate;
-                // private Date closingDate;
-                // private String manager;
-                // private int officerSlot;
-                // private String officers;
-                // private int visibility;
+                //***FOR DEBUGGING, YOU CAN PRINT EVERYTHING FIRST***//
+                //System.out.println(Arrays.toString(values));
 
                 if(numberOfUnits != 0 && visibility == 1 && flatType == FlatType.THREEROOM) {
-                    Room record = new Room(projectName, neighborhood, numberOfUnits, price,
+                    Room record = new Room(ID,projectName, neighborhood, numberOfUnits, price,
                             openingDate, closingDate, manager,
                             officerSlot, officer, visibility,flatType);
                     records.add(record);
