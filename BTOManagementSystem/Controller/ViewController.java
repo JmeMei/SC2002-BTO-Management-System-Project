@@ -1,44 +1,54 @@
 package BTOManagementSystem.Controller;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-
-import BTOManagementSystem.View.ApplicantView;
-import BTOManagementSystem.View.LoginPromptView;
 import BTOManagementSystem.Model.*;
+import BTOManagementSystem.Model.Roles.Applicant;
+import BTOManagementSystem.Model.Roles.HDBManager;
+import BTOManagementSystem.Model.Roles.HDBOfficer;
+import BTOManagementSystem.View.ApplicantView;
+import BTOManagementSystem.View.HDBManagerView;
+import BTOManagementSystem.View.HDBOfficerView;
+import java.text.ParseException;
 
 public class ViewController {
 
     //This is where we will split to the respective roles.
     public static void handleMenuOptions(User user) throws ParseException{
-        switch(user.getRole()){
-            case "Applicant":
-                ApplicantView view = new ApplicantView();
-                view.showMenu(user);
-                break;
-            case "Manager":
-                System.out.println("Manager menu");
-                break;
-            case "Officer":
-                System.out.println("Officer menu");
-                break;
-            default:
-                System.out.println("Unknown user role");
-                break;
-
+        // check via instance instead of getting role
+        if (user instanceof HDBOfficer) {
+            HDBOfficerView officerView = new HDBOfficerView();
+            officerView.showMenu((HDBOfficer)user);
+        } else if (user instanceof HDBManager) {
+            HDBManagerView managerView = new HDBManagerView();
+            managerView.showMenu((HDBManager)user);
+        } else if (user instanceof Applicant) {
+            ApplicantView view = new ApplicantView();
+            view.showMenu(user);
         }
 
     }
     
 
 }
-    
+
+//      old menu view
+//        switch(user.getRole()){
+//            case "Applicant":
+//                ApplicantView view = new ApplicantView();
+//                view.showMenu(user);
+//                break;
+//            case "Manager":
+//                HDBManagerView managerView = new HDBManagerView();
+//                managerView.showMenu((HDBManager)user);
+//               break;
+//            case "Officer":
+//                HDBOfficerView officerView = new HDBOfficerView();
+//                officerView.showMenu((HDBOfficer)user);
+//                break;
+//            default:
+//                System.out.println("Unknown user role");
+//                break;
+//       }
+
 //     // Path to the CSV 
 //     private static final String FILE_PATH = "BTOManagementSystem/Data/userlogin.csv"
 

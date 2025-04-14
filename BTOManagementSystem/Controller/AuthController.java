@@ -1,12 +1,12 @@
 package BTOManagementSystem.Controller;
-import java.util.*;
-
 import BTOManagementSystem.Model.*;
-import BTOManagementSystem.View.LoginPromptView;
-
+import BTOManagementSystem.Model.Roles.Applicant;
+import BTOManagementSystem.Model.Roles.HDBManager;
+import BTOManagementSystem.Model.Roles.HDBOfficer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.*;
 
 public class AuthController {
 
@@ -32,11 +32,26 @@ public class AuthController {
                 if (userNRIC.equals(NRIC) && userPassword.equals(password)) {
                     System.out.println("Login successful, welcome back " + userName);
                     //return back to LoginPromptView
-                    return new User(userName, userNRIC, userAge, userPassword, userMaritalStatus, userRole); //Model
-                }
-            }
 
-        } catch (IOException e) {
+                    //return proper object to LoginPromptView
+                    switch (userRole) {
+                    case "Manager" -> {
+                        return new HDBManager(userName, userNRIC, userAge, userPassword, userMaritalStatus);
+                        }
+                    case "Applicant" -> {
+                        System.out.print("is it here");
+                        return new Applicant(userName, userNRIC, userAge, userPassword, userMaritalStatus);
+                        }
+                    case "Officer" -> {
+                        return new HDBOfficer(userName, userNRIC, userAge, userPassword, userMaritalStatus);
+                        }
+                    default -> {
+                        return new User(userName, userNRIC, userAge, userPassword, userMaritalStatus, userRole);
+                        }
+                    }
+                }
+            } 
+            } catch (IOException e) {
             System.out.println("Error reading the CSV database: " + e.getMessage());
         }
 
