@@ -1,15 +1,20 @@
 package BTOManagementSystem.View;
 
+import java.io.Serial;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Scanner;
 
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.PasswordController;
+import BTOManagementSystem.Model.Room;
 import BTOManagementSystem.Model.User;
 
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
+
+    public static List<Room> roomsAvailable; //Global static variable to store the available rooms
 
     public void showMenu(User user) throws ParseException { //Applicant view has a user
         int option = 0;
@@ -40,6 +45,7 @@ public class ApplicantView {
                     viewAvailableProjects(user);
                     break;
                 case 2:
+                    viewAvailableProjects(user); //First, you have to view available projects first and store it in the global var (roomsAvailable)
                     applyForProject(user);
                     break;
                 case 3:
@@ -83,12 +89,18 @@ public class ApplicantView {
         System.out.println("Your age is: " + user.getAge());
         System.out.println("Your marital status is: " + user.getMaritalStatus());
         ApplicationController applicationController = new ApplicationController();
-        applicationController.displayAvailableProjects(user);
+        List<Room> roomsAvailable = applicationController.displayAvailableProjects(user);
         // Call controller to fetch and display projects
     }
 
     private static void applyForProject(User user) {
         System.out.println("[DEBUG] Applying for project...");
+        System.out.println("Enter the ID of the project you want to apply: ");
+        int projectID = scanner.nextInt();
+
+        ApplicationController applicationController = new ApplicationController();
+        applicationController.applyForProject(user, projectID);
+
         // Prompt for project and flat type → pass to controller
     }
 
