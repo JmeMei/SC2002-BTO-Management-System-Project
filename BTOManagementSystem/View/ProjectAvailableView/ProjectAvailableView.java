@@ -20,16 +20,16 @@ public class ProjectAvailableView {
 
     public void fullDisplay(List<Room> rooms){
         // headers for data
-        System.out.printf("%-20s %-20s %-20s %-20s %-20s\n",
-                "Project Name", "Neighborhood", "Price", "Opening Date", "Closing Date");
+        System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                "Project Name", "Neighborhood", "Price", "Opening Date", "Closing Date", "Available");
 
         // Seperator
-        System.out.println("=".repeat(96));
+        System.out.println("=".repeat(120));
 
         // iterate through two rooms
         for(Room room : rooms) {
-            System.out.printf("%-20s %-20s %-20s %-20s %-20s\n",
-                    room.getProjectName(), room.getNeighborhood(), room.getPriceType1(), room.getOpeningDate(), room.getClosingDate());
+            System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                    room.getProjectName(), room.getNeighborhood(), room.getPriceType1(), room.getOpeningDate(), room.getClosingDate(), room.getNumUnitsType());
         }
     }
 }

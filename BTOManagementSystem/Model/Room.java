@@ -5,8 +5,8 @@ import BTOManagementSystem.Model.DAO.Enum.*;
 public class Room {
     private String projectName;
     private String neighborhood;
-    private int numUnitsType1;
-    private double priceType1;
+    private int numUnitsType;
+    private double priceType;
     private String openingDate;
     private String closingDate;
     private String manager;
@@ -19,8 +19,8 @@ public class Room {
                 String closingDate2, String manager2, int officerSlot2, String officer, int visibility2, FlatType flatType) {
         this.projectName = projectName2;
         this.neighborhood = neighborhood2;
-        this.numUnitsType1 = numberOfUnits;
-        this.priceType1 = price;
+        this.numUnitsType = numberOfUnits;
+        this.priceType = price;
         this.openingDate = openingDate2;
         this.closingDate = closingDate2;
         this.manager = manager2;
@@ -42,17 +42,17 @@ public class Room {
     public void setNeighborhood(String neighborhood) {
         this.neighborhood = neighborhood;
     }
-    public int getNumUnitsType1() {
-        return numUnitsType1;
+    public int getNumUnitsType() {
+        return numUnitsType;
     }
-    public void setNumUnitsType1(int numUnitsType1) {
-        this.numUnitsType1 = numUnitsType1;
+    public void setNumUnitsType(int numUnitsType1) {
+        this.numUnitsType = numUnitsType1;
     }
     public double getPriceType1() {
-        return priceType1;
+        return priceType;
     }
-    public void setPriceType1(double priceType1) {
-        this.priceType1 = priceType1;
+    public void setPriceType(double priceType1) {
+        this.priceType = priceType1;
     }
     public String getOpeningDate() {
         return openingDate;
