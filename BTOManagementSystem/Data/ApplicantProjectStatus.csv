@@ -1,6 +1,6 @@
 ﻿Name,NRIC,Age,Marital Status,Project Name,Type, Application Status, Enquiry, Reply
-John,S1234567A,35,Single,Acacia Breeze, 2-Room, Pending, Can I cancel after booking?, Yes
-Sarah,T7654321B,40,Married,,,
-Grace,S9876543C,37,Married,,,,
-James,T2345678D,30,Married,,,
-Rachel,S3456789E,25,Single,,,
+John,S1234567A,35,Single,Acacia Breeze, 2-Room, PENDING, Can I cancel after booking?, Yes
+Sarah,T7654321B,40,Married,,,NA,,
+Grace,S9876543C,37,Married,,,NA,,
+James,T2345678D,30,Married,,,NA,,
+Rachel,S3456789E,25,Single,,,NA,,

@@ -1,13 +1,14 @@
 package BTOManagementSystem.Model.Roles;
 
 import BTOManagementSystem.Model.User;
+import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 
 //Name,NRIC,Age,Marital Status,Password,Project Name,Type, Application Status, Enquiry, Reply
 
 public class Applicant extends User{
     private String projectName;
     private String Type;
-    private String applicationStatus;
+    private ApplicationStatus applicationStatus;
     private String enquiry;
     private String reply;
 
@@ -16,7 +17,7 @@ public class Applicant extends User{
 
         // Default values if not yet applied
         this.projectName = "";
-        this.applicationStatus = "";
+        this.applicationStatus = ApplicationStatus.NA;
         this.enquiry = "";
         this.reply = "";
     }
@@ -36,11 +37,11 @@ public class Applicant extends User{
         Type = type;
     }
 
-    public String getApplicationStatus() {
+    public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
 
-    public void setApplicationStatus(String applicationStatus) {
+    public void setApplicationStatus(ApplicationStatus applicationStatus) {
         this.applicationStatus = applicationStatus;
     }
 
