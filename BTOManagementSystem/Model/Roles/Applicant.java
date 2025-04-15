@@ -4,6 +4,7 @@ import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 
 //APPLICANT IS CONNECTED TO APPLICANTPROJECTSTATS.CSV
+
 //Name,NRIC,Age,Marital Status,Password,role,ProjectID, Application Status, Enquiry, Reply
 public class Applicant extends User{
     public int ProjectID;

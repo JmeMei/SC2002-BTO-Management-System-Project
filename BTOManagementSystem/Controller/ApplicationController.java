@@ -37,16 +37,16 @@ public class ApplicationController {
         System.out.println("\nYou are eligible for:");
         if (canApplyForTwoRoom && !canApplyForThreeRoom) {
             System.out.println("- 2-Room flats only");
-            List<Room> rooms = roomDAO.loadAvailableTwoRooms();
+            List<Room> rooms = roomDAO.loadAvailableTwoRooms(user);
             projectAvailableView.fullDisplay(rooms);
             return rooms;
 
         } else if (canApplyForTwoRoom && canApplyForThreeRoom) {
             System.out.println("- 2-Room flats");
-            List<Room> tworooms = roomDAO.loadAvailableTwoRooms();
+            List<Room> tworooms = roomDAO.loadAvailableTwoRooms(user);
             projectAvailableView.fullDisplay(tworooms);
             System.out.println("\n- 3-Room flats");
-            List<Room> threerooms = roomDAO.loadAvailableThreeRooms();
+            List<Room> threerooms = roomDAO.loadAvailableThreeRooms(user);
             projectAvailableView.fullDisplay(threerooms);
 
             //Return both rooms

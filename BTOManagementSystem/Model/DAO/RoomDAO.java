@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import BTOManagementSystem.Model.Room;
+import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.Enum.*;
 
 public class RoomDAO {
     private static final String FILE_PATH = "BTOManagementSystem/Data/Room.csv";
 
-    public List<Room> loadAvailableTwoRooms(){ //for Date
+    public List<Room> loadAvailableTwoRooms(User user){ //for Date
         List<Room> records = new ArrayList<>();
+        List<Integer> projectID = new ArrayList<>();
 
         try(BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))){
             String line;
@@ -53,11 +55,12 @@ public class RoomDAO {
                 //***FOR DEBUGGING, YOU CAN PRINT EVERYTHING FIRST***//
                 //System.out.println(Arrays.toString(values));
 
-                if(numberOfUnits != 0 && visibility == 1 && flatType == FlatType.TWOROOM) {
+                if(numberOfUnits != 0 && visibility == 1 && flatType == FlatType.TWOROOM && !officer.contains(user.getName())) {
                     Room record = new Room(ID,projectName, neighborhood, numberOfUnits, price,
                             openingDate, closingDate, manager,
                             officerSlot, officer, visibility, flatType);
                     records.add(record);
+                    projectID.add(ID);
                 }
             }
         } catch(IOException e){
@@ -66,8 +69,9 @@ public class RoomDAO {
         return records; //return null i the tworrom csv is not found.
     }
 
-    public List<Room> loadAvailableThreeRooms(){ //for Date
+    public List<Room> loadAvailableThreeRooms(User user){ //for Date
         List<Room> records = new ArrayList<>();
+        List<Integer> projectID = new ArrayList<>();
 
         try(BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))){
             String line;
@@ -106,11 +110,12 @@ public class RoomDAO {
                 //***FOR DEBUGGING, YOU CAN PRINT EVERYTHING FIRST***//
                 //System.out.println(Arrays.toString(values));
 
-                if(numberOfUnits != 0 && visibility == 1 && flatType == FlatType.THREEROOM) {
+                if(numberOfUnits != 0 && visibility == 1 && flatType == FlatType.THREEROOM && !officer.contains(user.getName())) {
                     Room record = new Room(ID,projectName, neighborhood, numberOfUnits, price,
                             openingDate, closingDate, manager,
                             officerSlot, officer, visibility,flatType);
                     records.add(record);
+                    projectID.add(ID);
                 }
             }
         } catch(IOException e){

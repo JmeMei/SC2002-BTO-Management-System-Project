@@ -45,7 +45,7 @@ public class ApplicantView {
                     viewAvailableProjects(user);
                     break;
                 case 2:
-                    viewAvailableProjects(user); //First, you have to view available projects first and store it in the global var (roomsAvailable)
+                    viewAvailableProjects(user);
                     applyForProject(user);
                     break;
                 case 3:
@@ -89,18 +89,44 @@ public class ApplicantView {
         System.out.println("Your age is: " + user.getAge());
         System.out.println("Your marital status is: " + user.getMaritalStatus());
         ApplicationController applicationController = new ApplicationController();
-        List<Room> roomsAvailable = applicationController.displayAvailableProjects(user);
+        roomsAvailable = applicationController.displayAvailableProjects(user);
         // Call controller to fetch and display projects
     }
 
-    private static void applyForProject(User user) {
-        System.out.println("[DEBUG] Applying for project...");
-        System.out.println("Enter the ID of the project you want to apply: ");
-        int projectID = scanner.nextInt();
+    private static void applyForProject(User user) throws ParseException {
+        System.out.println("Enter the projectID: ");
+        
+        String input = scanner.nextLine(); // Read as String
+        int projectID;
+        try {
+            projectID = Integer.parseInt(input); // Parse to int
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            return; // or use continue inside a loop
+        }
 
-        ApplicationController applicationController = new ApplicationController();
-        applicationController.applyForProject(user, projectID);
+        boolean projectFound = false;
 
+        // Iterate through the roomsAvailable list
+        while(!projectFound){
+            // Make sure the user enters an integer
+            
+            //roomAvailable is a global that gets declared in viewAvailableProject
+            for (Room room : roomsAvailable) { 
+                if (room.getProjectID() == projectID) {
+                    System.out.println("Project found: " + room.getProjectName());
+                    projectFound = true;
+                    ApplicationController applicationController = new ApplicationController();
+                    applicationController.applyForProject(user, projectID);
+                    // You can now proceed with applying logic
+                    break;
+                }
+            }
+            if (!projectFound) {
+                System.out.println("No project found with that ID.");
+                return;
+            }
+        }
         // Prompt for project and flat type → pass to controller
     }
 
