@@ -131,8 +131,10 @@ public class ApplicantView {
     }
 
     private static void viewMyApplication(User user) {
-        System.out.println("[DEBUG] Viewing your application...");
-        // Use user.getApplication()
+       // System.out.println("[DEBUG] Viewing your application...");
+        ApplicationController applicationController = new ApplicationController();
+        applicationController.viewMyApplication(user);
+        
     }
 
     private static void withdrawApplication(User user) {

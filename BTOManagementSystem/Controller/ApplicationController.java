@@ -72,6 +72,16 @@ public class ApplicationController {
             System.out.print("Successfully applied. Now pending.");
         }
     }
+
+    public void viewMyApplication(User user) {
+        boolean success = applicantProjectStatusDAO.viewMyApplication(user);
+        if (success){
+            System.out.print("Application successfully viewed");
+        }
+        else{
+            System.out.print("Unable to view application");
+        }
+    }
         
         
 }

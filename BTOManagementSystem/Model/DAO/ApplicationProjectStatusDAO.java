@@ -6,9 +6,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import BTOManagementSystem.Model.User;
+import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 
 public class ApplicationProjectStatusDAO {
     private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantProjectStatus.csv";
@@ -56,6 +58,61 @@ public class ApplicationProjectStatusDAO {
             System.out.println("Error writing to ApplicantProjectStatus.csv: " + e.getMessage());
         }
 
+        return false;
+    }
+
+    public static boolean viewMyApplication(User user) {
+        List<String[]> fileContent = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String header = reader.readLine(); // Read header
+            fileContent.add(header.split(",")); // Store header
+
+            //Name,NRIC,Age,Marital Status,Password,role,ProjectID, Application Status, Enquiry, Reply
+
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] values = line.split(",");
+
+                // Get the applicant's NRIC
+                //System.out.println("[DEBUG] Comparing: " + values[1].trim() + " vs " + user.getNric());
+                if (values[1].trim().equalsIgnoreCase(user.getNric())) {
+                    // Extract data
+                    String name = values[0].trim();
+                    String nric = values[1].trim();
+                    int age = Integer.parseInt(values[2].trim());
+                    String maritalStatus = values[3].trim();
+                    //String password = values[4].trim();
+                    String role = values[5].trim();
+                    int projectID = Integer.parseInt(values[6].trim());
+                    ApplicationStatus applicationStatus = ApplicationStatus.valueOf(values[7].trim().toUpperCase());
+                    String enquiry = values[8].trim();
+                    String reply = values[9].trim();
+
+                    if (projectID == -1) {
+                        System.out.println("No application record found for NRIC: " + user.getNric());
+                        return false;
+                    }
+
+                    // Display in a user-friendly format
+                    System.out.println("\n=== Your Application Details ===");
+                    System.out.println("Name: " + name);
+                    System.out.println("NRIC: " + nric);
+                    System.out.println("Age: " + age);
+                    System.out.println("Marital Status: " + maritalStatus);
+                    System.out.println("Role: " + role);
+                    System.out.println("Applied Project ID: " + projectID);
+                    System.out.println("Application Status: " + applicationStatus);
+                    System.out.println("Enquiry: " + (enquiry.isEmpty() ? "None" : enquiry));
+                    System.out.println("Reply: " + (reply.isEmpty() ? "None" : reply));
+                    return true; // Exit after first match
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the ApplicantProjectStatus.csv: " + e.getMessage());
+            return false;
+        }
         return false;
     }
 }

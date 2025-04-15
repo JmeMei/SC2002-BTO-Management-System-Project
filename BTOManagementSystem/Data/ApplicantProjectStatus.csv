@@ -1,4 +1,4 @@
-﻿Name,NRIC,Age,Marital Status,Password,role,ProjectID, Application Status, Enquiry, Reply
+﻿Name,NRIC,Age,Marital Status,Password,role,ProjectID,Application Status,Enquiry,Reply
 John,S1234567A,35,Single,password,Applicant,-1,NA,Can I cancel after booking?,Yes
 Sarah,T7654321B,40,Married,password, Applicant,-1,NA,,
 Grace,S9876543C,37,Married,password, Applicant,-1,NA,,
