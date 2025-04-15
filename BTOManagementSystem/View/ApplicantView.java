@@ -10,6 +10,7 @@ import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.PasswordController;
 import BTOManagementSystem.Model.Room;
 import BTOManagementSystem.Model.User;
+import BTOManagementSystem.Model.Roles.HDBOfficer;
 
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
@@ -145,5 +146,8 @@ public class ApplicantView {
     private static void manageEnquiries(User user) {
         System.out.println("[DEBUG] Managing enquiries...");
         // Submenu for add/view/delete enquiry
+
+         ApplicantEnquiryView applicantEnquiryView = new ApplicantEnquiryView();
+         applicantEnquiryView.showEnquiryMenu(user);
     }
 }

@@ -1,9 +1,9 @@
 ﻿Name,NRIC,Age,Marital Status,Password,role,ProjectID,Application Status,Enquiry,Reply
-John,S1234567A,35,Single,password,Applicant,-1,NA,Can I cancel after booking?,Yes
-Sarah,T7654321B,40,Married,password, Applicant,-1,NA,,
-Grace,S9876543C,37,Married,password, Applicant,-1,NA,,
-James,T2345678D,30,Married,password, Applicant,-1,NA,,
-Rachel,S3456789E,25,Single,password, Applicant,-1,NA,,
-Daniel,T2109876H,36,Single,password, Officer,-1,NA,,
-Emily,S6543210I,28,Single,password, Officer,-1,NA,,
-David,T1234567J,29,Married,password, Officer,-1,NA,,
+John,S1234567A,35,Single,password,Applicant,-1,NA,NA,NA
+Sarah,T7654321B,40,Married,password,Applicant,-1,NA,NA,NA
+Grace,S9876543C,37,Married,password,Applicant,-1,NA,NA,NA
+James,T2345678D,30,Married,password,Applicant,-1,NA,NA,NA
+Rachel,S3456789E,25,Single,password,Applicant,-1,NA,NA,NA
+Daniel,T2109876H,36,Single,password,Officer,-1,NA,NA,NA
+Emily,S6543210I,28,Single,password,Officer,-1,NA,NA,NA
+David,T1234567J,29,Married,password,Officer,-1,NA,NA,NA
