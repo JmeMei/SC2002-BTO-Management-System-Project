@@ -4,6 +4,7 @@ import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBManager;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.Services.AuthenticatorService;
+import BTOManagementSystem.Services.SessionManagerService;
 import BTOManagementSystem.View.LoginPromptView;
 
 import java.io.BufferedReader;
@@ -60,7 +61,7 @@ public class AuthController {
         return null;
     }
 
-    public void startAuthenticateProcess(LoginPromptView LoginView, AuthenticatorService AuthService){
+    public void startAuthenticateProcess(LoginPromptView LoginView, AuthenticatorService AuthService, SessionManagerService sessionManager){
 
         String[] loginData;
         Boolean LoggedInStatus = false;
@@ -70,6 +71,8 @@ public class AuthController {
             LoggedInStatus = AuthService.authenticate(loginData[0],loginData[1]);
             LoginView.LoginSucessOrFail(LoggedInStatus);
         }while (!LoggedInStatus);
+
+        sessionManager.InstantiateSession(loginData[0]);
 
     }
 

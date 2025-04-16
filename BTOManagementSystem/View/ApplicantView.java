@@ -8,6 +8,7 @@ import java.util.Scanner;
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.PasswordController;
+import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Room;
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
@@ -17,7 +18,7 @@ public class ApplicantView {
 
     public static List<Room> roomsAvailable; //Global static variable to store the available rooms
 
-    public void showMenu(User user) throws ParseException { //Applicant view has a user
+    public void showMenu(Applicant user) /*throws ParseException*/ { //Applicant view has a user
         int option = 0;
 
         while (option != 8) {
@@ -85,7 +86,7 @@ public class ApplicantView {
     }
 
     // Dummy implementations to be replaced with real logic
-    private static void viewAvailableProjects(User user) throws ParseException {
+    private static void viewAvailableProjects(User user) /* throws ParseException */ {
         System.out.println("Based on your profile: ");
         System.out.println("Your age is: " + user.getAge());
         System.out.println("Your marital status is: " + user.getMaritalStatus());
@@ -94,7 +95,7 @@ public class ApplicantView {
         // Call controller to fetch and display projects
     }
 
-    private static void applyForProject(User user) throws ParseException {
+    private static void applyForProject(User user) /* throws ParseException */ {
         System.out.println("Enter the projectID: ");
         
         String input = scanner.nextLine(); // Read as String

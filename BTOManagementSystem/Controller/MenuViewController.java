@@ -12,7 +12,7 @@ import java.text.ParseException;
 public class MenuViewController {
 
 
-    public static void handleMenuOptions(User user) throws ParseException{
+    public void handleMenuOptions(User user) {
 
 
         if (user instanceof HDBOfficer) {
@@ -23,7 +23,7 @@ public class MenuViewController {
             managerView.showMenu((HDBManager)user);
         } else if (user instanceof Applicant) {
             ApplicantView view = new ApplicantView();
-            view.showMenu(user);
+            view.showMenu((Applicant)user);
         }
 
     }
