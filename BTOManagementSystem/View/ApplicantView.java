@@ -18,7 +18,7 @@ public class ApplicantView {
 
     public static List<Room> roomsAvailable; //Global static variable to store the available rooms
 
-    public void showMenu(Applicant user) /*throws ParseException*/ { //Applicant view has a user
+    public void showMenu(Applicant user)  { //Applicant view has a user
         int option = 0;
 
         while (option != 8) {
@@ -86,7 +86,7 @@ public class ApplicantView {
     }
 
     // Dummy implementations to be replaced with real logic
-    private static void viewAvailableProjects(User user) /* throws ParseException */ {
+    private static void viewAvailableProjects(User user)  {
         System.out.println("Based on your profile: ");
         System.out.println("Your age is: " + user.getAge());
         System.out.println("Your marital status is: " + user.getMaritalStatus());
@@ -95,7 +95,7 @@ public class ApplicantView {
         // Call controller to fetch and display projects
     }
 
-    private static void applyForProject(User user) /* throws ParseException */ {
+    private static void applyForProject(User user)  {
         System.out.println("Enter the projectID: ");
         
         String input = scanner.nextLine(); // Read as String
