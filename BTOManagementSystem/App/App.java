@@ -1,6 +1,8 @@
 package BTOManagementSystem.App;
 
-import BTOManagementSystem.View.ILoginView;
+import BTOManagementSystem.Controller.AuthController;
+import BTOManagementSystem.Controller.MenuViewController;
+import BTOManagementSystem.Services.AuthenticatorService;
 import BTOManagementSystem.View.LoginPromptView;
 
 /**
@@ -12,7 +14,15 @@ public class App {
     public static void main(String[] args) {
          // Using the interface type ILoginView
          LoginPromptView loginView = new LoginPromptView();
-        loginView.displayLogInMenu();
+         AuthenticatorService authService = new AuthenticatorService();
+         AuthController authController = new AuthController();
+
+
+         authController.startAuthenticateProcess(loginView,authService);
+
+
+
+
     }
 }
 

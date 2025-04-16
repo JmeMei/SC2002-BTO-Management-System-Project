@@ -9,11 +9,12 @@ import BTOManagementSystem.View.HDBManagerView;
 import BTOManagementSystem.View.HDBOfficerView;
 import java.text.ParseException;
 
-public class ViewController {
+public class MenuViewController {
 
-    //This is where we will split to the respective roles.
+
     public static void handleMenuOptions(User user) throws ParseException{
-        // check via instance instead of getting role
+
+
         if (user instanceof HDBOfficer) {
             HDBOfficerView officerView = new HDBOfficerView();
             officerView.showMenu((HDBOfficer)user);

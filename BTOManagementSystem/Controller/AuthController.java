@@ -3,6 +3,9 @@ import BTOManagementSystem.Model.*;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBManager;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
+import BTOManagementSystem.Services.AuthenticatorService;
+import BTOManagementSystem.View.LoginPromptView;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -56,4 +59,20 @@ public class AuthController {
 
         return null;
     }
+
+    public void startAuthenticateProcess(LoginPromptView LoginView, AuthenticatorService AuthService){
+
+        String[] loginData;
+        Boolean LoggedInStatus = false;
+
+        do{
+            loginData = LoginView.getLoginData();
+            LoggedInStatus = AuthService.authenticate(loginData[0],loginData[1]);
+            LoginView.LoginSucessOrFail(LoggedInStatus);
+        }while (!LoggedInStatus);
+
+    }
+
+
+
 }
