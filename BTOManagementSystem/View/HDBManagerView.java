@@ -13,11 +13,12 @@ public class HDBManagerView {
         System.out.println("\n=== HDB Manager Dashboard ===");
         System.out.println("Welcome, " + manager.getNric());
         System.out.println("1. Create Project");
-        System.out.println("2. Edit/Delete Project");
-        System.out.println("3. Approve Officer Registrations");
-        System.out.println("4. View Applications");
-        System.out.println("5. Logout");
-        System.out.println("6. Exit");
+        System.out.println("2. Edit");
+        System.out.println("3. Delete a Project");
+        System.out.println("4. Approve Officer Registrations");
+        System.out.println("5. View Applications");
+        System.out.println("6. Logout");
+        System.out.println("7. Exit");
 
 
         System.out.print("Enter your option: ");
