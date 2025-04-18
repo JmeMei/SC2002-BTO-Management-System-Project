@@ -11,7 +11,6 @@ import BTOManagementSystem.Controller.PasswordController;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Room;
 import BTOManagementSystem.Model.User;
-import BTOManagementSystem.Model.Roles.HDBOfficer;
 
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
@@ -86,6 +85,7 @@ public class ApplicantView {
     }
 
     // Dummy implementations to be replaced with real logic
+    // move this to a a applicant menu controller
     private static void viewAvailableProjects(User user)  {
         System.out.println("Based on your profile: ");
         System.out.println("Your age is: " + user.getAge());
