@@ -4,9 +4,11 @@ import BTOManagementSystem.Model.*;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBManager;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
+import BTOManagementSystem.Services.HDB_Manager_ActionHandler;
 import BTOManagementSystem.View.ApplicantView;
 import BTOManagementSystem.View.HDBManagerView;
 import BTOManagementSystem.View.HDBOfficerView;
+import BTOManagementSystem.Services.*;
 import java.text.ParseException;
 
 public class MenuViewController {
@@ -14,13 +16,21 @@ public class MenuViewController {
 
     public void handleMenuOptions(User user) {
 
+        int option;
 
         if (user instanceof HDBOfficer) {
             HDBOfficerView officerView = new HDBOfficerView();
             officerView.showMenu((HDBOfficer)user);
         } else if (user instanceof HDBManager) {
+
+
             HDBManagerView managerView = new HDBManagerView();
-            managerView.showMenu((HDBManager)user);
+            option = managerView.showMenu((HDBManager)user);
+
+            HDB_Manager_ActionHandler actionHandler = new HDB_Manager_ActionHandler();
+            actionHandler.HandleAction(option);
+
+
         } else if (user instanceof Applicant) {
             ApplicantView view = new ApplicantView();
             view.showMenu((Applicant)user);

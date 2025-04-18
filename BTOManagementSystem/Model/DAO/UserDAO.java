@@ -11,22 +11,26 @@ import java.util.*;
 public class UserDAO {
 
     private String csvFile = "BTOManagementSystem/Data/ApplicantList.csv";
+    private List<String> csvFiles = Arrays.asList("BTOManagementSystem/Data/ApplicantList.csv","BTOManagementSystem/Data/OfficerList.csv","BTOManagementSystem/Data/ManagerList.csv");
 
     public boolean NRIC_exist(String NRIC){
 
+        for (String csvfile : csvFiles){
 
-        String line;
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                if (values[1].trim().equalsIgnoreCase(NRIC)) {
+            String line;
+            try (BufferedReader br = new BufferedReader(new FileReader(csvfile))) {
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split(",");
+                    if (values[1].trim().equalsIgnoreCase(NRIC)) {
 
-                    return true;
+                        return true;
+                    }
                 }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return false;
@@ -35,27 +39,41 @@ public class UserDAO {
 
     public String getPasswordOfUser(String NRIC){
 
-        String line;
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                if (values[1].trim().equalsIgnoreCase(NRIC)) {
 
-                    return values[4];
+
+        for (String csvfile : csvFiles){
+
+            String line;
+            try (BufferedReader br = new BufferedReader(new FileReader(csvfile))) {
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split(",");
+                    if (values[1].trim().equalsIgnoreCase(NRIC)) {
+
+                        return values[4];
+                    }
                 }
-            }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return null;
     }
 
-    public String[] getAllUserDetails(String NRIC){
+    public String[] getAllUserDetails(String NRIC, String usertype){
+
+        String csv =  "";
+        if (usertype.compareTo("applicant") == 0){
+            csv = csvFiles.get(0);
+        }else if (usertype.compareTo("officer") == 0){
+            csv = csvFiles.get(1);
+        }else if (usertype.compareTo("manager") == 0){
+            csv = csvFiles.get(2);
+        }
 
         String line;
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(csv))) {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 if (values[1].trim().equalsIgnoreCase(NRIC)) {
@@ -69,6 +87,50 @@ public class UserDAO {
 
         return null;
     }
+
+    public String getUserType(String NRIC){
+
+
+        for (String csvfile : csvFiles){
+
+            String line;
+            try (BufferedReader br = new BufferedReader(new FileReader(csvfile))) {
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split(",");
+                    if (values[1].trim().equalsIgnoreCase(NRIC)) {
+
+
+                        if (csvfile.compareTo(csvFiles.get(0)) == 0 ){
+
+                            return "applicant";
+
+                        }
+
+                        else if (csvfile.compareTo(csvFiles.get(1)) == 0 ){
+
+                            return "officer";
+
+                        }
+
+                        else if (csvfile.compareTo(csvFiles.get(2)) == 0 ){
+
+                            return "manager";
+
+                        }
+
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+
+
 
 
 }

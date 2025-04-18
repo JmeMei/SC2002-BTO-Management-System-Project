@@ -20,8 +20,10 @@ public class App {
     public static void main(String[] args) {
 
          LoginPromptView loginView = new LoginPromptView();
+
          AuthenticatorService authService = new AuthenticatorService();
          AuthController authController = new AuthController();
+
          SessionManagerService sessionManager = new SessionManagerService();
          MenuViewController menuController = new MenuViewController();
 

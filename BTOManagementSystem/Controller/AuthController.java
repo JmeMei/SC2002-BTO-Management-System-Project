@@ -66,6 +66,7 @@ public class AuthController {
         String[] loginData;
         Boolean LoggedInStatus = false;
 
+
         do{
             loginData = LoginView.getLoginData();
             LoggedInStatus = AuthService.authenticate(loginData[0],loginData[1]);
