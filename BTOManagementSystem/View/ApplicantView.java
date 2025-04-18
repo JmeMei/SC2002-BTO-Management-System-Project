@@ -11,7 +11,6 @@ import BTOManagementSystem.Controller.PasswordController;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Room;
 import BTOManagementSystem.Model.User;
-import BTOManagementSystem.Model.Roles.HDBOfficer;
 
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
@@ -19,6 +18,7 @@ public class ApplicantView {
     public static List<Room> roomsAvailable; //Global static variable to store the available rooms
 
     public void showMenu(Applicant user)  { //Applicant view has a user
+        ApplicationController applicationController = new ApplicationController();
         int option = 0;
 
         while (option != 8) {
@@ -44,17 +44,17 @@ public class ApplicantView {
 
             switch (option) {
                 case 1:
-                    viewAvailableProjects(user);
+                    applicationController.displayAvailableProjects(user);
                     break;
                 case 2:
-                    viewAvailableProjects(user);
-                    applyForProject(user);
+                    applicationController.displayAvailableProjects(user);
+                    applyForProject(user); // TODO shift the applyproject to ApplicationController
                     break;
                 case 3:
-                    viewMyApplication(user);
+                    applicationController.viewMyApplication(user);
                     break;
                 case 4:
-                    withdrawApplication(user);
+                    applicationController.withdrawApplication(user); // add the call to the applicationController
                     break;
                 case 5:
                     manageEnquiries(user);
@@ -85,18 +85,10 @@ public class ApplicantView {
         }
     }
 
-    // Dummy implementations to be replaced with real logic
-    private static void viewAvailableProjects(User user)  {
-        System.out.println("Based on your profile: ");
-        System.out.println("Your age is: " + user.getAge());
-        System.out.println("Your marital status is: " + user.getMaritalStatus());
-        ApplicationController applicationController = new ApplicationController();
-        roomsAvailable = applicationController.displayAvailableProjects(user);
-        // Call controller to fetch and display projects
-    }
 
     private static void applyForProject(User user)  {
         System.out.println("Enter the projectID: ");
+        ApplicationController applicationController = new ApplicationController();
         
         String input = scanner.nextLine(); // Read as String
         int projectID;
@@ -113,12 +105,13 @@ public class ApplicantView {
         while(!projectFound){
             // Make sure the user enters an integer
             
+            roomsAvailable = applicationController.displayAvailableProjects(user);
             //roomAvailable is a global that gets declared in viewAvailableProject
             for (Room room : roomsAvailable) { 
                 if (room.getProjectID() == projectID) {
                     System.out.println("Project found: " + room.getProjectName());
                     projectFound = true;
-                    ApplicationController applicationController = new ApplicationController();
+                    
                     applicationController.applyForProject(user, projectID);
                     // You can now proceed with applying logic
                     break;
@@ -132,17 +125,6 @@ public class ApplicantView {
         // Prompt for project and flat type → pass to controller
     }
 
-    private static void viewMyApplication(User user) {
-       // System.out.println("[DEBUG] Viewing your application...");
-        ApplicationController applicationController = new ApplicationController();
-        applicationController.viewMyApplication(user);
-        
-    }
-
-    private static void withdrawApplication(User user) {
-        System.out.println("[DEBUG] Withdrawing application...");
-        // Call controller to withdraw
-    }
 
     private static void manageEnquiries(User user) {
         System.out.println("[DEBUG] Managing enquiries...");

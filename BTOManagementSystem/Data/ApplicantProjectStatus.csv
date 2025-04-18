@@ -1,5 +1,5 @@
 ﻿Name,NRIC,Age,Marital Status,Password,role,ProjectID,Application Status,Enquiry,Reply
-John,S1234567A,35,Single,password,Applicant,-1,NA,NA,NA
+John,S1234567A,35,Single,password,Applicant,1,PENDING,NA,NA
 Sarah,T7654321B,40,Married,password,Applicant,-1,NA,NA,NA
 Grace,S9876543C,37,Married,password,Applicant,-1,NA,NA,NA
 James,T2345678D,30,Married,password,Applicant,-1,NA,NA,NA

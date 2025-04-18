@@ -7,7 +7,7 @@ import java.util.*;
 
 public class PasswordController {
 
-    private static final String FILE_PATH = "BTOManagementSystem/Data/userlogin.csv"; // adjust path as needed
+    private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantList.csv"; // adjust path as needed
 
     public static boolean changePassword(String NRIC, String newPassword) {
         List<String[]> fileContent = new ArrayList<>();

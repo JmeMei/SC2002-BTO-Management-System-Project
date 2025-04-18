@@ -82,6 +82,10 @@ public class ApplicationController {
             System.out.print("Unable to view application");
         }
     }
+
+    public void withdrawApplication(User user){
+        System.out.println("[TODO] To implement this feature");
+    }
         
         
 }

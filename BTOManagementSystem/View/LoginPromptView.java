@@ -1,8 +1,6 @@
 package BTOManagementSystem.View;
 
 
-import BTOManagementSystem.Services.AuthenticatorService;
-
 import java.util.*;
 
 
@@ -11,6 +9,7 @@ public class LoginPromptView {
 
     public String[] getLoginData(){
 
+        System.out.println("Welcome to the BTO Management System!");
         System.out.print("Enter your NRIC: ");
         Scanner scanner = new Scanner(System.in);
         String NRIC = scanner.nextLine().toUpperCase();
