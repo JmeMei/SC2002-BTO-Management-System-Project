@@ -104,15 +104,4 @@ public class HDB_Manager_ActionHandler {
     }
 
 
-    public static void main(String[] args) {
-        HDB_Manager_ActionHandler action = new HDB_Manager_ActionHandler();
-        action.createNewProject();
-
-
-    }
-
-
-
-
-
 }

@@ -16,7 +16,7 @@ public class MenuViewController {
 
     public void handleMenuOptions(User user) {
 
-        int option;
+        int option = 0;
 
         if (user instanceof HDBOfficer) {
             HDBOfficerView officerView = new HDBOfficerView();
@@ -24,11 +24,15 @@ public class MenuViewController {
         } else if (user instanceof HDBManager) {
 
 
-            HDBManagerView managerView = new HDBManagerView();
-            option = managerView.showMenu((HDBManager)user);
 
-            HDB_Manager_ActionHandler actionHandler = new HDB_Manager_ActionHandler();
-            actionHandler.HandleAction(option);
+            HDBManagerView managerView = new HDBManagerView();
+
+            while (option != -1){
+                option = managerView.showMenu((HDBManager)user);
+                HDB_Manager_ActionHandler actionHandler = new HDB_Manager_ActionHandler();
+                actionHandler.HandleAction(option);
+            }
+
 
 
         } else if (user instanceof Applicant) {

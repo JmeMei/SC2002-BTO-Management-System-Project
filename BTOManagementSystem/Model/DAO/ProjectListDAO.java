@@ -53,6 +53,8 @@ public class ProjectListDAO {
             writer.append(",");
             writer.append(String.valueOf(project.getVisibility()));
 
+            writer.append("\n");
+
             System.out.println("New Project added successfully!");
 
         } catch (IOException e) {
