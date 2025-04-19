@@ -7,6 +7,8 @@ import BTOManagementSystem.View.*;
 import BTOManagementSystem.App.*;
 
 
+import javax.swing.text.View;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import java.time.LocalDate;
@@ -31,14 +33,14 @@ public class HDB_Manager_ActionHandler {
                 editProject();
                 break;
             case 3:
-                System.out.println("[DEBUG] Editing or deleting a project...");
-                System.out.println("[DEBUG] Approving officer registrations...");
+
+                DeleteProject();
                 break;
             case 4:
-                System.out.println("[DEBUG] Viewing applications...");
+                ViewAllProjects();
                 break;
             case 5:
-                System.out.println("Logging out...");
+                ViewFilteredProjects();
                 return;
             case 6:
                 break;
@@ -96,7 +98,7 @@ public class HDB_Manager_ActionHandler {
 
         Project newProject = new Project(ProjectName,Neighbourhood,RoomType1,
                 NumberOfUnitsType1,sellingPriceType1, RoomType2, NumberOfUnitsType2 , sellingPriceType2, OpeningDateObj,
-                closingDateObj, /*((HDBManager)App.userSession).getName()*/ "tim", OfficerSlots);
+                closingDateObj,((HDBManager)App.userSession).getName(), OfficerSlots);
 
 
         ProjectListDAO dao = new ProjectListDAO();
@@ -136,5 +138,60 @@ public class HDB_Manager_ActionHandler {
         dao.editAProject(projectName,attribute, newValue);
 
     }
+
+
+    public void  DeleteProject(){
+
+        ProjectListDAO dao = new ProjectListDAO();
+        System.out.println("==========================================");
+        System.out.print("Select the Project Name you want to delete: ");
+
+        String ProjectName = scanner.nextLine();
+
+        boolean found = dao.DeleteProject(ProjectName);
+
+        if (found == true) {
+            System.out.println("Project Deleted Successfully! ");
+        }else {
+            System.out.println("Project does not exist! ");
+        }
+
+    }
+
+
+    public void ViewAllProjects(){
+        ProjectListDAO dao = new ProjectListDAO();
+
+        ArrayList<ArrayList<String>> Projects = dao.get_all_Projects();
+
+        System.out.println("==== List of Projects ====");
+
+        for (ArrayList<String> row : Projects) {
+
+            for (String val : row) {
+                System.out.print(String.format("%-30s", val));
+            }
+            System.out.println();
+        }
+    }
+
+
+    public void ViewFilteredProjects(){
+
+        ProjectListDAO dao = new ProjectListDAO();
+
+        ArrayList<ArrayList<String>> Projects = dao.get_filtered_Projects(App.userSession.getName());
+
+        System.out.println("==== List of Projects ====");
+
+        for (ArrayList<String> row : Projects) {
+
+            for (String val : row) {
+                System.out.print(String.format("%-30s", val));
+            }
+            System.out.println();
+        }
+    }
+
 
 }

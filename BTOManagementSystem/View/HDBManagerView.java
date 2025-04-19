@@ -15,6 +15,10 @@ public class HDBManagerView {
         System.out.println("1. Create Project");
         System.out.println("2. Edit");
         System.out.println("3. Delete a Project");
+        System.out.println("4. View ALL Projects");
+        System.out.println("5. View Projects created by YOU");
+
+
         System.out.println("4. Approve Officer Registrations");
         System.out.println("5. View Applications");
         System.out.println("6. Logout");
