@@ -1,6 +1,6 @@
 Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Officer Slot,Officer,visibility
 Acacia Breeze,Yishun,2-Room,2,350000,3-Room,3,450000,15-02-2025,20-03-2025,Jessica,3,"Daniel,Emily",1
-proj,yishn,1room,2,30000.0,2-room,300,300000.0,18-04-2025,20-04-2025,tim,3,"",0
-myproject2,,1-room,30,30000.0,2-room,40000,20000.0,18-04-2025,20-05-2025,tim,5,"",0
+proj,yishn,1room,2,30000.0,2-room,300,300000.0,18-04-2025,20-04-2025,tim,3,"",1
 SkyPeak@Bukit Batok,Bukit Batok,2-Room,2,350000,3-Room,5,465000,01-04-2025,30-04-2025,,3,"",1
 Coral Edge,Sengkang,2-Room,6,360000,3-Room,6,470000,10-04-2025,10-05-2025,,4,"",1
+myproject3,tamp,1-room,30,30000.0,2-room,40000,500000.0,20-05-2025,21-06-2025,Jessica,4,"",0

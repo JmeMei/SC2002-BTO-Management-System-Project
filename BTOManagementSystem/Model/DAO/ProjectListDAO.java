@@ -127,6 +127,142 @@ public class ProjectListDAO {
 
     }
 
+
+    public boolean DeleteProject(String projectName){
+
+        List<String[]> rows = new ArrayList<>();
+
+        //Reading
+        boolean found = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+
+                String[] aRow = line.split(",");
+                if (aRow[0].compareTo(projectName) != 0){
+
+
+                    rows.add(aRow);
+
+                }else{
+                    found = true;
+                }
+
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+
+        try (FileWriter fw = new FileWriter(filePath)) {
+            for (String[] row : rows) {
+                fw.write(String.join(",", row) + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return found;
+
+    }
+
+
+    public ArrayList<ArrayList<String>> get_all_Projects(){
+
+        ArrayList<ArrayList<String>> rows = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                ArrayList<String> values = CSV_data_Parse(line);
+
+                rows.add(values);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the file.");
+            e.printStackTrace();
+        }
+
+        return rows;
+    }
+
+    private ArrayList<String> CSV_data_Parse(String line){
+
+        ArrayList<String> formatted = new ArrayList<>();
+
+        boolean inQuote = false;
+        StringBuilder aData = new StringBuilder();
+
+        for (int i = 0; i < line.length(); i++) {
+
+            char c = line.charAt(i);
+
+            if (c == '"'){
+
+                if (!inQuote){
+
+                    inQuote = true;
+
+                }else{
+                    inQuote = false;
+                }
+
+            }
+            if (c == ','){
+
+
+
+                if (!inQuote){
+                   formatted.add(aData.toString());
+
+                   aData.setLength(0);
+
+                }else{
+                    aData.append(c);
+                }
+
+            }else{
+                aData.append(c);
+            }
+
+
+        }
+
+        formatted.add(aData.toString());
+
+        return formatted;
+
+    }
+
+    public ArrayList<ArrayList<String>> get_filtered_Projects(String Name){
+
+        ArrayList<ArrayList<String>> rows = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                ArrayList<String> values = CSV_data_Parse(line);
+
+                if(values.get(10).equals(Name)){
+                    rows.add(values);
+                }
+
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the file.");
+            e.printStackTrace();
+        }
+
+
+
+        return rows;
+    }
+
+
     /////FOR APPLICANT/////
     public List<Room> loadAvailableTwoRooms(User user){ 
         //final String FILE_PATH = "BTOManagementSystem/Data/ProjectList.csv";
