@@ -5,7 +5,6 @@ import BTOManagementSystem.Model.DAO.UserDAO;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.Model.Roles.HDBManager;
-import com.sun.jdi.Value;
 
 public class SessionManagerService {
 
