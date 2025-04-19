@@ -1,0 +1,9 @@
+﻿Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Officer Slot,Officer,visbility
+Acacia Breeze,Yishun,2-Room,2,350000,3-Room,3,450000,15/2/25,20/3/25,Jessica,3,"Daniel,Emily",1
+Fern Grove,Punggol,2-Room,4,360000,3-Room,5,460000,1/3/25,31/3/25,Michael,4,"David",1
+Clementi Rise,Clementi,2-Room,3,365000,3-Room,6,480000,5/3/25,5/4/25,Jessica,3,"",1
+Harbour Glade,Queenstown,2-Room,5,370000,3-Room,5,490000,10/3/25,10/4/25,Michael,4,"",1
+Maple Residences,Tampines,2-Room,4,355000,3-Room,4,470000,20/3/25,20/4/25,,2,"David",1
+Spring View,Woodlands,2-Room,3,340000,3-Room,4,455000,25/3/25,25/4/25,,3,"Daniel",1
+SkyPeak@Bukit Batok,Bukit Batok,2-Room,2,350000,3-Room,5,465000,1/4/25,30/4/25,,3,"",1
+Coral Edge,Sengkang,2-Room,6,360000,3-Room,6,470000,10/4/25,10/5/25,,4,"",1
