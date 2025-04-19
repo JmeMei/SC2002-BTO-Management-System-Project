@@ -9,7 +9,19 @@ public class ApplicantEnquiryView {
     private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantProjectStatus.csv";
     private static final Scanner scanner = new Scanner(System.in);
 
-    //Name,NRIC,Age,Marital Status,Password,role,ProjectID,Application Status,Enquiry,Reply
+    /*
+            0 Name,
+            1 NRIC,
+            2 Age,
+            3 Marital Status,
+            4 Password,
+            5 role,
+            6 Project Name,
+            7 FlatType,
+            8 Application Status,
+            9 Enquiry,
+            10 Reply
+            */
 
     public static void showEnquiryMenu(User user) {
         int choice = 0;
@@ -48,8 +60,8 @@ public class ApplicantEnquiryView {
                 String[] values = line.split(",");
 
             if (values[1].trim().equalsIgnoreCase(user.getNric())) {
-                String enquiry = values[8].trim();
-                String reply = values[9].trim();
+                String enquiry = values[9].trim();
+                String reply = values[10].trim();
                 //System.out.println("Enquiry: " + (enquiry.isEmpty() ? "None" : enquiry)); //Enquiry will never be empty (will be NA if no enquiry yet)
                 System.out.println("Enquiry: " + enquiry); 
                 //System.out.println("Reply: " + (reply.isEmpty() ? "No reply yet" : reply)); //Reply will never be empty (will be NA if no reply yet)
@@ -88,8 +100,8 @@ public class ApplicantEnquiryView {
                                         .map(String::trim)
                                         .toArray(String[]::new);
                 if (values[1].equalsIgnoreCase(user.getNric())) {
-                    values[8] = newEnquiry; // Enquiry
-                    values[9] = "NA"; // Reset reply
+                    values[9] = newEnquiry; // Enquiry
+                    values[10] = "NA"; // Reset reply
                 }
                 records.add(values);
             }
