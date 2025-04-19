@@ -21,7 +21,7 @@ public class SessionManagerService {
         else if (role.equals("HDBOfficer")) {
             newUser = new HDBOfficer(details[0], details[1], Integer.parseInt(details[2]), details[4], details[3]);
         }
-        else if (role.equals("HDBManager")) {
+        else {
             newUser = new HDBManager(details[0], details[1], Integer.parseInt(details[2]), details[4], details[3]);
         }
 
