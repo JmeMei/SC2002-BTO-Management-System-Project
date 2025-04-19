@@ -1,114 +1,96 @@
 package BTOManagementSystem.Model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import BTOManagementSystem.Model.DAO.Enum.*;
 
 public class Room {
-    private int ProjectID;
     private String projectName;
     private String neighborhood;
     private int numUnitsType;
-    private double priceType;
-    private String openingDate;
-    private String closingDate;
-    private String manager;
-    private int officerSlot;
-    private List<String> officers;
-    private int visibility;
+    private double price;
+    private LocalDate openingDate;
+    private LocalDate closingDate;
+    //private String manager;
+    //private int officerSlot;
+    //private List<String> officers;
+    //private int visibility;
     private FlatType flatType;
-
-    public Room(int ProjectID, String projectName2, String neighborhood2, int numberOfUnits, double price, String openingDate2,
-                String closingDate2, String manager2, int officerSlot2, List<String> officer, int visibility2, FlatType flatType) {
-        this.ProjectID = ProjectID;
-        this.projectName = projectName2;
-        this.neighborhood = neighborhood2;
-        this.numUnitsType = numberOfUnits;
-        this.priceType = price;
-        this.openingDate = openingDate2;
-        this.closingDate = closingDate2;
-        this.manager = manager2;
-        this.officerSlot = officerSlot2;
-        this.officers = officer;
-        this.visibility = visibility2;
+    
+    public Room(String projectName, String neighborhood, int numUnitsType, double price, LocalDate openingDate,
+            LocalDate closingDate /*, List<String> officers*/, FlatType flatType) {
+        this.projectName = projectName;
+        this.neighborhood = neighborhood;
+        this.numUnitsType = numUnitsType;
+        this.price = price;
+        this.openingDate = openingDate;
+        this.closingDate = closingDate;
+        //this.officers = officers;
         this.flatType = flatType;
-    }
-
-    public int getProjectID() {
-        return ProjectID;
-    }
-    public void setProjectID(int ProjectID) {
-        this.ProjectID = ProjectID;
-    }
-    public double getPriceType() {
-        return priceType;
     }
 
     public String getProjectName() {
         return projectName;
     }
+
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
+
     public String getNeighborhood() {
         return neighborhood;
     }
+
     public void setNeighborhood(String neighborhood) {
         this.neighborhood = neighborhood;
     }
+
     public int getNumUnitsType() {
         return numUnitsType;
     }
-    public void setNumUnitsType(int numUnitsType1) {
-        this.numUnitsType = numUnitsType1;
+
+    public void setNumUnitsType(int numUnitsType) {
+        this.numUnitsType = numUnitsType;
     }
-    public double getPriceType1() {
-        return priceType;
+
+    public double getPrice() {
+        return price;
     }
-    public void setPriceType(double priceType1) {
-        this.priceType = priceType1;
+
+    public void setPrice(double priceType) {
+        this.price = priceType;
     }
-    public String getOpeningDate() {
+
+    public LocalDate getOpeningDate() {
         return openingDate;
     }
-    public void setOpeningDate(String openingDate) {
+
+    public void setOpeningDate(LocalDate openingDate) {
         this.openingDate = openingDate;
     }
-    public String getClosingDate() {
+
+    public LocalDate getClosingDate() {
         return closingDate;
     }
-    public void setClosingDate(String closingDate) {
+
+    public void setClosingDate(LocalDate closingDate) {
         this.closingDate = closingDate;
     }
-    public String getManager() {
-        return manager;
-    }
-    public void setManager(String manager) {
-        this.manager = manager;
-    }
-    public int getOfficerSlot() {
-        return officerSlot;
-    }
-    public void setOfficerSlot(int officerSlot) {
-        this.officerSlot = officerSlot;
-    }
-    public List<String> getOfficers() {
-        return officers;
-    }
-    public void setOfficers(List<String> officers) {
-        this.officers = officers;
-    }
-    public int getVisibility() {
-        return visibility;
-    }
-    public void setVisibility(int visibility) {
-        this.visibility = visibility;
-    }
+
+    // public List<String> getOfficers() {
+    //     return officers;
+    // }
+
+    // public void setOfficers(List<String> officers) {
+    //     this.officers = officers;
+    // }
+
     public FlatType getFlatType() {
         return flatType;
     }
-    public void setFlatType( FlatType flatType) {
-        this.visibility = visibility;
+
+    public void setFlatType(FlatType flatType) {
+        this.flatType = flatType;
     }
-    
 }

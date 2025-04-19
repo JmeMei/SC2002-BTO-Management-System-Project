@@ -88,6 +88,7 @@ public class ApplicantView {
 
     private static void applyForProject(User user)  {
         System.out.println("Enter the projectID: ");
+        /* 
         ApplicationController applicationController = new ApplicationController();
         
         String input = scanner.nextLine(); // Read as String
@@ -123,6 +124,7 @@ public class ApplicantView {
             }
         }
         // Prompt for project and flat type → pass to controller
+        */
     }
 
 
