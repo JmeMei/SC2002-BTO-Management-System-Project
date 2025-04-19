@@ -74,9 +74,8 @@ public class ApplicationController {
 
     public void applyForProject(User user, String projectName) {
         //Need to update ApplicantProjectStatus from NA -> PENDING
-        FlatType roomTypeChoice = FlatType.TWOROOM;
         FlatType RoomType = applicantActionHandler.getRoomType(user);
-        
+
         //public static boolean applyForProject(User user, String projectName, FlatType flatType)
         boolean success = applicantProjectStatusDAO.applyForProject(user, projectName, RoomType);
         if (success){
