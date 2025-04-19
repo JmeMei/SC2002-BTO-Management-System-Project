@@ -1,7 +1,5 @@
 package BTOManagementSystem.Model.DAO;
 
-import BTOManagementSystem.Model.User;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,7 +8,7 @@ import java.util.*;
 
 public class UserDAO {
 
-    private String csvFile = "BTOManagementSystem/Data/ApplicantList.csv";
+    private String csvFile = "BTOManagementSystem/Data/ApplicantProjectList.csv"; // um what is the point of this line
     private List<String> csvFiles = Arrays.asList("BTOManagementSystem/Data/ApplicantList.csv","BTOManagementSystem/Data/OfficerList.csv","BTOManagementSystem/Data/ManagerList.csv");
 
     public boolean NRIC_exist(String NRIC){

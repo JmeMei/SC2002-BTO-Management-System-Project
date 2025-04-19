@@ -2,7 +2,6 @@ package BTOManagementSystem.App;
 
 import BTOManagementSystem.Controller.AuthController;
 import BTOManagementSystem.Controller.MenuViewController;
-import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Services.AuthenticatorService;
 import BTOManagementSystem.Services.SessionManagerService;
 import BTOManagementSystem.View.LoginPromptView;

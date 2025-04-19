@@ -8,8 +8,6 @@ import BTOManagementSystem.Services.HDB_Manager_ActionHandler;
 import BTOManagementSystem.View.ApplicantView;
 import BTOManagementSystem.View.HDBManagerView;
 import BTOManagementSystem.View.HDBOfficerView;
-import BTOManagementSystem.Services.*;
-import java.text.ParseException;
 
 public class MenuViewController {
 
@@ -20,11 +18,8 @@ public class MenuViewController {
 
         if (user instanceof HDBOfficer) {
             HDBOfficerView officerView = new HDBOfficerView();
-            officerView.showMenu((HDBOfficer)user);
+            HDBOfficerView.showMenu((HDBOfficer)user);
         } else if (user instanceof HDBManager) {
-
-
-
             HDBManagerView managerView = new HDBManagerView();
 
             while (option != -1){

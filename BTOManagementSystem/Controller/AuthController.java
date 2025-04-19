@@ -14,7 +14,7 @@ import java.util.*;
 
 public class AuthController {
 
-    private static final String FILE_PATH = "BTOManagementSystem/Data/userlogin.csv";
+    private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantProjectList.csv";
 
     public static User Authenticate(String NRIC, String password) {
 

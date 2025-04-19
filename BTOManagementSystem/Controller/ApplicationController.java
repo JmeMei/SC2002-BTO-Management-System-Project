@@ -8,7 +8,6 @@ import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Services.ApplicantActionHandler;
-import BTOManagementSystem.View.ApplicantView;
 import BTOManagementSystem.View.ProjectAvailableView.ProjectAvailableView;
 import BTOManagementSystem.Model.Room;
 
