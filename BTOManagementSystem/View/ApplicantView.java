@@ -9,8 +9,11 @@ import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.PasswordController;
 import BTOManagementSystem.Model.Roles.Applicant;
+import BTOManagementSystem.Services.ApplicantActionHandler;
 import BTOManagementSystem.Model.Room;
 import BTOManagementSystem.Model.User;
+import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
+import BTOManagementSystem.Model.DAO.Enum.FlatType;
 
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
@@ -44,10 +47,10 @@ public class ApplicantView {
 
             switch (option) {
                 case 1:
-                    applicationController.displayAvailableProjects(user);
+                   roomsAvailable = applicationController.displayAvailableProjects(user);
                     break;
                 case 2:
-                    applicationController.displayAvailableProjects(user);
+                    roomsAvailable = applicationController.displayAvailableProjects(user);
                     applyForProject(user); // TODO shift the applyproject to ApplicationController
                     break;
                 case 3:
@@ -87,44 +90,50 @@ public class ApplicantView {
 
 
     private static void applyForProject(User user)  {
-        System.out.println("Enter the projectID: ");
-        /* 
-        ApplicationController applicationController = new ApplicationController();
-        
-        String input = scanner.nextLine(); // Read as String
-        int projectID;
-        try {
-            projectID = Integer.parseInt(input); // Parse to int
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
-            return; // or use continue inside a loop
-        }
 
+        System.out.println("Enter the Project Name: ");
+        String projectName = scanner.nextLine(); // Read as String
         boolean projectFound = false;
 
-        // Iterate through the roomsAvailable list
         while(!projectFound){
             // Make sure the user enters an integer
-            
-            roomsAvailable = applicationController.displayAvailableProjects(user);
             //roomAvailable is a global that gets declared in viewAvailableProject
             for (Room room : roomsAvailable) { 
-                if (room.getProjectID() == projectID) {
+                if (room.getProjectName().equalsIgnoreCase(projectName)) {
                     System.out.println("Project found: " + room.getProjectName());
                     projectFound = true;
-                    
-                    applicationController.applyForProject(user, projectID);
+                    ApplicationController applicationController = new ApplicationController();
+                    applicationController.applyForProject(user, projectName);
                     // You can now proceed with applying logic
                     break;
                 }
             }
             if (!projectFound) {
-                System.out.println("No project found with that ID.");
+                System.out.println("No project found with that name.");
                 return;
             }
         }
-        // Prompt for project and flat type → pass to controller
-        */
+        
+    }
+
+    public static FlatType chooseRoom() {
+        while (true) {
+            System.out.println("Choose room type: ");
+            System.out.println("1. 2-Room");
+            System.out.println("2. 3-Room");
+            System.out.print("Enter your choice (1 or 2): ");
+    
+            String input = scanner.nextLine();
+    
+            switch (input.trim()) {
+                case "1":
+                    return FlatType.TWOROOM;
+                case "2":
+                    return FlatType.THREEROOM;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
     }
 
 

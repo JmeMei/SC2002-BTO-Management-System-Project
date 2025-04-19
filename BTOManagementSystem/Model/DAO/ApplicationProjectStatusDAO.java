@@ -11,33 +11,45 @@ import java.util.List;
 
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
+import BTOManagementSystem.Model.DAO.Enum.FlatType;
 
 public class ApplicationProjectStatusDAO {
     private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantProjectStatus.csv";
 
-     public static boolean applyForProject(User user, int projectID) {
+     public static boolean applyForProject(User user, String projectName, FlatType flatType) {
         List<String[]> fileContent = new ArrayList<>();
-
+        /*
+        0 Name,
+        1 NRIC,
+        2 Age,
+        3 Marital Status,
+        4 Password,
+        5 role,
+        6 Project Name,
+        7 FlatType,
+        8 Application Status,
+        9 Enquiry,
+        10 Reply
+        */
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String header = reader.readLine(); // Read header
             fileContent.add(header.split(",")); // Store header
-
-            //Name,NRIC,Age,Marital Status,Password,role,ProjectID, Application Status, Enquiry, Reply
 
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(",");
 
                 // Check if application status is already PENDING
-                if (values[7].trim().equalsIgnoreCase("PENDING")) {
+                if (values[8].trim().equalsIgnoreCase("PENDING")) {
                     System.out.println("You already applied before.");
                     return false; // Exit early, don't modify or write back
                 }
 
                 // If NRIC matches, update the project ID and application status
                 if (values[1].trim().equalsIgnoreCase(user.getNric())) {
-                    values[6] = String.valueOf(projectID); // ProjectID
-                    values[7] = "PENDING"; // Application Status
+                    values[6] = projectName; //Project name
+                    values[7] = flatType.name(); // Application Status
+                    values[8] = "PENDING";
                 }
 
                 fileContent.add(values);
@@ -68,7 +80,19 @@ public class ApplicationProjectStatusDAO {
             String header = reader.readLine(); // Read header
             fileContent.add(header.split(",")); // Store header
 
-            //Name,NRIC,Age,Marital Status,Password,role,ProjectID, Application Status, Enquiry, Reply
+            /*
+            0 Name,
+            1 NRIC,
+            2 Age,
+            3 Marital Status,
+            4 Password,
+            5 role,
+            6 Project Name,
+            7 FlatType,
+            8 Application Status,
+            9 Enquiry,
+            10 Reply
+            */
 
             String line;
 
@@ -85,12 +109,13 @@ public class ApplicationProjectStatusDAO {
                     String maritalStatus = values[3].trim();
                     //String password = values[4].trim();
                     String role = values[5].trim();
-                    int projectID = Integer.parseInt(values[6].trim());
-                    ApplicationStatus applicationStatus = ApplicationStatus.valueOf(values[7].trim().toUpperCase());
-                    String enquiry = values[8].trim();
-                    String reply = values[9].trim();
+                    String projectName = values[6].trim();
+                    FlatType flatType = FlatType.valueOf(values[7].trim().toUpperCase());
+                    ApplicationStatus applicationStatus = ApplicationStatus.valueOf(values[8].trim().toUpperCase());
+                    String enquiry = values[9].trim();
+                    String reply = values[10].trim();
 
-                    if (projectID == -1) {
+                    if (projectName == "NA") {
                         System.out.println("No application record found for NRIC: " + user.getNric());
                         return false;
                     }
@@ -102,7 +127,8 @@ public class ApplicationProjectStatusDAO {
                     System.out.println("Age: " + age);
                     System.out.println("Marital Status: " + maritalStatus);
                     System.out.println("Role: " + role);
-                    System.out.println("Applied Project ID: " + projectID);
+                    System.out.println("Project Name: " + projectName);
+                    System.out.println("Flat Type: " + flatType);
                     System.out.println("Application Status: " + applicationStatus);
                     System.out.println("Enquiry: " + (enquiry.isEmpty() ? "None" : enquiry));
                     System.out.println("Reply: " + (reply.isEmpty() ? "None" : reply));

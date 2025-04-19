@@ -6,6 +6,9 @@ import java.util.List;
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
+import BTOManagementSystem.Model.DAO.Enum.FlatType;
+import BTOManagementSystem.Services.ApplicantActionHandler;
+import BTOManagementSystem.View.ApplicantView;
 import BTOManagementSystem.View.ProjectAvailableView.ProjectAvailableView;
 import BTOManagementSystem.Model.Room;
 
@@ -16,12 +19,14 @@ public class ApplicationController {
     //ApplicationController “has a” ProjectAvailableView
     private ProjectListDAO projectListDao;
     private ApplicationProjectStatusDAO applicantProjectStatusDAO;
+    private ApplicantActionHandler applicantActionHandler;
 
     private ProjectAvailableView projectAvailableView;
-    
+
     public ApplicationController(){
         this.applicantProjectStatusDAO = new ApplicationProjectStatusDAO();
         this.projectListDao = new ProjectListDAO();
+        this.applicantActionHandler = new ApplicantActionHandler();
 
         this.projectAvailableView = new ProjectAvailableView();
     }
@@ -67,9 +72,13 @@ public class ApplicationController {
         return new ArrayList<>();
     }
 
-    public void applyForProject(User user, int projectID) {
+    public void applyForProject(User user, String projectName) {
         //Need to update ApplicantProjectStatus from NA -> PENDING
-        boolean success = applicantProjectStatusDAO.applyForProject(user, projectID);
+        FlatType roomTypeChoice = FlatType.TWOROOM;
+        FlatType RoomType = applicantActionHandler.getRoomType(user);
+        
+        //public static boolean applyForProject(User user, String projectName, FlatType flatType)
+        boolean success = applicantProjectStatusDAO.applyForProject(user, projectName, RoomType);
         if (success){
             System.out.print("Successfully applied. Now pending.");
         }
