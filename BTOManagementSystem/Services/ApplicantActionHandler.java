@@ -15,10 +15,10 @@ public class ApplicantActionHandler {
         //System.out.println("\nYou are eligible for:");
         if (canApplyForTwoRoom && !canApplyForThreeRoom) {
             //System.out.println("- 2-Room flats only");
-            return FlatType.TWOROOM;
+            //return FlatType.TWOROOM;
         } else if (canApplyForTwoRoom && canApplyForThreeRoom) {
             //User will choose whether he/she wants TWOROOM or THREEROOM
-            return ApplicantView.chooseRoom();
+            //return ApplicantView.chooseRoom();
         }
         
         if (!canApplyForTwoRoom && !canApplyForThreeRoom) {

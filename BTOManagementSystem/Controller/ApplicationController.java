@@ -3,14 +3,13 @@ package BTOManagementSystem.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Services.ApplicantActionHandler;
-import BTOManagementSystem.View.ProjectAvailableView.ProjectAvailableView;
-import BTOManagementSystem.Model.Room;
-
+import BTOManagementSystem.View.ApplicantViewProjectsView;
 
 
 public class ApplicationController {
@@ -19,64 +18,78 @@ public class ApplicationController {
     private ProjectListDAO projectListDao;
     private ApplicationProjectStatusDAO applicantProjectStatusDAO;
     private ApplicantActionHandler applicantActionHandler;
-
-    private ProjectAvailableView projectAvailableView;
+    private ApplicantViewProjectsView viewProjectsView;
 
     public ApplicationController(){
         this.applicantProjectStatusDAO = new ApplicationProjectStatusDAO();
         this.projectListDao = new ProjectListDAO();
         this.applicantActionHandler = new ApplicantActionHandler();
 
-        this.projectAvailableView = new ProjectAvailableView();
+        this.viewProjectsView = new ApplicantViewProjectsView();
+    }
+
+    public List<Project> getEligibleProjects(User user) {
+        List<Project> eligibleProjects = new ArrayList<>();
+        boolean canApplyForTwoRoom = (user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single"))
+                || (user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21);
+        boolean canApplyForThreeRoom = user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21;
+
+        if (canApplyForTwoRoom) {
+            List<Project> twoRoomProjects = projectListDao.loadAvailableTwoRooms(user);
+            eligibleProjects.addAll(twoRoomProjects);
+        }
+
+        if (canApplyForThreeRoom) {
+            List<Project> threeRoomProjects = projectListDao.loadAvailableTwoRooms(user);
+            eligibleProjects.addAll(projectListDao.loadAvailableThreeRooms(user));
+        }
+
+        return eligibleProjects;
     }
     
-    public List<Room> displayAvailableProjects(User user) {
+    public void displayAvailableProjects(User user) {
 
-        // Display user eligibility information
-        System.out.println("\n=== Available Projects ===");
-        
-        // Determine eligibility
-        boolean canApplyForTwoRoom = (user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single"))
-                                    || (user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21);
-        boolean canApplyForThreeRoom = user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21;
-        
-        System.out.println("\nYou are eligible for:");
-        if (canApplyForTwoRoom && !canApplyForThreeRoom) {
-            System.out.println("- 2-Room flats only");
-            List<Room> rooms = projectListDao.loadAvailableTwoRooms(user);
-            projectAvailableView.fullDisplay(rooms);
-            return rooms;
+        List<Project> eligibleProjects = getEligibleProjects(user);
 
-        } else if (canApplyForTwoRoom && canApplyForThreeRoom) {
-            System.out.println("- 2-Room flats");
-            List<Room> tworooms = projectListDao.loadAvailableTwoRooms(user);
-            projectAvailableView.fullDisplay(tworooms);
-            System.out.println("\n- 3-Room flats");
-            List<Room> threerooms = projectListDao.loadAvailableThreeRooms(user);
-            projectAvailableView.fullDisplay(threerooms);
-
-            //Return both rooms
-            List<Room> allRooms = new ArrayList<>();
-            allRooms.addAll(tworooms);
-            allRooms.addAll(threerooms);
-            return allRooms;
+        if (eligibleProjects.isEmpty()) {
+            viewProjectsView.NotEligibleForProjectsMessage();
+        } else {
+            viewProjectsView.DisplayProjects(eligibleProjects);
         }
-        
-        if (!canApplyForTwoRoom && !canApplyForThreeRoom) {
-            System.out.println("You are not eligible for any flat types at this time.");
-            System.out.println("Singles must be 35 years or older to apply for 2-Room flats.");
-            System.out.println("Married applicants must be 21 years or older to apply for 2-Room or 3-Room flats.");
-            return new ArrayList<>(); //return empty ArrayList because he is not elgible at all
-        }
-        return new ArrayList<>();
     }
 
-    public void applyForProject(User user, String projectName) {
+    public boolean project_Exist(String projectName,User user){
+        List<Project> projectAvailable = getEligibleProjects(user);
+
+        for (Project p : projectAvailable){
+            if(p.getName().equalsIgnoreCase(projectName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<FlatType> getAvailableFlatTypes(String projectName, User user){
+        List<Project> projectAvailable = getEligibleProjects(user);
+
+        List<FlatType> availableFlatTypes = new ArrayList<>();
+        for (Project p : projectAvailable){
+            if(p.getName().equalsIgnoreCase(projectName)){
+                FlatType flatType1 = FlatType.fromString(p.getType1());
+                FlatType flatType2 = FlatType.fromString(p.getType2());
+
+                availableFlatTypes.add(flatType1);
+                availableFlatTypes.add(flatType2);
+            }
+        }
+        return availableFlatTypes;
+    }
+
+    public void applyForProject(User user, String projectName,FlatType flatType) {
         //Need to update ApplicantProjectStatus from NA -> PENDING
-        FlatType RoomType = applicantActionHandler.getRoomType(user);
 
         //public static boolean applyForProject(User user, String projectName, FlatType flatType)
-        boolean success = applicantProjectStatusDAO.applyForProject(user, projectName, RoomType);
+        boolean success = applicantProjectStatusDAO.applyForProject(user, projectName, flatType);
         if (success){
             System.out.print("Successfully applied. Now pending.");
         }

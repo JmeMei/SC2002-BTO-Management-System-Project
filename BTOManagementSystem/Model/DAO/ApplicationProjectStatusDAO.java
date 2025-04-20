@@ -48,7 +48,7 @@ public class ApplicationProjectStatusDAO {
                 // If NRIC matches, update the project ID and application status
                 if (values[1].trim().equalsIgnoreCase(user.getNric())) {
                     values[6] = projectName; //Project name
-                    values[7] = flatType.name(); // Application Status
+                    values[7] = flatType.getDisplayName(); // Application Status
                     values[8] = "PENDING";
                 }
 
@@ -110,7 +110,7 @@ public class ApplicationProjectStatusDAO {
                     //String password = values[4].trim();
                     String role = values[5].trim();
                     String projectName = values[6].trim();
-                    FlatType flatType = FlatType.valueOf(values[7].trim().toUpperCase());
+                    FlatType flatType = FlatType.fromString(values[7].trim());
                     ApplicationStatus applicationStatus = ApplicationStatus.valueOf(values[8].trim().toUpperCase());
                     String enquiry = values[9].trim();
                     String reply = values[10].trim();

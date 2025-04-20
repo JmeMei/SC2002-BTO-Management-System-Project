@@ -43,7 +43,7 @@ public class HDBOfficerView {
                     break;
                 case 2: // apply for projects
                     applicationController.displayAvailableProjects(officer);
-                    applicationController.applyForProject(officer, null); // to implement
+                    //applicationController.applyForProject(officer, null); // to implement
                     break;
                 case 3: // view application
                     applicationController.viewMyApplication(officer);

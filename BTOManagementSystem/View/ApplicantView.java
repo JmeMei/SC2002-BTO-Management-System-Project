@@ -6,15 +6,14 @@ import java.util.Scanner;
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.PasswordController;
-import BTOManagementSystem.Model.Roles.Applicant;
-import BTOManagementSystem.Model.Room;
-import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
+import BTOManagementSystem.Model.Project;
+import BTOManagementSystem.Model.Roles.Applicant;
 
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static List<Room> roomsAvailable; //Global static variable to store the available rooms
+    public static List<Project> projectsAvailable; //Global static variable to store the available rooms
 
     public void showMenu(Applicant user)  { //Applicant view has a user
 
@@ -45,11 +44,47 @@ public class ApplicantView {
 
             switch (option) {
                 case 1:
-                   roomsAvailable = applicationController.displayAvailableProjects(user);
+                   applicationController.displayAvailableProjects(user);
                     break;
                 case 2:
-                    roomsAvailable = applicationController.displayAvailableProjects(user);
-                    applyForProject(user); // TODO shift the applyproject to ApplicationController
+                    applicationController.displayAvailableProjects(user);
+                    System.out.println("Enter the Project Name: ");
+                    // Read User Input
+                    String projectName = scanner.nextLine();
+                    boolean projectFound = false;
+
+                    if (applicationController.project_Exist(projectName, user)) {
+                        System.out.println("Project found: " + projectName);
+
+                        // Get available flat types for that project
+                        List<FlatType> availableTypes = applicationController.getAvailableFlatTypes(projectName, user);
+
+                        System.out.println("Available flat types for project " + projectName);
+                        for (FlatType type : availableTypes) {
+                            System.out.println("- " + type.getDisplayName());
+                        }
+
+                        // Loop Until Chosen Flat Type has been input
+                        FlatType chosenType = null;
+                        while (chosenType == null) {
+                            System.out.print("Choose flat type (e.g., 2-Room or 3-Room): ");
+
+                            // Get User Input for the Flat Type to Apply for
+                            String roomTypeInput = scanner.nextLine();
+                            FlatType inputType = FlatType.fromString(roomTypeInput);
+
+                            if (inputType != null && availableTypes.contains(inputType)) {
+                                chosenType = inputType;
+                            } else {
+                                System.out.println("Invalid flat type. Please choose from the available types.");
+                            }
+                        }
+
+                        System.out.println("You selected: " + chosenType.getDisplayName());
+                        applicationController.applyForProject(user, projectName, chosenType);
+                    } else {
+                        System.out.println("No project found with that name.");
+                    }
                     break;
                 case 3:
                     applicationController.viewMyApplication(user);
@@ -82,54 +117,6 @@ public class ApplicantView {
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");
-            }
-        }
-    }
-
-
-    private static void applyForProject(User user)  {
-
-        System.out.println("Enter the Project Name: ");
-        String projectName = scanner.nextLine(); // Read as String
-        boolean projectFound = false;
-
-        while(!projectFound){
-            // Make sure the user enters an integer
-            //roomAvailable is a global that gets declared in viewAvailableProject
-            for (Room room : roomsAvailable) { 
-                if (room.getProjectName().equalsIgnoreCase(projectName)) {
-                    System.out.println("Project found: " + room.getProjectName());
-                    projectFound = true;
-                    ApplicationController applicationController = new ApplicationController();
-                    applicationController.applyForProject(user, projectName);
-                    // You can now proceed with applying logic
-                    break;
-                }
-            }
-            if (!projectFound) {
-                System.out.println("No project found with that name.");
-                return;
-            }
-        }
-        
-    }
-
-    public static FlatType chooseRoom() {
-        while (true) {
-            System.out.println("Choose room type: ");
-            System.out.println("1. 2-Room");
-            System.out.println("2. 3-Room");
-            System.out.print("Enter your choice (1 or 2): ");
-    
-            String input = scanner.nextLine();
-    
-            switch (input.trim()) {
-                case "1":
-                    return FlatType.TWOROOM;
-                case "2":
-                    return FlatType.THREEROOM;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
             }
         }
     }
