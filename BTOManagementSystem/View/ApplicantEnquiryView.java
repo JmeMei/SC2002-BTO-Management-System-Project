@@ -30,7 +30,6 @@ public class ApplicantEnquiryView {
 
     public static void showEnquiryMenu(User user) {
         EnquiryController enquiryController = new EnquiryController();
-        ApplicationController applicationController = new ApplicationController();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         do {

@@ -43,7 +43,7 @@ public class EnquiryController {
         if (!enquiry.getAnswer().trim().isEmpty()) {
             return false; // Cannot delete an enquiry that has already been answered
         }
-    
+        
         return enquiryDAO.deleteEnquiry(enquiryID);
     }
 
