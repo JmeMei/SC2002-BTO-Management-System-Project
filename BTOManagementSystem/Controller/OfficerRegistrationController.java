@@ -33,6 +33,7 @@ public class OfficerRegistrationController {
             if(projectListDAO.IsManaging(Data[1], App.userSession.getName())){
 
                 int AddSuccess = projectListDAO.AddOfficerToProject(Data[0],Data[1]);
+
                 if  (AddSuccess == -1){
                     approveOfficerView.SlotFullErrorMessage();
                 }

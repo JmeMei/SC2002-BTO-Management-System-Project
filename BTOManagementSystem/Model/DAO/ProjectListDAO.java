@@ -91,55 +91,7 @@ public class ProjectListDAO {
 
     }
 
-    public void writeANewProjectEntry(Project project, FileWriter writer){
 
-
-        try (writer) {
-
-            writer.append(project.getName());
-            writer.append(",");
-            writer.append(project.getNeighbourhood());
-            writer.append(",");
-            writer.append(project.getType1());
-            writer.append(",");
-            writer.append(String.valueOf(project.getType1_numofunits()));
-            writer.append(",");
-            writer.append(String.valueOf(project.getType1_sellingprice()));
-            writer.append(",");
-            writer.append(project.getType2());
-            writer.append(",");
-            writer.append(String.valueOf(project.getType2_numofunits()));
-            writer.append(",");
-            writer.append(String.valueOf(project.getType2_sellling_price()));
-            writer.append(",");
-            writer.append(project.getOpeningDateAsString());
-            writer.append(",");
-            writer.append(project.getClosingDateAsString());
-            writer.append(",");
-            writer.append(project.getManager());
-            writer.append(",");
-            writer.append(String.valueOf(project.getOfficerslots()));
-            writer.append(",");
-
-            String joinedNames = String.join(",", project.get_offficers());
-
-            joinedNames = "\"" + joinedNames + "\"";
-            writer.append(joinedNames);
-
-            writer.append(",");
-            writer.append(String.valueOf(project.getVisibility()));
-
-            writer.append("\n");
-
-            System.out.println("New Project added successfully!");
-
-        } catch (IOException e) {
-            System.out.println("An error occurred while writing to the file.");
-            e.printStackTrace();
-        }
-
-
-    }
 
     public void CreateNewProject(ArrayList<String> Data){
 
@@ -267,10 +219,13 @@ public class ProjectListDAO {
 
             if (p.getName().equals(ProjectName)) {
 
-                if (p.getNumberofCurrentOfficers() < p.getOfficerslots()){
+                if (p.getNumberofCurrentOfficers() > 0 ){
                     p.add_Officer(officerName);
+                    p.setOfficerslots(p.getOfficerslots() - 1);
                     UpdateDB();
                     return 1;
+
+
                 }
                 else{
                     return -1;
