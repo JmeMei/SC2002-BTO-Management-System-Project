@@ -1,10 +1,11 @@
 package BTOManagementSystem.Model.Roles;
 
 import BTOManagementSystem.Model.Project;
+import BTOManagementSystem.Model.User;
 
 //Name,NRIC,Age,Marital Status,Password,Project Name,Type, Application Status, Enquiry, Reply
 
-public class HDBOfficer extends Applicant{
+public class HDBOfficer extends User {
     private String projectName;
     private String Type;
     private String applicationStatus;
@@ -12,7 +13,7 @@ public class HDBOfficer extends Applicant{
     private String reply;
 
     public HDBOfficer(String name, String nric, int age, String maritalStatus, String password) {
-        super(name, nric, age, maritalStatus, password);
+        super(name, nric, age, maritalStatus, password,"Officer");
 
         // Default values if not yet applied
         this.projectName = "";

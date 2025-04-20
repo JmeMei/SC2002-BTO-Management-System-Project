@@ -1,34 +1,36 @@
 package BTOManagementSystem.Services;
 import BTOManagementSystem.App.*;
+import BTOManagementSystem.Model.DAO.ApplicantDAO;
+import BTOManagementSystem.Model.DAO.HDBManagerDAO;
+import BTOManagementSystem.Model.DAO.HDBOfficerDAO;
 import BTOManagementSystem.Model.DAO.UserDAO;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBManager;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
+import BTOManagementSystem.Model.User;
 
 
 public class SessionManagerService {
 
     public void InstantiateSession(String NRIC){
 
-        UserDAO DAO = new UserDAO();
-        String userType = DAO.getUserType(NRIC);
-        String[] details = DAO.getAllUserDetails(NRIC, userType);
+        ApplicantDAO ApplicantDAO = new ApplicantDAO();
+        HDBOfficerDAO OfficerDAO = new HDBOfficerDAO();
+        HDBManagerDAO ManagerDAO = new HDBManagerDAO();
 
+        User newUser = null;
 
-
-        if(userType.compareTo("applicant") == 0){
-            Applicant newUser = new Applicant(details[0],details[1],Integer.parseInt(details[2]),details[4],details[3]);
-            App.userSession = newUser;
+        if (ApplicantDAO.NRIC_exist(NRIC)){
+           newUser = ApplicantDAO.getUser(NRIC);
+        }
+        else if (OfficerDAO.NRIC_exist(NRIC)){
+            newUser = OfficerDAO.getUser(NRIC);
+        }
+        else if (ManagerDAO.NRIC_exist(NRIC)){
+            newUser = ManagerDAO.getUser(NRIC);
         }
 
-        else if (userType.compareTo("officer") == 0){
-            HDBOfficer newUser = new HDBOfficer(details[0],details[1],Integer.parseInt(details[2]),details[4],details[3]);
-            App.userSession = newUser;
-        }
-        else if (userType.compareTo("manager") == 0){
-            HDBManager newUser = new HDBManager(details[0],details[1],Integer.parseInt(details[2]),details[4],details[3]);
-            App.userSession = newUser;
-        }
+        App.userSession = newUser;
 
 
     }

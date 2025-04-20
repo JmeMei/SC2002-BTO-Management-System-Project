@@ -8,7 +8,8 @@ The project is organized into multiple packages as follows:
 
 2. Authentication
 
-- SessionManager.java : Handles account-related operation
+- SessionManagerService.java : Handles account-related operation.
+- AuthenticatorService.java : Handles the user authentication through NRIC and password credentials.
 
 3. Controller
 Controllers handle the logic and act as the handlers between the model and view.
@@ -31,7 +32,9 @@ CSV files that serve as the database for the application
 5. DataAccess
 DAO classes for managing CRUD operations with CSV files:
 
-- UserDAO.java : 
+- ApplicantDAO.java : Extracts the list of users who are Applicants from csv into an ArrayList of Applicants for CRUD Operations.
+- HDBOfficerDAO.java : Extracts the list of users who are HDB Officers from csv into an ArrayList of HDB Officers for CRUD Operations.
+- HDBManagerDAO.java : Extracts the list of users who are HDB Managers from csv into an ArrayList of HDB Managers for CRUD Operations.
 
 6. Model
 Model classes that represent the data structure:

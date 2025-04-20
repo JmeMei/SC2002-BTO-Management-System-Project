@@ -1,5 +1,12 @@
 package BTOManagementSystem.Controller;
 
+import BTOManagementSystem.App.App;
+import BTOManagementSystem.Model.DAO.ApplicantDAO;
+import BTOManagementSystem.Model.DAO.HDBManagerDAO;
+import BTOManagementSystem.Model.DAO.HDBOfficerDAO;
+import BTOManagementSystem.Model.Roles.Applicant;
+import BTOManagementSystem.Model.Roles.HDBManager;
+import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.Model.User;
 
 import java.io.*;
@@ -7,42 +14,52 @@ import java.util.*;
 
 public class PasswordController {
 
-    private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantList.csv"; // adjust path as needed
+    public static boolean changePassword(String nric, String newPassword) {
 
-    public static boolean changePassword(String NRIC, String newPassword) {
-        List<String[]> fileContent = new ArrayList<>();
+        //Set new password in session
+        User user = App.userSession;
+        user.setPassword(newPassword);
+        App.userSession = user;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))){
-            
-            String header = reader.readLine(); //read the header
-            fileContent.add(header.split(",")); //store the header
+        //Init all DAOs
+        ApplicantDAO ApplicantDAO = new ApplicantDAO();
+        HDBOfficerDAO OfficerDAO = new HDBOfficerDAO();
+        HDBManagerDAO ManagerDAO = new HDBManagerDAO();
 
-            String line;
-            while((line = reader.readLine()) != null){
-                String[] values = line.split(",");
+        boolean updated = false;
 
-                //If the NRIC match, change the password
-                //Name,NRIC,Age,Marital Status,Password,role
-                if(values[1].trim().equalsIgnoreCase(NRIC)) values[4] = newPassword;
+        String role = user.getRole();
 
-                fileContent.add(values);
+        if (role.equals("Applicant")) {
+            List<Applicant> applicants = ApplicantDAO.getAllUsers();
+            for (Applicant a : applicants) {
+                if (a.getNric().equals(user.getNric())) {
+                    a.setPassword(newPassword);
+                    updated = ApplicantDAO.updateDB();
+                    break;
+                }
             }
-
-        }catch (IOException e){
-            System.out.println("Error reading the userlogin.csv " + e.getMessage());
-            return false;
+        } else if (role.equals("Officer")) {
+            List<HDBOfficer> officers = OfficerDAO.getAllUsers();
+            for (HDBOfficer o : officers) {
+                if (o.getNric().equals(user.getNric())) {
+                    o.setPassword(newPassword);
+                    updated = ApplicantDAO.updateDB();
+                    break;
+                }
+            }
+        } else if (role.equals("Manager")) {
+            List<HDBManager> managers = ManagerDAO.getAllUsers();
+            for (HDBManager m : managers) {
+                if (m.getNric().equals(user.getNric())) {
+                    m.setPassword(newPassword);
+                    updated = ApplicantDAO.updateDB();
+                    break;
+                }
+            }
         }
 
-        //Write the updated content back to the file
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))){
-            for(String[] values : fileContent){
-                writer.write(String.join(",", values));
-                writer.newLine();
-            }
-            return true;
-        } catch (IOException e){
-            System.out.println("Error writing back to the userlogin.csv " + e.getMessage());
-        }
-        return false;
+        return updated;
+
     }//END of changePassword
 }
