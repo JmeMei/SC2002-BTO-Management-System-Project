@@ -496,6 +496,14 @@ public class ProjectListDAO {
         return rows;
     }
 
+    public List<String> getProjectNames() {
+        List<String> projectNames = new ArrayList<>();
+        for (Project project : ProjectsList) {
+            projectNames.add(project.getName());
+        }
+        return projectNames;
+    }
+
 
     /////FOR APPLICANT/////
     public List<Room> loadAvailableTwoRooms(User user){ 

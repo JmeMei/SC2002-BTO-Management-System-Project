@@ -32,7 +32,8 @@ public class EnquiryDAO {
                         fields[1],
                         fields[2],
                         fields[3],
-                        fields[4]
+                        fields[4],
+                        fields[5]
                     );
                     enquiries.add(enquiry);
                 }
@@ -67,22 +68,25 @@ public class EnquiryDAO {
         return result;
     }
 
-    // Update an enquiry (e.g., add answer) and rewrite the whole file
-    public void updateEnquiry(Enquiry updatedEnquiry) {
-        List<Enquiry> all = loadAllEnquiries();
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            for (Enquiry e : all) {
-                if (e.getEnquiryID().equals(updatedEnquiry.getEnquiryID())) {
-                    writer.write(updatedEnquiry.toString());
-                } else {
-                    writer.write(e.toString());
-                }
-                writer.newLine();
+    public boolean editEnquiry(Enquiry enquiry, String applicantNRIC, String newQuestion) {
+        List<Enquiry> enquiries = loadAllEnquiries();
+        boolean updated = false;
+    
+        for (Enquiry e : enquiries) {
+            if (e.getEnquiryID().equals(enquiry.getEnquiryID()) &&
+                e.getApplicantNRIC().equals(applicantNRIC) &&
+                (e.getAnswer() == null || e.getAnswer().isEmpty())) {
+                e.setQuestion(newQuestion);
+                updated = true;
+                break;
             }
-        } catch (IOException e) {
-            System.out.println("Error updating enquiry: " + e.getMessage());
         }
+    
+        if (updated) {
+            saveAllEnquiries(enquiries);
+        }
+    
+        return updated;
     }
 
     // Auto-generate an enquiry ID
@@ -111,8 +115,6 @@ public class EnquiryDAO {
 
     private void saveAllEnquiries(List<Enquiry> enquiries) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            writer.write("EnquiryID,ProjectName,ApplicantNRIC,Question,OfficerNRIC,Answer");
-            writer.newLine();
             for (Enquiry e : enquiries) {
                 writer.write(String.join(",",
                         e.getEnquiryID(),

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import BTOManagementSystem.Model.Enquiry;
 import BTOManagementSystem.Model.DAO.EnquiryDAO;
+import BTOManagementSystem.Model.DAO.ProjectListDAO;
 
 // This class handles all logic to do with enquiries
 // This includes the applicant who can create an enquiry for the project, and the officer who can respond to these enquiries under the officer
@@ -23,6 +24,7 @@ public class EnquiryController {
         enquiryDAO.saveEnquiry(enquiry);
     }
 
+    // view all enquiries for applicant
     public List<Enquiry> viewEnquiriesForApplicant(String applicantNRIC){
         return enquiryDAO.getEnquiriesByApplicant(applicantNRIC);
     }
@@ -32,31 +34,42 @@ public class EnquiryController {
         return enquiryDAO.getEnquiriesByOfficer(officerNRIC);
     }
 
-    // officers can answer enquiry
-    public boolean answerEnquiry(Enquiry enquiry, String answer) {
-        if (!enquiry.getAnswer().isEmpty()) {
-            return false; // Already answered
+    public boolean deleteEnquiry(String enquiryID, String applicantNRIC) {
+        Enquiry enquiry = enquiryDAO.getEnquiryById(enquiryID);
+        if (enquiry == null || !enquiry.getApplicantNRIC().equals(applicantNRIC)) {
+            return false; // Enquiry not found or doesn't belong to applicant
         }
-        enquiry.setAnswer(answer);
-        enquiryDAO.updateEnquiry(enquiry);
+    
+        if (!enquiry.getAnswer().trim().isEmpty()) {
+            return false; // Cannot delete an enquiry that has already been answered
+        }
+    
+        return enquiryDAO.deleteEnquiry(enquiryID);
+    }
+
+    // edit enquiries method
+    public boolean editEnquiry(String applicantNRIC, String enquiryID, String newQuestion) {
+        Enquiry enquiry = enquiryDAO.getEnquiryById(enquiryID);
+    
+        if (enquiry == null || !enquiry.getApplicantNRIC().equals(applicantNRIC)) {
+            return false; // Enquiry not found or doesn't belong to applicant
+        }
+    
+        if (!enquiry.getAnswer().trim().isEmpty()) {
+            return false; // Cannot edit an enquiry that has already been answered
+        }
+
+        enquiryDAO.editEnquiry(enquiry, applicantNRIC, newQuestion);
         return true;
     }
 
-    public boolean deleteEnquiry(String enquiryID, String applicantNRIC) {
-        Enquiry enquiry = enquiryDAO.getEnquiryById(enquiryID);
-        if (enquiry == null) return false;
+    public List<String> availableProjectList(ProjectListDAO projectDAO) {
+    List<String> projectNames = projectDAO.getProjectNames();
 
-        // Only delete if applicant owns it and it's unanswered
-        if (enquiry.getApplicantNRIC().equalsIgnoreCase(applicantNRIC) && enquiry.getAnswer().isEmpty()) {
-            return enquiryDAO.deleteEnquiry(enquiryID);
-        }
-        return false;
+    if (projectNames.isEmpty()) {
+        return null;
     }
 
-    public List<Enquiry> getEditableEnquiries(String applicantNRIC) {
-        List<Enquiry> all = enquiryDAO.getEnquiriesByApplicant(applicantNRIC);
-        return all.stream()
-                  .filter(e -> e.getAnswer().isEmpty())
-                  .collect(Collectors.toList());
-    }
+    return projectNames;
+}
 }

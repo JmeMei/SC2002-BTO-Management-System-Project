@@ -18,6 +18,15 @@ public class Enquiry {
         this.answer = "";
     }
 
+    public Enquiry(String enquiryID, String projectName, String applicantNRIC, String question, String officerNRIC, String answer) {
+        this.enquiryID = enquiryID;
+        this.projectName = projectName;
+        this.applicantNRIC = applicantNRIC;
+        this.question = question;
+        this.officerNRIC = officerNRIC;
+        this.answer = answer;
+    }
+
     public String getEnquiryID() {
         return enquiryID;
     }

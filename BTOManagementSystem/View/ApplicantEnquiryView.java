@@ -6,7 +6,9 @@ import java.util.*;
 import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.EnquiryController;
 import BTOManagementSystem.Model.Enquiry;
+import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.User;
+import BTOManagementSystem.Model.DAO.ProjectListDAO;
 
 public class ApplicantEnquiryView {
     private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantProjectStatus.csv";
@@ -56,11 +58,10 @@ public class ApplicantEnquiryView {
                         System.out.println("You have not submitted any enquiries");
                         break;
                     }
-                    System.out.println("\n--- Your submitted enquiries ---");
                     for (int i = 0; i < enquiries.size(); i++) {
                         Enquiry e = enquiries.get(i);
-                        System.out.printf("[%d] %s\n   Question: %s\n   Answer: %s\n", 
-                            i + 1, 
+                        System.out.printf("==Enquiry ID: %s==\nProject Name: %s\n Question: %s\n Answer: %s\n", 
+                            e.getEnquiryID(), 
                             e.getProjectName(), 
                             e.getQuestion(), 
                             e.getAnswer().isEmpty() ? "Unanswered" : e.getAnswer());
@@ -69,23 +70,75 @@ public class ApplicantEnquiryView {
                 }
                 case 2 -> {
                     // ask for which project
-                    applicationController.displayAvailableProjects(user);
-                    System.out.println("Enter the project name to ask about?");
+                    ProjectListDAO projectDAO = new ProjectListDAO();
 
-                    String projectName = scanner.nextLine(); // TODO fill in with logic to get the name from the project list file
-                    
+                    List<String> availableProjects = enquiryController.availableProjectList(projectDAO);
+
+                    // if no available projects
+                    if (availableProjects == null || availableProjects.isEmpty()) {
+                        System.out.println("No available projects.");
+                        return;
+                    }
+            
+                    System.out.println("Select a project to ask a question about:");
+                    for (int i = 0; i < availableProjects.size(); i++) {
+                        System.out.printf("%d. %s\n", i + 1, availableProjects.get(i));
+                    }
+                    System.out.print("Enter your choice (1-" + availableProjects.size() + "): ");
+                    choice = scanner.nextInt();
+
+                    // if valid choice of project
+                    if (choice >= 1 && choice <= availableProjects.size()) {
+                        String selectedProject = availableProjects.get(choice - 1);
+                        System.out.println("You selected: " + selectedProject);
+            
+                        // ask the user for question
+                        scanner.nextLine();
+                        System.out.print("Enter your question: ");
+                        String question = scanner.nextLine();
+
                     // get question from user
-                    System.out.println("What do you want to ask about this project?");
-                    String question = scanner.nextLine();
-                    enquiryController.submitEnquiry(user.getNric(), projectName, question, "");// dont know officerNRIC for now 
-                    System.out.println("Enquiry submitted successfully!");}
+                    enquiryController.submitEnquiry(user.getNric(), selectedProject, question, "");// dont know officerNRIC for now 
+                    System.out.println("Enquiry submitted successfully!");
+                    }
+                }
 
                 case 3 -> {
-                    // lets user edit their enquiry
-                    System.out.println("to be implemented");}
+
+                    // show all the enquiries by the user
+                    List<Enquiry> enquiries = enquiryController.viewEnquiriesForApplicant(user.getNric());
+                    if(enquiries.isEmpty()){
+                        System.out.println("You have not submitted any enquiries");
+                        break;
+                    }
+                    System.out.println("\n--- Your submitted enquiries ---");
+                    for (int i = 0; i < enquiries.size(); i++) {
+                        Enquiry e = enquiries.get(i);
+                        System.out.printf("==Enquiry ID: %s==\nProject Name: %s\n Question: %s\n Answer: %s\n", 
+                            e.getEnquiryID(), 
+                            e.getProjectName(), 
+                            e.getQuestion(), 
+                            e.getAnswer().isEmpty() ? "Unanswered" : e.getAnswer());
+                    }
+
+                    // edit enquiry by ID
+                    System.out.print("Enter Enquiry ID to edit: ");
+                    String enquiryID = scanner.nextLine();
+
+                    System.out.print("Enter new question: ");
+                    String newQuestion = scanner.nextLine();
+
+                    boolean success = enquiryController.editEnquiry(user.getNric(), enquiryID, newQuestion);
+
+                    if (success) {
+                        System.out.println("Enquiry updated successfully.");
+                    } else {
+                        System.out.println("Failed to update enquiry. It might be already answered or not belong to you.");
+                    };
+                }
 
                 case 4 -> {
-                    List<Enquiry> deletableEnquiries = enquiryController.getEditableEnquiries(user.getNric());
+                    List<Enquiry> deletableEnquiries = enquiryController.viewEnquiriesForApplicant(user.getNric());
 
                     if (deletableEnquiries.isEmpty()) {
                         System.out.println("You have no deletable (unanswered) enquiries.");
@@ -95,24 +148,17 @@ public class ApplicantEnquiryView {
                     System.out.println("\n--- Deletable Enquiries ---");
                     for (int i = 0; i < deletableEnquiries.size(); i++) {
                         Enquiry e = deletableEnquiries.get(i);
-                        System.out.printf("[%d] %s\n   Question: %s\n", i + 1, e.getProjectName(), e.getQuestion());
+                        System.out.printf("==Enquiry ID: %s==\nProject Name: %s\n Question: %s\n Answer: %s\n", 
+                            e.getEnquiryID(), 
+                            e.getProjectName(), 
+                            e.getQuestion(), 
+                            e.getAnswer().isEmpty() ? "Unanswered" : e.getAnswer());
                     }
+
+                    System.out.print("Enter Enquiry ID to Delete: ");
+                    String enquiryID = scanner.nextLine();
                 
-                    System.out.print("Select the enquiry number to delete (or 0 to cancel): ");
-                    try {
-                        choice = Integer.parseInt(scanner.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input.");
-                        return;
-                    }
-                
-                    if (choice <= 0 || choice > deletableEnquiries.size()) {
-                        System.out.println("Cancelled.");
-                        return;
-                    }
-                
-                    Enquiry selected = deletableEnquiries.get(choice - 1);
-                    boolean success = enquiryController.deleteEnquiry(selected.getEnquiryID(), user.getNric());
+                    boolean success = enquiryController.deleteEnquiry(enquiryID, user.getNric());
                 
                     if (success) {
                         System.out.println("Enquiry deleted successfully.");
@@ -127,74 +173,4 @@ public class ApplicantEnquiryView {
         } while (choice != 5);
     }
 
-    // all logic implemented into EnquiryDAO and Enquiry Controller
-    private static void viewEnquiry(User user) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            reader.readLine(); // skip header
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] values = line.split(",");
-
-            if (values[1].trim().equalsIgnoreCase(user.getNric())) {
-                String enquiry = values[9].trim();
-                String reply = values[10].trim();
-                //System.out.println("Enquiry: " + (enquiry.isEmpty() ? "None" : enquiry)); //Enquiry will never be empty (will be NA if no enquiry yet)
-                System.out.println("Enquiry: " + enquiry); 
-                //System.out.println("Reply: " + (reply.isEmpty() ? "No reply yet" : reply)); //Reply will never be empty (will be NA if no reply yet)
-                System.out.println("Reply: " + reply); 
-                return;
-            }
-            }
-            System.out.println("No record found for your NRIC.");
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        }
-    }
-
-    private static void submitEnquiry(User user) {
-        System.out.print("Enter your enquiry: ");
-        String newEnquiry = scanner.nextLine();
-
-        updateEnquiry(user, newEnquiry);
-    }
-
-    private static void deleteEnquiry(User user) {
-        updateEnquiry(user, "NA");
-        System.out.println("Enquiry deleted.");
-    }
-
-    private static void updateEnquiry(User user, String newEnquiry) {
-        List<String[]> records = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            String header = reader.readLine();
-            records.add(header.split(","));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] values = Arrays.stream(line.split(","))
-                                        .map(String::trim)
-                                        .toArray(String[]::new);
-                if (values[1].equalsIgnoreCase(user.getNric())) {
-                    values[9] = newEnquiry; // Enquiry
-                    values[10] = "NA"; // Reset reply
-                }
-                records.add(values);
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-            return;
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            for (String[] values : records) {
-                writer.write(String.join(",", values));
-                writer.newLine();
-            }
-            System.out.println("Enquiry updated.");
-        } catch (IOException e) {
-            System.out.println("Error writing file: " + e.getMessage());
-        }
-    }
 }
