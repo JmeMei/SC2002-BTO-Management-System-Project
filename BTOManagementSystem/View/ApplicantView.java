@@ -63,7 +63,7 @@ public class ApplicantView {
                 case 6:
                     System.out.print("Enter the new password: ");
                     String newPassword = scanner.nextLine();
-                    boolean success = PasswordController.changePassword(user.getNric(), newPassword);
+                    boolean success = PasswordController.changePassword(user.getNric(),newPassword);
 
                     if (success) {
                         System.out.print("Password updated. Please log in again.\n");

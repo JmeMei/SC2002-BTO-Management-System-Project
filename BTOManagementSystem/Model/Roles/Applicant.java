@@ -64,4 +64,14 @@ public class Applicant extends User{
     public void setReply(String reply) {
         Reply = reply;
     }
+
+//    @Override
+//    public String toString() {
+//        return "Applicant{" +
+//                "name='" + name + '\'' +
+//                ", nric='" + nric + '\'' +
+//                ", age=" + age +
+//                ", maritalstatus='" + password + '\'' +
+//                '}';
+//    }
 }

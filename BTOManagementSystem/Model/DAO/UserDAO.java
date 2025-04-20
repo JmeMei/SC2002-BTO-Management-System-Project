@@ -37,8 +37,6 @@ public class UserDAO {
 
     public String getPasswordOfUser(String NRIC){
 
-
-
         for (String csvfile : csvFiles){
 
             String line;
@@ -87,7 +85,6 @@ public class UserDAO {
     }
 
     public String getUserType(String NRIC){
-
 
         for (String csvfile : csvFiles){
 

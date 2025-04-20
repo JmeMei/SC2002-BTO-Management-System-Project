@@ -8,7 +8,7 @@ public class User {
     protected String maritalStatus;
     protected String role;
 
-    public User(String name, String nric, int age, String password,String maritalStatus, String role) {
+    public User(String name, String nric, int age, String maritalStatus, String password, String role) {
         this.name = name;
         this.nric = nric;
         this.age = age;
@@ -38,8 +38,10 @@ public class User {
         return role;
     }
 
-    // public String getPassword(String NRIC){
-    //     return password;
-    // }
+    public String getPassword(){return password;}
+
+    public void setPassword(String password)  {
+        this.password = password;
+    }
 
 }
