@@ -1,7 +1,5 @@
 package BTOManagementSystem.View;
 
-import java.io.Serial;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,10 +7,8 @@ import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.PasswordController;
 import BTOManagementSystem.Model.Roles.Applicant;
-import BTOManagementSystem.Services.ApplicantActionHandler;
 import BTOManagementSystem.Model.Room;
 import BTOManagementSystem.Model.User;
-import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 
 public class ApplicantView {
@@ -21,7 +17,9 @@ public class ApplicantView {
     public static List<Room> roomsAvailable; //Global static variable to store the available rooms
 
     public void showMenu(Applicant user)  { //Applicant view has a user
+
         ApplicationController applicationController = new ApplicationController();
+        ApplicantEnquiryView enquiryView = new ApplicantEnquiryView();
         int option = 0;
 
         while (option != 8) {
@@ -60,7 +58,7 @@ public class ApplicantView {
                     applicationController.withdrawApplication(user); // add the call to the applicationController
                     break;
                 case 5:
-                    manageEnquiries(user);
+                    enquiryView.showEnquiryMenu(user);
                     break;
                 case 6:
                     System.out.print("Enter the new password: ");
@@ -137,11 +135,4 @@ public class ApplicantView {
     }
 
 
-    private static void manageEnquiries(User user) {
-        System.out.println("[DEBUG] Managing enquiries...");
-        // Submenu for add/view/delete enquiry
-
-         ApplicantEnquiryView applicantEnquiryView = new ApplicantEnquiryView();
-         applicantEnquiryView.showEnquiryMenu(user);
-    }
 }
