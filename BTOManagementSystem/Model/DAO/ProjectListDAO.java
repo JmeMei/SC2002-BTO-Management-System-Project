@@ -1,6 +1,8 @@
 package BTOManagementSystem.Model.DAO;
 
 
+import BTOManagementSystem.App.App;
+import BTOManagementSystem.HDB_ManagerActions.CreateNewProject;
 import BTOManagementSystem.Model.*;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 
@@ -21,13 +23,78 @@ import java.time.format.DateTimeParseException;
 
 public class ProjectListDAO {
 
+    private String[] headers = {"Project Name",
+            "Neighborhood",
+            "Type 1",
+            "Number of units for Type 1",
+            "Selling price for Type 1",
+            "Type 2",
+            "Number of units for Type 2",
+            "Selling price for Type 2",
+            "Application opening date",
+            "Application closing date",
+            "Manager",
+            "Officer Slot",
+            "Officer",
+            "visibility"};
+
     private String filePath = "BTOManagementSystem/Data/ProjectList.csv";
+    ArrayList<Project> ProjectsList = new ArrayList<>();
 
-    public void writeANewProjectEntry(Project project){
+    public ProjectListDAO() {
 
 
 
-        try (FileWriter writer = new FileWriter(filePath,true)) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
+            String line;
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                ArrayList<String> values = CSV_data_Parse(line);
+
+                String name = values.get(0);
+                String Neighbourhood = values.get(1);
+                String type1 =  values.get(2);
+
+                int Type1_numofunits = Integer.parseInt(values.get(3));
+
+                double Type1_sellingprice =  Double.parseDouble(values.get(4));
+
+                String Type2 =  values.get(5);
+                int Type2_numofunits =  Integer.parseInt(values.get(6));
+                double type2_sellling_price = Double.parseDouble(values.get(7));
+
+
+
+                String openingDate = values.get(8);
+                String closingDate = values.get(9);
+
+
+                String manager = values.get(10);
+                int officerslots =  Integer.parseInt(values.get(11));
+
+                String officers = values.get(12).substring(1, values.get(12).length()-1);
+
+                int visibility = Integer.parseInt(values.get(13));
+
+                Project newProject = new Project(name,Neighbourhood,type1, Type1_numofunits, Type1_sellingprice,
+                        Type2,Type2_numofunits,type2_sellling_price,openingDate,closingDate,manager,officerslots,officers,visibility);
+
+                ProjectsList.add(newProject);
+
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the file.");
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void writeANewProjectEntry(Project project, FileWriter writer){
+
+
+        try (writer) {
 
             writer.append(project.getName());
             writer.append(",");
@@ -71,6 +138,141 @@ public class ProjectListDAO {
             e.printStackTrace();
         }
 
+
+    }
+
+    public void CreateNewProject(ArrayList<String> Data){
+
+        Project newProject = new Project(Data.get(0),Data.get(1),Data.get(2),Integer.parseInt(Data.get(3)),
+                Double.parseDouble(Data.get(4)), Data.get(5), Integer.parseInt(Data.get(6)) , Double.parseDouble(Data.get(7)), Data.get(8), Data.get(9), App.userSession.getName() , Integer.parseInt(Data.get(10)), "", 0);
+
+        this.ProjectsList.add(newProject);
+        this.UpdateDB();
+
+    }
+
+    public void UpdateDB(){
+
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            // Write header
+            writer.write("Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Officer Slot,Officer,visibility");
+            writer.newLine();
+
+            // Write records
+            for (Project p :ProjectsList) {
+                writer.write(String.format("%s,%s,%s,%d,%f,%s,%d,%f,%s,%s,%s,%d,%s,%d",
+
+                        p.getName(),
+                        p.getNeighbourhood(),
+                        p.getType1(),
+                        p.getType1_numofunits(),
+                        p.getType1_sellingprice(),
+                        p.getType2(),
+                        p.getType2_numofunits(),
+                        p.getType2_sellling_price(),
+                        p.getOpeningDateAsString(),
+                        p.getOpeningDateAsString(),
+                        p.getManager(),
+                        p.getOfficerslots(),
+                        p.get_officers_as_string_for_csv(),
+                        p.getVisibility()
+                        )
+                );
+                writer.newLine();
+            }
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
+    public void editProjectDetails(Project project, int attribute, String value){
+
+        switch (attribute){
+
+            case 1:
+
+                project.setName(value);
+                break;
+
+            case 2:
+                project.setNeighbourhood(value);
+                break;
+
+            case 3:
+                project.setType1(value);
+                break;
+            case 4:
+                project.setType1_numofunits(Integer.parseInt(value));
+                break;
+
+            case 5:
+                project.setType1_sellingprice(Double.parseDouble(value));
+                break;
+
+            case 6:
+                project.setType2(value);
+                break;
+            case 7:
+                project.setType2_numofunits(Integer.parseInt(value));
+                break;
+            case 8:
+                project.setType2_sellling_price(Double.parseDouble(value));
+                break;
+
+            case 9:
+                project.setOpeningDate(value);
+                break;
+            case 10:
+                project.setClosingDate(value);
+                break;
+
+            case 11:
+                project.setOfficerslots(Integer.parseInt(value));
+                break;
+
+            case 12:
+                project.setVisibility(Integer.parseInt(value));
+                break;
+        }
+
+        this.UpdateDB();
+
+    }
+
+    public Project getProjectFromStringName(String ProjectName){
+
+        for (Project p : ProjectsList) {
+
+            if (p.getName().equals(ProjectName)) {
+
+                return p;
+            }
+
+        }
+
+        return null;
+    }
+
+    public void AddOfficerToProject(String officerName, String ProjectName){
+
+        for (Project p : ProjectsList) {
+
+            if (p.getName().equals(ProjectName)) {
+
+                p.add_Officer(officerName);
+                UpdateDB();
+                return;
+            }
+
+        }
 
 
     }
@@ -130,41 +332,46 @@ public class ProjectListDAO {
 
     public boolean DeleteProject(String projectName){
 
-        List<String[]> rows = new ArrayList<>();
+        for(Project p : ProjectsList){
 
-        //Reading
-        boolean found = false;
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
+            if (p.getName().equals(projectName)){
 
-                String[] aRow = line.split(",");
-                if (aRow[0].compareTo(projectName) != 0){
+                ProjectsList.remove(p);
+                this.UpdateDB();
+                return true;
 
+            }
 
-                    rows.add(aRow);
+        }
 
-                }else{
-                    found = true;
+        return false;
+    }
+
+    public String[] getHeaders(){
+        return this.headers;
+    }
+
+    public ArrayList<Project> LoadProjects (int filter){
+
+        ArrayList<Project> projectsToReturn = new ArrayList<>();
+        if (filter == 1){
+
+            for (Project p : ProjectsList) {
+
+                if (p.getManager().equals(App.userSession.getName())){
+
+                    projectsToReturn.add(p);
+
                 }
 
-
             }
-        } catch (IOException e) {
-            e.printStackTrace();
 
+            return projectsToReturn;
+
+
+        }else{
+            return this.ProjectsList;
         }
-
-
-        try (FileWriter fw = new FileWriter(filePath)) {
-            for (String[] row : rows) {
-                fw.write(String.join(",", row) + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return found;
 
     }
 

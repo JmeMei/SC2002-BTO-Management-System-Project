@@ -1,6 +1,7 @@
 package BTOManagementSystem.Services;
 
 import BTOManagementSystem.Model.*;
+import BTOManagementSystem.Model.DAO.OfficerRegistrationRequestDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.Roles.HDBManager;
 import BTOManagementSystem.View.*;
@@ -43,6 +44,7 @@ public class HDB_Manager_ActionHandler {
                 ViewFilteredProjects();
                 return;
             case 6:
+
                 break;
             default:
                 System.out.println("Invalid option.");
@@ -95,14 +97,14 @@ public class HDB_Manager_ActionHandler {
         System.out.print("Enter number of officer slots: ");
         int OfficerSlots = scanner.nextInt();
 
-
+        /*
         Project newProject = new Project(ProjectName,Neighbourhood,RoomType1,
                 NumberOfUnitsType1,sellingPriceType1, RoomType2, NumberOfUnitsType2 , sellingPriceType2, OpeningDateObj,
                 closingDateObj,((HDBManager)App.userSession).getName(), OfficerSlots);
-
+        */
 
         ProjectListDAO dao = new ProjectListDAO();
-        dao.writeANewProjectEntry(newProject);
+        //dao.writeANewProjectEntry(newProject);
 
     }
 
@@ -148,13 +150,9 @@ public class HDB_Manager_ActionHandler {
 
         String ProjectName = scanner.nextLine();
 
-        boolean found = dao.DeleteProject(ProjectName);
+        //boolean found = dao.DeleteProject(ProjectName);
 
-        if (found == true) {
-            System.out.println("Project Deleted Successfully! ");
-        }else {
-            System.out.println("Project does not exist! ");
-        }
+
 
     }
 
@@ -191,6 +189,22 @@ public class HDB_Manager_ActionHandler {
             }
             System.out.println();
         }
+    }
+
+    public void ViewOfficerRegistrationsRequests(){
+
+       //OfficerRegistrationRequestDAO dao = new OfficerRegistrationRequestDAO();
+
+        //ArrayList<ArrayList<String>> Requests = dao.ViewRequests();
+
+        /*
+        for (ArrayList<String> row : Requests) {
+
+            for (String val : row) {
+                System.out.print(String.format("%-30s", val));
+            }
+            System.out.println();
+        }*/
     }
 
 

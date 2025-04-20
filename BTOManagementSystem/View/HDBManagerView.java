@@ -1,5 +1,8 @@
 package BTOManagementSystem.View;
 
+import BTOManagementSystem.App.App;
+import BTOManagementSystem.Controller.OfficerRegistrationController;
+import BTOManagementSystem.Controller.ProjectListController;
 import BTOManagementSystem.Model.Roles.HDBManager;
 import java.util.Scanner;
 
@@ -8,24 +11,79 @@ public class HDBManagerView {
 
 
 
-    public int showMenu(HDBManager manager) {
+    public void showMenu() {
 
         System.out.println("\n=== HDB Manager Dashboard ===");
-        System.out.println("Welcome, " + manager.getNric());
+        System.out.println("Welcome, " + App.userSession.getNric());
         System.out.println("1. Create Project");
         System.out.println("2. Edit");
         System.out.println("3. Delete a Project");
-        System.out.println("4. View ALL Projects");
-        System.out.println("5. View Projects created by YOU");
-
-
-        System.out.println("4. Approve Officer Registrations");
-        System.out.println("5. View Applications");
-        System.out.println("6. Logout");
-        System.out.println("7. Exit");
+        System.out.println("4. View Projects");
+        System.out.println("5. View officer ALL registration requests");
+        System.out.println("6. Approve Officer Registrations");
 
 
         System.out.print("Enter your option: ");
+        int option = scanner.nextInt();
+
+        ProjectListController controller = new ProjectListController();
+        OfficerRegistrationController officerRegistrationController = new OfficerRegistrationController();
+
+
+        //views
+        HDBManagerCreateProjectView createView = new HDBManagerCreateProjectView();
+
+        HDBManagerEditProjectView editView = new HDBManagerEditProjectView();
+
+        HDBManagerDeleteProjectView deleteView = new HDBManagerDeleteProjectView();
+
+        HDBManagerViewProjectsView viewProjectsView = new HDBManagerViewProjectsView();
+
+        HDBManagerApproveOfficerView approveOfficerView = new HDBManagerApproveOfficerView();
+        switch (option) {
+
+            case 1:
+
+                controller.CreateNewProject(this, createView );
+                break;
+
+            case 2:
+
+                controller.EditProject(this,editView);
+                break;
+
+            case 3:
+                controller.DeleteProject(this, deleteView);
+                break;
+
+            case 4:
+                controller.ViewProjects(this, viewProjectsView);
+                break;
+            case 5:
+                officerRegistrationController.ViewApproveRequests(this, approveOfficerView);
+                break;
+
+            case 6:
+                officerRegistrationController.ApproveARequest(this, approveOfficerView);
+                break;
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
         int option = 0;
         while (option > 6 || option < 1) {
 
@@ -37,7 +95,7 @@ public class HDBManagerView {
             }
 
         }
-        return option;
+        return option; */
     }
 
 }

@@ -5,7 +5,8 @@ import BTOManagementSystem.Model.Roles.HDBOfficer;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,12 @@ public class Project {
     String manager;
     int officerslots;
 
-    private List<String> officers;
+    private ArrayList<String> officers;
     private int visibility = 0;
 
     public Project(String name, String Neighbourhood, String type1 ,int Type1_numofunits, double Type1_sellingprice,
                    String Type2, int Type2_numofunits, double type2_sellling_price,
-                   LocalDate openingDate, LocalDate closingDate, String manager, int officerslots ) {
+                   String openingDate, String closingDate, String manager, int officerslots , String officers ,int visibility) {
 
         this.name = name;
         this.Neighbourhood = Neighbourhood;
@@ -43,13 +44,23 @@ public class Project {
         this.Type2 = Type2;
         this.Type2_numofunits = Type2_numofunits;
         this.type2_sellling_price = type2_sellling_price;
-        this.openingDate = openingDate;
-        this.closingDate = closingDate;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+
+        this.openingDate = LocalDate.parse(openingDate,formatter);
+        this.closingDate = LocalDate.parse(closingDate,formatter);
+
+
         this.manager = manager;
         this.officerslots = officerslots;
 
 
-        this.officers = new ArrayList<String>();
+        String[] officer_arr = officers.split(",");
+        this.officers = new ArrayList<>(Arrays.asList(officer_arr));
+
+
+        this.visibility = visibility;
 
 
     }
@@ -131,13 +142,15 @@ public class Project {
         return formattedDate;
     }
 
-    public void setOpeningDate(LocalDate openingDate) {
-        this.openingDate = openingDate;
+    public void setOpeningDate(String openingDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        this.openingDate = LocalDate.parse(openingDate);
     }
 
 
 
     public LocalDate getClosingDate() {
+
         return closingDate;
     }
 
@@ -148,8 +161,11 @@ public class Project {
         return formattedDate;
     }
 
-    public void setClosingDate(LocalDate closingDate) {
-        this.closingDate = closingDate;
+    public void setClosingDate(String closingDate) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        this.closingDate = LocalDate.parse(closingDate);
+
     }
 
     public String getManager() {
@@ -172,7 +188,29 @@ public class Project {
         return this.officers;
     }
 
+    public String get_officers_as_string_for_csv(){
+
+        StringBuilder sb = new StringBuilder();
+        sb.append('"');
+        sb.append(String.join(",",officers));
+        sb.append('"');
+
+        return sb.toString();
+    }
+
+    public void add_Officer(String officer){
+
+        this.officers.add(officer);
+
+    }
+
     public int getVisibility() {
         return visibility;
     }
+
+
+    public  void setVisibility(int visibility) {
+        this.visibility = visibility;
+    }
+
 }

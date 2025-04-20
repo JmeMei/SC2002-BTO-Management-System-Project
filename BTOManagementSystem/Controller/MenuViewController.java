@@ -23,11 +23,14 @@ public class MenuViewController {
             HDBManagerView managerView = new HDBManagerView();
 
             while (option != -1){
-                option = managerView.showMenu((HDBManager)user);
-                HDB_Manager_ActionHandler actionHandler = new HDB_Manager_ActionHandler();
-                actionHandler.HandleAction(option);
-            }
 
+                 managerView.showMenu();
+
+
+                //HDB_Manager_ActionHandler actionHandler = new HDB_Manager_ActionHandler();
+                //actionHandler.HandleAction(option);
+
+            }
 
 
         } else if (user instanceof Applicant) {
