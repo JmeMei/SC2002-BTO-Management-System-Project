@@ -62,4 +62,8 @@ public class HDBManagerApproveOfficerView {
         System.out.println("Successfully Approved! ");
     }
 
+    public void SlotFullErrorMessage(){
+        System.out.println("Officer Slots are full!");
+    }
+
 }

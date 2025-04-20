@@ -204,6 +204,10 @@ public class Project {
 
     }
 
+    public int getNumberofCurrentOfficers(){
+        return  this.officers.size();
+    }
+
     public int getVisibility() {
         return visibility;
     }

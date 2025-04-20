@@ -89,6 +89,19 @@ public class OfficerRegistrationRequestDAO {
         return false;
     }
 
+    public boolean RecordExists(String Name, String ProjectName){
+
+        for (OfficerRegistrationRequest request : this.officerRegistrationRequests){
+
+            if (request.getOfficerName().equals(Name) && request.getProjectName().equals(ProjectName)){
+
+                return true;
+            }
+
+        }
+        return false;
+    }
+
 
     public void updateDB(){
 

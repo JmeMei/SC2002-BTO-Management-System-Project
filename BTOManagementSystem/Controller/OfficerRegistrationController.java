@@ -24,18 +24,23 @@ public class OfficerRegistrationController {
         String[] Data = approveOfficerView.PromptNameOfOfficerToApprove(); // gets corresponding ProjName as well
 
 
-        boolean success = dao.UpdateApprovalStatus(Data[0],Data[1]);
+        boolean recordExists = dao.RecordExists(Data[0], Data[1]);
+        if (recordExists){
 
+            int AddSuccess = projectListDAO.AddOfficerToProject(Data[0],Data[1]);
+            if  (AddSuccess == -1){
+                approveOfficerView.SlotFullErrorMessage();
+            }
+            else if (AddSuccess == 1){
 
-        if (success){
-
-            projectListDAO.AddOfficerToProject(Data[0],Data[1]);
-            approveOfficerView.SuccessMessage();
+                dao.UpdateApprovalStatus(Data[0], Data[1]);
+                approveOfficerView.SuccessMessage();
+            }
 
         }else{
-
             approveOfficerView.RequestDoesNotExistMessage();
         }
+
 
         managerView.showMenu();
     }

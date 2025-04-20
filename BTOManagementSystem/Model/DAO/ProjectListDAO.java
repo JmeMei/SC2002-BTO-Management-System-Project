@@ -261,19 +261,26 @@ public class ProjectListDAO {
         return null;
     }
 
-    public void AddOfficerToProject(String officerName, String ProjectName){
+    public int AddOfficerToProject(String officerName, String ProjectName){
 
         for (Project p : ProjectsList) {
 
             if (p.getName().equals(ProjectName)) {
 
-                p.add_Officer(officerName);
-                UpdateDB();
-                return;
+                if (p.getNumberofCurrentOfficers() < p.getOfficerslots()){
+                    p.add_Officer(officerName);
+                    UpdateDB();
+                    return 1;
+                }
+                else{
+                    return -1;
+                }
+
             }
 
         }
 
+        return 0;
 
     }
 
