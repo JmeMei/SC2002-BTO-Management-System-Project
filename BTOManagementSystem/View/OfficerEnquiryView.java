@@ -1,43 +1,30 @@
 package BTOManagementSystem.View;
 
-import java.io.*;
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
 import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.EnquiryController;
 import BTOManagementSystem.Model.Enquiry;
 import BTOManagementSystem.Model.User;
 
-public class ApplicantEnquiryView {
-    private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantProjectStatus.csv";
-    private static final Scanner scanner = new Scanner(System.in);
+public class OfficerEnquiryView {
 
-    /*
-            0 Name,
-            1 NRIC,
-            2 Age,
-            3 Marital Status,
-            4 Password,
-            5 role,
-            6 Project Name,
-            7 FlatType,
-            8 Application Status,
-            9 Enquiry,
-            10 Reply
-            */
-
-    public static void showEnquiryMenu(User user) {
+        public static void showEnquiryMenu(User user) {
+            
         EnquiryController enquiryController = new EnquiryController();
         ApplicationController applicationController = new ApplicationController();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         do {
+            // first 4 options is similar to applicant
             System.out.println("\n=== Enquiry Management ===");
             System.out.println("1. View Your Enquiries");
             System.out.println("2. Submit a New Enquiry");
             System.out.println("3. Edit Your Enquiry");
-            System.out.println("4. Delete Enquiry");
-            System.out.println("5. Back to Dashboard");
+            System.out.println("4. Delete Own Enquiry");
+            System.out.println("5. Answer Enquiry of Managed Projects");
+            System.out.println("6. Back to Dashboard");
             System.out.print("Enter your choice: ");
             
             String input = scanner.nextLine();
@@ -120,81 +107,12 @@ public class ApplicantEnquiryView {
                         System.out.println("Failed to delete enquiry.");
                     };
                 }
-                case 5 -> System.out.println("Returning to dashboard...");
+                case 5 -> System.out.println("TODO, implement answering enquiries");
+                case 6 -> System.out.println("Returning to dashboard...");
                 default -> System.out.println("Invalid choice.");
             }
 
         } while (choice != 5);
     }
-
-    // all logic implemented into EnquiryDAO and Enquiry Controller
-    private static void viewEnquiry(User user) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            reader.readLine(); // skip header
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] values = line.split(",");
-
-            if (values[1].trim().equalsIgnoreCase(user.getNric())) {
-                String enquiry = values[9].trim();
-                String reply = values[10].trim();
-                //System.out.println("Enquiry: " + (enquiry.isEmpty() ? "None" : enquiry)); //Enquiry will never be empty (will be NA if no enquiry yet)
-                System.out.println("Enquiry: " + enquiry); 
-                //System.out.println("Reply: " + (reply.isEmpty() ? "No reply yet" : reply)); //Reply will never be empty (will be NA if no reply yet)
-                System.out.println("Reply: " + reply); 
-                return;
-            }
-            }
-            System.out.println("No record found for your NRIC.");
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        }
-    }
-
-    private static void submitEnquiry(User user) {
-        System.out.print("Enter your enquiry: ");
-        String newEnquiry = scanner.nextLine();
-
-        updateEnquiry(user, newEnquiry);
-    }
-
-    private static void deleteEnquiry(User user) {
-        updateEnquiry(user, "NA");
-        System.out.println("Enquiry deleted.");
-    }
-
-    private static void updateEnquiry(User user, String newEnquiry) {
-        List<String[]> records = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            String header = reader.readLine();
-            records.add(header.split(","));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] values = Arrays.stream(line.split(","))
-                                        .map(String::trim)
-                                        .toArray(String[]::new);
-                if (values[1].equalsIgnoreCase(user.getNric())) {
-                    values[9] = newEnquiry; // Enquiry
-                    values[10] = "NA"; // Reset reply
-                }
-                records.add(values);
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-            return;
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            for (String[] values : records) {
-                writer.write(String.join(",", values));
-                writer.newLine();
-            }
-            System.out.println("Enquiry updated.");
-        } catch (IOException e) {
-            System.out.println("Error writing file: " + e.getMessage());
-        }
-    }
+    
 }

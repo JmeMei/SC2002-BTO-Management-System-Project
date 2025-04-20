@@ -12,6 +12,7 @@ public class HDBOfficerView {
     public static void showMenu(HDBOfficer officer) {
 
         ApplicationController applicationController = new ApplicationController();
+        OfficerEnquiryView officerEnquiryView = new OfficerEnquiryView();
 
         int option = 0;
 
@@ -51,7 +52,7 @@ public class HDBOfficerView {
                     applicationController.withdrawApplication(officer);
                     break;
                 case 5: // enquiry management
-                    //enquiryController.viewEnquiry; to implement
+                    officerEnquiryView.showEnquiryMenu(officer);
                     break;
                 case 6: // view applicants for managed project
                     //projectController.viewProject(officer);
