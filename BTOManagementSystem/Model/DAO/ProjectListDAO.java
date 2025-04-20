@@ -284,6 +284,26 @@ public class ProjectListDAO {
 
     }
 
+    public boolean IsManaging(String ProjectName, String MangerName){
+
+        for (Project p : ProjectsList) {
+
+            if (p.getName().equals(ProjectName)) {
+
+                if (p.getManager().equals(MangerName)) {
+
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+
+        }
+
+        return false;
+    }
+
     public void editAProject(String projectName, int atrributeIndex, String NewValue){
 
         List<String[]> rows = new ArrayList<>();

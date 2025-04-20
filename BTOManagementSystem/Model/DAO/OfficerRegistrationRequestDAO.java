@@ -103,6 +103,8 @@ public class OfficerRegistrationRequestDAO {
     }
 
 
+
+
     public void updateDB(){
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {

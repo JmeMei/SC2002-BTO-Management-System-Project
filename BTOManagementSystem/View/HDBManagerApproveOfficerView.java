@@ -66,4 +66,7 @@ public class HDBManagerApproveOfficerView {
         System.out.println("Officer Slots are full!");
     }
 
+    public void NotManagerErrorMessage(){
+        System.out.println("You are not the manager for the project! unable to approve");
+    }
 }

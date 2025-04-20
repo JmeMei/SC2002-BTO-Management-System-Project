@@ -1,5 +1,6 @@
 package BTOManagementSystem.Controller;
 
+import BTOManagementSystem.App.App;
 import BTOManagementSystem.Model.DAO.OfficerRegistrationRequestDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.View.HDBManagerApproveOfficerView;
@@ -12,8 +13,10 @@ public class OfficerRegistrationController {
     public void ViewApproveRequests(HDBManagerView managerView, HDBManagerApproveOfficerView approveOfficerView ){
 
         int filter = approveOfficerView.Prompt();
+
         approveOfficerView.DisplayRequests(dao.LoadOfficerRegistrationRequests(filter), dao.getHeaders());
         managerView.showMenu();
+
     }
 
     public void ApproveARequest(HDBManagerView managerView, HDBManagerApproveOfficerView approveOfficerView ){
@@ -27,15 +30,24 @@ public class OfficerRegistrationController {
         boolean recordExists = dao.RecordExists(Data[0], Data[1]);
         if (recordExists){
 
-            int AddSuccess = projectListDAO.AddOfficerToProject(Data[0],Data[1]);
-            if  (AddSuccess == -1){
-                approveOfficerView.SlotFullErrorMessage();
-            }
-            else if (AddSuccess == 1){
+            if(projectListDAO.IsManaging(Data[1], App.userSession.getName())){
 
-                dao.UpdateApprovalStatus(Data[0], Data[1]);
-                approveOfficerView.SuccessMessage();
+                int AddSuccess = projectListDAO.AddOfficerToProject(Data[0],Data[1]);
+                if  (AddSuccess == -1){
+                    approveOfficerView.SlotFullErrorMessage();
+                }
+                else if (AddSuccess == 1){
+
+                    dao.UpdateApprovalStatus(Data[0], Data[1]);
+                    approveOfficerView.SuccessMessage();
+                }
+
+            }else{
+                approveOfficerView.NotManagerErrorMessage();
+
             }
+
+
 
         }else{
             approveOfficerView.RequestDoesNotExistMessage();
