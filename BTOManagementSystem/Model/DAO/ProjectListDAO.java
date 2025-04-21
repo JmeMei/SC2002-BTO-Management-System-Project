@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -449,6 +450,23 @@ public class ProjectListDAO {
             projectNames.add(project.getName());
         }
         return projectNames;
+    }
+
+    public int ManagerHasActiveProject(String ManagerName){
+
+        for (Project p : ProjectsList) {
+
+            if (p.getManager().equals(ManagerName)){
+
+                if(p.getClosingDate().isAfter(LocalDate.now())){
+                    return 1;
+                }
+
+            }
+
+        }
+        return 0;
+
     }
 
     // get officers in charge of the project
