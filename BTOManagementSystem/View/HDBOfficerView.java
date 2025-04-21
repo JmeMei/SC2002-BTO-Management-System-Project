@@ -2,14 +2,15 @@ package BTOManagementSystem.View;
 
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.ApplicationController;
+import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
 
 import java.util.Scanner;
 
-public class HDBOfficerView {
+public class HDBOfficerView extends ApplicantView{
      private static final Scanner scanner = new Scanner(System.in);
 
-    public static void showMenu(HDBOfficer officer) {
+    public void showMenu(HDBOfficer officer) {
 
         ApplicationController applicationController = new ApplicationController();
         OfficerEnquiryView officerEnquiryView = new OfficerEnquiryView();
@@ -39,17 +40,17 @@ public class HDBOfficerView {
 
             switch (option) {
                 case 1: // display projects
-                    applicationController.displayAvailableProjects(officer);
+                    applicationController.displayAvailableProjects(this,officer);
                     break;
                 case 2: // apply for projects
-                    applicationController.displayAvailableProjects(officer);
+                    applicationController.displayAvailableProjects(this,officer);
                     //applicationController.applyForProject(officer, null); // to implement
                     break;
                 case 3: // view application
-                    applicationController.viewMyApplication(officer);
+                    applicationController.viewMyApplication(this,officer);
                     break;
                 case 4: // withdraw application
-                    applicationController.withdrawApplication(officer);
+                    applicationController.withdrawApplication(this,officer);
                     break;
                 case 5: // enquiry management
                     officerEnquiryView.showEnquiryMenu(officer);

@@ -1,47 +1,51 @@
 package BTOManagementSystem.View;
 
+import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Model.Project;
+import BTOManagementSystem.Model.Roles.Applicant;
 
 import java.util.List;
 
 public class ApplicantViewProjectsView {
 
-    public void DisplayProjects(List<Project> projects){
+    public void DisplayProjects(List<Project> projects,boolean eligibleTwoRoom, boolean eligibleThreeRoom) {
 
-        // headers for data
-        System.out.printf(
-                "%-25s %-15s %-10s %-10s %-10s %-10s %-10s %-10s %-12s %-12s\n",
-                "Project Name",
-                "Neighborhood",
-                "Flat T-1",
-                "Units T-1",
-                "Price T-1",
-                "Flat T-2",
-                "Flat T-2",
-                "Price T-2",
-                "Open Date",
-                "Close Date");
+        System.out.println("Available Projects");
+        for (Project p : projects) {
+            System.out.println("--------------------------------------------------");
+            System.out.println("Project Name   : " + p.getName());
+            System.out.println("Neighborhood   : " + p.getNeighbourhood());
 
-        // Seperator
-        System.out.println("=".repeat(140));
+            if (eligibleTwoRoom) {
+                if (p.getType1().equalsIgnoreCase(FlatType.TWO_ROOM.getDisplayName()) && p.getType1_numofunits() > 0) {
+                    System.out.println("2-Room Units   : " + p.getType1_numofunits() +
+                            " (Price: $" + (int) p.getType1_sellingprice() + ")");
+                }
+                if (p.getType2().equalsIgnoreCase(FlatType.TWO_ROOM.getDisplayName()) && p.getType2_numofunits() > 0) {
+                    System.out.println("2-Room Units   : " + p.getType2_numofunits() +
+                            " (Price: $" + (int) p.getType2_sellling_price() + ")");
+                }
+            }
 
-        // iterate through two rooms
-        for(Project p : projects) {
-            System.out.printf(
-                    "%-25s %-15s %-10s %-10d %-10.1f %-10s %-10d %-10.1f %-12s %-12s\n",
-                    p.getName(),
-                    p.getNeighbourhood(),
-                    p.getType1(),
-                    p.getType1_numofunits(),
-                    p.getType1_sellingprice(),
-                    p.getType2(),
-                    p.getType2_numofunits(),
-                    p.getType2_sellling_price(),
-                    p.getOpeningDateAsString(),
-                    p.getClosingDateAsString());
+            if (eligibleThreeRoom) {
+                if (p.getType1().equalsIgnoreCase(FlatType.THREE_ROOM.getDisplayName()) && p.getType1_numofunits() > 0) {
+                    System.out.println("3-Room Units   : " + p.getType1_numofunits() +
+                            " (Price: $" + (int) p.getType1_sellingprice() + ")");
+                }
+                if (p.getType2().equalsIgnoreCase(FlatType.THREE_ROOM.getDisplayName()) && p.getType2_numofunits() > 0) {
+                    System.out.println("3-Room Units   : " + p.getType2_numofunits() +
+                            " (Price: $" + (int) p.getType2_sellling_price() + ")");
+                }
+            }
+
+            System.out.println("Opening Date   : " + p.getOpeningDateAsString());
+            System.out.println("Closing Date   : " + p.getClosingDateAsString());
+            System.out.println();
         }
 
     }
+
+
 
     public void NotEligibleForProjectsMessage(){
         System.out.println("You are not eligible for any flat types at this time.");

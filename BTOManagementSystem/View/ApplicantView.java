@@ -9,13 +9,14 @@ import BTOManagementSystem.Controller.PasswordController;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.Applicant;
+import BTOManagementSystem.Model.User;
 
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static List<Project> projectsAvailable; //Global static variable to store the available rooms
 
-    public void showMenu(Applicant user)  { //Applicant view has a user
+    public void showMenu(User user)  { //Applicant view has a user
 
         ApplicationController applicationController = new ApplicationController();
         ApplicantEnquiryView enquiryView = new ApplicantEnquiryView();
@@ -42,55 +43,21 @@ public class ApplicantView {
                 continue;
             }
 
+            //views
+            ApplicantViewApplyProjectView applyView = new ApplicantViewApplyProjectView();
+
             switch (option) {
                 case 1:
-                   applicationController.displayAvailableProjects(user);
+                    applicationController.displayAvailableProjects(this,user);
                     break;
                 case 2:
-                    applicationController.displayAvailableProjects(user);
-                    System.out.println("Enter the Project Name: ");
-                    // Read User Input
-                    String projectName = scanner.nextLine();
-                    boolean projectFound = false;
-
-                    if (applicationController.project_Exist(projectName, user)) {
-                        System.out.println("Project found: " + projectName);
-
-                        // Get available flat types for that project
-                        List<FlatType> availableTypes = applicationController.getAvailableFlatTypes(projectName, user);
-
-                        System.out.println("Available flat types for project " + projectName);
-                        for (FlatType type : availableTypes) {
-                            System.out.println("- " + type.getDisplayName());
-                        }
-
-                        // Loop Until Chosen Flat Type has been input
-                        FlatType chosenType = null;
-                        while (chosenType == null) {
-                            System.out.print("Choose flat type (e.g., 2-Room or 3-Room): ");
-
-                            // Get User Input for the Flat Type to Apply for
-                            String roomTypeInput = scanner.nextLine();
-                            FlatType inputType = FlatType.fromString(roomTypeInput);
-
-                            if (inputType != null && availableTypes.contains(inputType)) {
-                                chosenType = inputType;
-                            } else {
-                                System.out.println("Invalid flat type. Please choose from the available types.");
-                            }
-                        }
-
-                        System.out.println("You selected: " + chosenType.getDisplayName());
-                        applicationController.applyForProject(user, projectName, chosenType);
-                    } else {
-                        System.out.println("No project found with that name.");
-                    }
+                    applicationController.applyProject(this,applyView,user);
                     break;
                 case 3:
-                    applicationController.viewMyApplication(user);
+                    applicationController.viewMyApplication(this,user);
                     break;
                 case 4:
-                    applicationController.withdrawApplication(user); // add the call to the applicationController
+                    applicationController.withdrawApplication(this,user); // add the call to the applicationController
                     break;
                 case 5:
                     enquiryView.showEnquiryMenu(user);

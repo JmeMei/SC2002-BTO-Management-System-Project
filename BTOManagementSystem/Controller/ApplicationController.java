@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import BTOManagementSystem.Model.Project;
+import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Services.ApplicantActionHandler;
+import BTOManagementSystem.View.ApplicantView;
+import BTOManagementSystem.View.ApplicantViewApplyProjectView;
 import BTOManagementSystem.View.ApplicantViewProjectsView;
 
 
@@ -26,6 +29,82 @@ public class ApplicationController {
         this.applicantActionHandler = new ApplicantActionHandler();
 
         this.viewProjectsView = new ApplicantViewProjectsView();
+    }
+
+    public void displayAvailableProjects(ApplicantView applicantView,User user) {
+
+        boolean eligibleTwoRoom = (user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single"))
+                || (user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21);
+        boolean eligibleThreeRoom = user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21;
+
+        List<Project> eligibleProjects = getEligibleProjects(user);
+
+        if (eligibleProjects.isEmpty()) {
+            viewProjectsView.NotEligibleForProjectsMessage();
+        } else {
+            viewProjectsView.DisplayProjects(eligibleProjects,eligibleTwoRoom,eligibleThreeRoom);
+        }
+
+        applicantView.showMenu(user);
+    }
+
+    public void applyProject(ApplicantView applicantView, ApplicantViewApplyProjectView applyView,User user) {
+
+        // Prompt user view to return name of project to apply for
+        String projectName = applyView.promptApplicantChooseProject();
+
+        //get project using projectName
+        Project project = getProject(projectName, user);
+
+        if(project != null){
+            // Show available flat types for this project
+            List<FlatType> availableTypes = getAvailableFlatTypes(project, user);
+            FlatType flatType =  applyView.PromptAvailableFlatTypesforProject(project, availableTypes);
+
+            // Apply for Project
+            boolean success = applicantProjectStatusDAO.applyForProject(user, projectName, flatType);
+            if (success){
+                applyView.ApplySuccessMessage();
+            }else{
+                applyView.AppliedBeforeMessage();
+            }
+        }
+        else{
+            applyView.ProjectNotFoundMessage();
+        }
+        applicantView.showMenu(user);
+    }
+
+    public void viewMyApplication(ApplicantView applicantView,User user) {
+        boolean success = applicantProjectStatusDAO.viewMyApplication(user);
+        if (success){
+            System.out.print("Application successfully viewed");
+        }
+        else{
+            System.out.print("Unable to view application");
+        }
+
+        applicantView.showMenu(user);
+    }
+
+    public void withdrawApplication(ApplicantView applicantView,User user){
+        boolean success = applicantProjectStatusDAO.requestApplicationWithdrawal(user);
+        if (success){
+            System.out.print("Application Withdrawal was successfully requested");
+        }else{
+            System.out.print("Unable to request application withdrawal");
+        }
+    }
+
+    public Project getProject(String projectName,User user){
+        List<Project> projectAvailable = getEligibleProjects(user);
+
+        for (Project p : projectAvailable){
+            if(p.getName().equalsIgnoreCase(projectName)){
+                return p;
+            }
+        }
+        return null;
     }
 
     public List<Project> getEligibleProjects(User user) {
@@ -46,67 +125,37 @@ public class ApplicationController {
 
         return eligibleProjects;
     }
-    
-    public void displayAvailableProjects(User user) {
 
-        List<Project> eligibleProjects = getEligibleProjects(user);
 
-        if (eligibleProjects.isEmpty()) {
-            viewProjectsView.NotEligibleForProjectsMessage();
-        } else {
-            viewProjectsView.DisplayProjects(eligibleProjects);
-        }
-    }
 
-    public boolean project_Exist(String projectName,User user){
-        List<Project> projectAvailable = getEligibleProjects(user);
+    public List<FlatType> getAvailableFlatTypes(Project project, User user){
 
-        for (Project p : projectAvailable){
-            if(p.getName().equalsIgnoreCase(projectName)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<FlatType> getAvailableFlatTypes(String projectName, User user){
-        List<Project> projectAvailable = getEligibleProjects(user);
+        boolean eligibleTwoRoom = (user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single"))
+                || (user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21);
+        boolean eligibleThreeRoom = user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21;
 
         List<FlatType> availableFlatTypes = new ArrayList<>();
-        for (Project p : projectAvailable){
-            if(p.getName().equalsIgnoreCase(projectName)){
-                FlatType flatType1 = FlatType.fromString(p.getType1());
-                FlatType flatType2 = FlatType.fromString(p.getType2());
+        FlatType flatType1 = FlatType.fromString(project.getType1());
+        FlatType flatType2 = FlatType.fromString(project.getType2());
 
-                availableFlatTypes.add(flatType1);
-                availableFlatTypes.add(flatType2);
+        if (eligibleTwoRoom) {
+            if (flatType1 == FlatType.TWO_ROOM && project.getType1_numofunits() > 0) {
+                availableFlatTypes.add(FlatType.TWO_ROOM);
+            }
+            if (flatType2 == FlatType.TWO_ROOM && project.getType2_numofunits() > 0) {
+                availableFlatTypes.add(FlatType.TWO_ROOM);
+            }
+        }
+
+        if (eligibleThreeRoom) {
+            if (flatType1 == FlatType.THREE_ROOM && project.getType1_numofunits() > 0) {
+                availableFlatTypes.add(FlatType.THREE_ROOM);
+            }
+            if (flatType2 == FlatType.THREE_ROOM && project.getType2_numofunits() > 0) {
+                availableFlatTypes.add(FlatType.THREE_ROOM);
             }
         }
         return availableFlatTypes;
-    }
-
-    public void applyForProject(User user, String projectName,FlatType flatType) {
-        //Need to update ApplicantProjectStatus from NA -> PENDING
-
-        //public static boolean applyForProject(User user, String projectName, FlatType flatType)
-        boolean success = applicantProjectStatusDAO.applyForProject(user, projectName, flatType);
-        if (success){
-            System.out.print("Successfully applied. Now pending.");
-        }
-    }
-
-    public void viewMyApplication(User user) {
-        boolean success = applicantProjectStatusDAO.viewMyApplication(user);
-        if (success){
-            System.out.print("Application successfully viewed");
-        }
-        else{
-            System.out.print("Unable to view application");
-        }
-    }
-
-    public void withdrawApplication(User user){
-        System.out.println("[TODO] To implement this feature");
     }
         
         

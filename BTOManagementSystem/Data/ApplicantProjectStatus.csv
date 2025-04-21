@@ -1,9 +1,9 @@
-﻿Name,NRIC,Age,Marital Status,Password,role,Project Name,FlatType,Application Status,Enquiry,Reply
+Name,NRIC,Age,Marital Status,Password,role,Project Name,FlatType,Application Status,Withdrawal Status,Enquiry,Reply
 John,S1234567A,35,Single,password,Applicant,Acacia Breeze,2-Room,PENDING,NA,NA
-Sarah,T7654321B,40,Married,password,Applicant,NA,NA,NA,NA,NA
-Grace,S9876543C,37,Married,password,Applicant,NA,NA,NA,NA,NA
-James,T2345678D,30,Married,password,Applicant,NA,NA,NA,NA,NA
-Rachel,S3456789E,25,Single,password,Applicant,NA,NA,NA,NA,NA
-Daniel,T2109876H,36,Single,password,Officer,NA,NA,NA,NA,NA
-Emily,S6543210I,28,Single,password,Officer,NA,NA,NA,NA,NA
-David,T1234567J,29,Married,password,Officer,NA,NA,NA,NA,NA
+Sarah,T7654321B,40,Married,password,Applicant,NA,NA,NA,NA,NA,NA
+Grace,S9876543C,37,Married,password,Applicant,NA,NA,NA,NA,NA,NA
+James,T2345678D,30,Married,password,Applicant,NA,NA,NA,NA,NA,NA
+Rachel,S3456789E,25,Single,password,Applicant,NA,NA,NA,NA,NA,NA
+Daniel,T2109876H,36,Single,password,Officer,NA,NA,NA,NA,NA,NA
+Emily,S6543210I,28,Single,password,Officer,NA,NA,NA,NA,NA,NA
+David,T1234567J,29,Married,password,Officer,NA,NA,NA,NA,NA,NA
