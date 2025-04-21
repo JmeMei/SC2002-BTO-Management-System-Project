@@ -46,11 +46,30 @@ public class ApplicantViewApplyProjectView {
 
 
     public void ApplySuccessMessage(){
-        System.out.print("Successfully applied. Now pending.");
+        System.out.println("Successfully applied. Now pending.");
+    }
+
+    public void NoAvailableFlatsMessage(){
+        System.out.println("You are eligible, but there are no available flats.");
     }
 
     public void AppliedBeforeMessage(){
-        System.out.print("You have already applied for this project before.");
+        System.out.println("You have already applied for this project before.");
+    }
+
+    public void ApplicationPendingMessage(){
+        System.out.println("Your application is currently pending.");
+        System.out.println("You are not able to apply for any more projects at this time.");
+    }
+
+    public void ApplicationBookedMessage(){
+        System.out.println("Your flat has already been booked.");
+        System.out.println("You are not able to apply for any more projects at this time.");
+    }
+
+    public void ApplicationSuccessfulMessage(){
+        System.out.println("Your application has been successful.");
+        System.out.println("You are not able to apply for any more projects at this time.");
     }
 
     public void NotEligibleForProjectsMessage(){

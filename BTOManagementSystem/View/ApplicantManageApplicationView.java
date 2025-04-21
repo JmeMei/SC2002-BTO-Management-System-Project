@@ -1,7 +1,10 @@
 package BTOManagementSystem.View;
 
+import BTOManagementSystem.Model.ApplicantProjectStatus;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Model.Project;
+import BTOManagementSystem.Model.User;
+import BTOManagementSystem.Model.WithdrawalRequest;
 
 import java.util.List;
 import java.util.Scanner;
@@ -10,55 +13,27 @@ public class ApplicantManageApplicationView {
 
     private Scanner scanner = new Scanner(System.in);
 
-    public String promptApplicantChooseProject() {
-        System.out.println("Enter the Project Name: ");
-        String projectName = scanner.nextLine();
-        return projectName;
+
+    public void DisplayApplicationStatus(ApplicantProjectStatus status) {
+        System.out.println("\n=== Your Application Details ===");
+        System.out.println("Name: " + status.getName());
+        System.out.println("NRIC: " + status.getNric());
+        System.out.println("Project Name: " + status.getProjectName());
+        System.out.println("Flat Type: " + status.getFlatType());
+        System.out.println("Application Status: " + status.getApplicationStatus());
+        System.out.println("Enquiry: " + (status.getEnquiry().isEmpty() ? "None" : status.getEnquiry()));
+        System.out.println("Reply: " + (status.getReply().isEmpty() ? "None" : status.getReply()));
     }
 
-    public FlatType PromptAvailableFlatTypesforProject(Project project, List<FlatType> availableTypes) {
-        System.out.println("You are eligible for the following flat types for this project:");
-        for (FlatType type : availableTypes) {
-            if (FlatType.fromString(project.getType1()) == type) {
-                System.out.println(project.getType1() + " units: " + project.getType1_numofunits() +
-                        " (Price: $" + (int) project.getType1_sellingprice() + ")");
-            } else if (FlatType.fromString(project.getType2()) == type) {
-                System.out.println(project.getType2() + " units: " + project.getType2_numofunits() +
-                        " (Price: $" + (int) project.getType2_sellling_price() + ")");
-            }
-        }
-
-        FlatType chosenType = null;
-        while (chosenType == null) {
-            System.out.print("Choose flat type (e.g., 2-Room or 3-Room): ");
-            String roomTypeInput = scanner.nextLine().trim();
-            FlatType inputType = FlatType.fromString(roomTypeInput);
-
-            if (inputType != null && availableTypes.contains(inputType)) {
-                chosenType = inputType;
-            } else {
-                System.out.println("Invalid flat type. Please choose from the available types.");
-            }
-
-        }
-        return chosenType;
+    public void ApplicationNotFoundMessage(){
+        System.out.println("You have not applied for a project yet.");
     }
 
-
-    public void ApplySuccessMessage(){
-        System.out.print("Successfully applied. Now pending.");
+    public void ReqWithdrawalSuccessMessage() {
+        System.out.println("Your withdrawal request has been submitted successfully.");
     }
 
-    public void AppliedBeforeMessage(){
-        System.out.print("You have already applied for this project before.");
-    }
-
-    public void NotEligibleForProjectsMessage(){
-        System.out.println("You are not eligible for any flat types at this time.");
-        System.out.println("Singles must be 35 years or older to apply for 2-Room flats.");
-        System.out.println("Married applicants must be 21 years or older to apply for 2-Room or 3-Room flats.");
-    }
-    public void ProjectNotFoundMessage() {
-        System.out.println("No project found with that name.");
+    public void RequestedBeforeMessage() {
+        System.out.println("Your withdrawal request is being processed. Please wait for approval.");
     }
 }

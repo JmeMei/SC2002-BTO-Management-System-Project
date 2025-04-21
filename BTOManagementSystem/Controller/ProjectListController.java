@@ -1,5 +1,6 @@
 package BTOManagementSystem.Controller;
 
+import BTOManagementSystem.App.App;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.View.*;
@@ -13,8 +14,15 @@ public class ProjectListController {
     public void CreateNewProject(HDBManagerView managerView, HDBManagerCreateProjectView createProjectView) {
 
 
-        ArrayList<String> Data = createProjectView.Prompt();
-        dao.CreateNewProject(Data);
+        if (dao.ManagerHasActiveProject(App.userSession.getName()) == 0){
+            ArrayList<String> Data = createProjectView.Prompt();
+            dao.CreateNewProject(Data);
+
+        }else{
+            createProjectView.AlreadyManagingProjectMessage();
+        }
+
+
         managerView.showMenu();
 
     }
