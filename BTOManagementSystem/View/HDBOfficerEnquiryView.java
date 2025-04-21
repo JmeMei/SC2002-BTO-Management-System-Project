@@ -72,7 +72,7 @@ public class HDBOfficerEnquiryView {
                 }
 
                 case 3 -> {
-                    List<Enquiry> enquiries = enquiryController.viewEnquiriesForInCharge(user.getNric());
+                    List<Enquiry> enquiries = enquiryController.getUnansweredEnquiries(user.getNric());
                     if(enquiries.isEmpty()){
                         System.out.println("You have not submitted any enquiries");
                         break;
@@ -118,7 +118,7 @@ public class HDBOfficerEnquiryView {
                     }
                 }
                 case 5 -> {
-                    List<Enquiry> unansweredEnquiries = enquiryController.viewEnquiriesForInCharge(user.getNric());
+                    List<Enquiry> unansweredEnquiries = enquiryController.getUnansweredEnquiries(user.getNric());
 
                     if(unansweredEnquiries.isEmpty()){
                         System.out.println("You have no unanswered enquiries.");
@@ -137,11 +137,14 @@ public class HDBOfficerEnquiryView {
                     if(success){
                         System.out.println("You have successfully replied.");
                     } else{
-                        System.out.println("You have been unsuccessful in your reply");
+                        System.out.println("Please ensure correct enquiry ID");
                     }
 
                 }
-                case 6 -> System.out.println("Returning to dashboard...");
+                case 6 -> {
+                    scanner.close();
+                    System.out.println("Returning to dashboard...");
+                }
                 default -> System.out.println("Invalid choice.");
             }
 

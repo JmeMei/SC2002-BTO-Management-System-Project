@@ -44,12 +44,18 @@ public class EnquiryDAO {
         return enquiries;
     }
 
+    // get all enquiries
+    public List<Enquiry> getAllEnquiries(){
+        return loadAllEnquiries();
+    }
+
     // get enquiries where user is in charge of (officer / manager)
-    public List<Enquiry> getEnquiriesForInCharge(String personIC) {
+    public List<Enquiry> getUnansweredEnquiries(String personIC) {
         List<Enquiry> all = loadAllEnquiries();
         List<Enquiry> result = new ArrayList<>();
         for (Enquiry e : all) {
-            if (e.getofficerIC().equals(personIC) || e.getManagerIC().equals(personIC)) {
+            if ((e.getofficerIC().equals(personIC) || e.getManagerIC().equals(personIC))
+            && e.getAnswer().trim().isEmpty()) {
                 result.add(e);
             }
         }

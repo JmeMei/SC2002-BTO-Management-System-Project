@@ -38,10 +38,13 @@ public class EnquiryController {
         return enquiryDAO.getEnquiriesByApplicant(applicantNRIC);
     }
 
-    // viewing an enquiries for managed project (officer / manager)
-    // make one for unanswered enquiries
-    public List<Enquiry> viewEnquiriesForInCharge(String personIC){
-        return enquiryDAO.getEnquiriesForInCharge(personIC);
+    // viewing unanswered enquiries for managed project (officer / manager)
+    public List<Enquiry> getUnansweredEnquiries(String personIC){
+        return enquiryDAO.getUnansweredEnquiries(personIC);
+    }
+
+    public List<Enquiry> getAllEnquiries(){
+        return enquiryDAO.getAllEnquiries();
     }
 
     // delete enquiry by enquiryID
