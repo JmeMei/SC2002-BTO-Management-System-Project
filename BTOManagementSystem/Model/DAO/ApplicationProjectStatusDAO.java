@@ -41,7 +41,7 @@ public class ApplicationProjectStatusDAO {
                         values[6].trim(),                                     // Project Name
                         FlatType.fromString(values[7].trim()),                // Flat Type
                         ApplicationStatus.valueOf(values[8].trim()),          // Application Status
-                        WithdrawalStatus.valueOf(values[9].trim()),          // Withdrawal Status
+                        WithdrawalStatus.valueOf(values[9].trim()),           // Withdrawal Status
                         values[10].trim(),                                     // Enquiry
                         values[11].trim()                                     // Reply
 

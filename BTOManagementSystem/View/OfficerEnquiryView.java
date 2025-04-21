@@ -84,7 +84,7 @@ public class OfficerEnquiryView {
                         String question = scanner.nextLine();
 
                     // get question from user
-                    enquiryController.submitEnquiry(user.getNric(), selectedProject, question, "");// dont know officerNRIC for now 
+                    //enquiryController.submitEnquiry(user.getNric(), selectedProject, question, "");// dont know officerNRIC for now
                     System.out.println("Enquiry submitted successfully!");
                     }
                 }
