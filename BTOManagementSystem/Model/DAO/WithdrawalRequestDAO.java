@@ -2,6 +2,7 @@ package BTOManagementSystem.Model.DAO;
 
 import BTOManagementSystem.Model.OfficerRegistrationRequest;
 import BTOManagementSystem.Model.Project;
+import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.WithdrawalRequest;
 
 import java.io.*;
@@ -37,6 +38,22 @@ public class WithdrawalRequestDAO {
         }
 
     }
+
+    public boolean CreateWithdrawalRequest(User user, String projectName) {
+        // Check if Request was already made
+        for (WithdrawalRequest wReq : withdrawalRequests) {
+            if(wReq.getNric().equals(user.getNric())) {
+                return false;
+            }
+        }
+
+        // Create new withdrawal Request for Applicant
+        WithdrawalRequest withdrawalRequest = new WithdrawalRequest(user.getName(), user.getNric(), projectName, "0");
+        withdrawalRequests.add(withdrawalRequest);
+        this.UpdateDB();
+        return true;
+    }
+
 
 
     private ArrayList<String> CSV_data_Parse(String line){
