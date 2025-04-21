@@ -2,23 +2,14 @@ package BTOManagementSystem.Model.DAO;
 
 
 import BTOManagementSystem.App.App;
-import BTOManagementSystem.HDB_ManagerActions.CreateNewProject;
 import BTOManagementSystem.Model.*;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.io.BufferedWriter;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 
 public class ProjectListDAO {
@@ -457,6 +448,26 @@ public class ProjectListDAO {
             projectNames.add(project.getName());
         }
         return projectNames;
+    }
+
+    // get officers in charge of the project
+    public String getOfficerIC(String projectName){
+        for (Project p: ProjectsList){
+            if(p.getName().equalsIgnoreCase(projectName)){
+                return p.get_officers_as_string_for_csv();
+            }
+        }
+        return null;
+    }
+
+    // get manager in charge of the project
+    public String getManagerbyProject(String projectName){
+        for (Project p : ProjectsList) {              
+            if (p.getName().equalsIgnoreCase(projectName)) {
+                return p.getManager();                
+            }
+        }
+        return null;
     }
 
     /////FOR APPLICANT/////
