@@ -14,7 +14,7 @@ public class HDBManagerView {
     public void showMenu() {
 
         System.out.println("\n=== HDB Manager Dashboard ===");
-        System.out.println("Welcome, " + App.userSession.getNric());
+        System.out.println("Welcome, " + App.userSession.getName());
         System.out.println("1. Create Project");
         System.out.println("2. Edit");
         System.out.println("3. Delete a Project");

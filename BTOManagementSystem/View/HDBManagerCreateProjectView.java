@@ -106,4 +106,10 @@ public class HDBManagerCreateProjectView {
 
     }
 
+    public void AlreadyManagingProjectMessage(){
+        System.out.println("You are already currently managing a project! Unable to create!");
+    }
+
+
+
 }
