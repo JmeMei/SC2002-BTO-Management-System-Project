@@ -1,109 +1,37 @@
 package BTOManagementSystem.Controller;
 
+import BTOManagementSystem.Model.ApplicantProjectStatus;
 import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
+import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
+import BTOManagementSystem.Model.DAO.WithdrawalRequestDAO;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Services.ApplicantActionHandler;
+import BTOManagementSystem.View.ApplicantManageApplicationView;
 import BTOManagementSystem.View.ApplicantView;
 import BTOManagementSystem.View.ApplicantViewApplyProjectView;
 import BTOManagementSystem.View.ApplicantViewProjectsView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ApplicationController {
-    //ApplicationController “has a” projectListDao
+    //ApplicationController “has a” projectListDAO
     //ApplicationController “has a” ProjectAvailableView
-    private ProjectListDAO projectListDao;
+    private ProjectListDAO projectListDAO;
     private ApplicationProjectStatusDAO applicantProjectStatusDAO;
-    private ApplicantActionHandler applicantActionHandler;
+    private WithdrawalRequestDAO withdrawalRequestDAO;
     private ApplicantViewProjectsView viewProjectsView;
 
-    public ApplicationController(){
+    public ApplicationController() {
         this.applicantProjectStatusDAO = new ApplicationProjectStatusDAO();
-        this.projectListDao = new ProjectListDAO();
-        this.applicantActionHandler = new ApplicantActionHandler();
-
+        this.projectListDAO = new ProjectListDAO();
+        this.withdrawalRequestDAO = new WithdrawalRequestDAO();
         this.viewProjectsView = new ApplicantViewProjectsView();
-    }
-
-    public void displayAvailableProjects(ApplicantView applicantView,User user) {
-
-        boolean eligibleTwoRoom = (user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single"))
-                || (user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21);
-        boolean eligibleThreeRoom = user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21;
-
-        List<Project> eligibleProjects = getEligibleProjects(user);
-
-        if (eligibleProjects.isEmpty()) {
-            viewProjectsView.NotEligibleForProjectsMessage();
-        } else {
-            viewProjectsView.DisplayProjects(eligibleProjects,eligibleTwoRoom,eligibleThreeRoom);
-        }
-
-        applicantView.showMenu(user);
-    }
-
-    public void applyProject(ApplicantView applicantView, ApplicantViewApplyProjectView applyView,User user) {
-
-        // Prompt user view to return name of project to apply for
-        String projectName = applyView.promptApplicantChooseProject();
-
-        //get project using projectName
-        Project project = getProject(projectName, user);
-
-        if(project != null){
-            // Show available flat types for this project
-            List<FlatType> availableTypes = getAvailableFlatTypes(project, user);
-            FlatType flatType =  applyView.PromptAvailableFlatTypesforProject(project, availableTypes);
-
-            // Apply for Project
-            boolean success = applicantProjectStatusDAO.applyForProject(user, projectName, flatType);
-            if (success){
-                applyView.ApplySuccessMessage();
-            }else{
-                applyView.AppliedBeforeMessage();
-            }
-        }
-        else{
-            applyView.ProjectNotFoundMessage();
-        }
-        applicantView.showMenu(user);
-    }
-
-    public void viewMyApplication(ApplicantView applicantView,User user) {
-        boolean success = applicantProjectStatusDAO.viewMyApplication(user);
-        if (success){
-            System.out.print("Application successfully viewed");
-        }
-        else{
-            System.out.print("Unable to view application");
-        }
-
-        applicantView.showMenu(user);
-    }
-
-    public void withdrawApplication(ApplicantView applicantView,User user){
-        boolean success = applicantProjectStatusDAO.requestApplicationWithdrawal(user);
-        if (success){
-            System.out.print("Application Withdrawal was successfully requested");
-        }else{
-            System.out.print("Unable to request application withdrawal");
-        }
-    }
-
-    public Project getProject(String projectName,User user){
-        List<Project> projectAvailable = getEligibleProjects(user);
-
-        for (Project p : projectAvailable){
-            if(p.getName().equalsIgnoreCase(projectName)){
-                return p;
-            }
-        }
-        return null;
     }
 
     public List<Project> getEligibleProjects(User user) {
@@ -113,21 +41,144 @@ public class ApplicationController {
         boolean canApplyForThreeRoom = user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21;
 
         if (canApplyForTwoRoom) {
-            List<Project> twoRoomProjects = projectListDao.loadAvailableTwoRooms(user);
+            List<Project> twoRoomProjects = projectListDAO.loadAvailableTwoRooms(user);
             eligibleProjects.addAll(twoRoomProjects);
         }
 
         if (canApplyForThreeRoom) {
-            List<Project> threeRoomProjects = projectListDao.loadAvailableTwoRooms(user);
-            eligibleProjects.addAll(projectListDao.loadAvailableThreeRooms(user));
+            List<Project> threeRoomProjects = projectListDAO.loadAvailableTwoRooms(user);
+            eligibleProjects.addAll(projectListDAO.loadAvailableThreeRooms(user));
         }
 
         return eligibleProjects;
     }
 
+    public void displayAvailableProjects(ApplicantView applicantView, User user) {
+
+        // Check User Flat Type Eligibility
+        List<FlatType> eligibleFlatTypes = new ArrayList<FlatType>();
+
+        if ((user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single"))
+                || (user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21)) {
+            eligibleFlatTypes.add(FlatType.TWO_ROOM);
+        }
+
+        if (user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21) {
+            eligibleFlatTypes.add(FlatType.THREE_ROOM);
+        }
+
+        // Get Projects
+        List<Project> eligibleProjects = new ArrayList<Project>();
+        if (eligibleFlatTypes.contains(FlatType.TWO_ROOM)) {
+            List<Project> twoRoomProjects = projectListDAO.loadAvailableTwoRooms(user);
+            eligibleProjects.addAll(twoRoomProjects);
+        }
+
+        if (eligibleFlatTypes.contains(FlatType.THREE_ROOM)) {
+            List<Project> threeRoomProjects = projectListDAO.loadAvailableTwoRooms(user);
+            eligibleProjects.addAll(projectListDAO.loadAvailableThreeRooms(user));
+        }
+
+        if (eligibleFlatTypes.isEmpty() || eligibleProjects.isEmpty()) {
+            viewProjectsView.NotEligibleForProjectsMessage();
+        } else {
+            viewProjectsView.DisplayProjects(eligibleProjects, eligibleFlatTypes);
+        }
+
+        applicantView.showMenu(user);
+    }
+
+    public void applyProject(ApplicantView applicantView, ApplicantViewApplyProjectView applyView, User user) {
+
+        // Prompt user view to return name of project to apply for
+        String projectName = applyView.promptApplicantChooseProject();
+
+        //get project using projectName
+        Project project = this.getProject(projectName, user);
+
+        if (project != null) {
+            // Show available flat types for this project
+            List<FlatType> availableTypes = this.getAvailableFlatTypes(project, user);
+
+            // Check the available flat types for project based on user eligibility
+            if (!availableTypes.isEmpty()) {
+                FlatType flatType = applyView.PromptAvailableFlatTypesforProject(project, availableTypes);
+
+                // Apply for Project
+                boolean success = applicantProjectStatusDAO.applyForProject(user, projectName, flatType);
+                if (success) {
+                    // Decrease no of units from ProjectList
+                    projectListDAO.decreaseFlatUnits(project, flatType);
+                    applyView.ApplySuccessMessage();
+                } else {
+                    // Already applied
+                    ApplicationStatus status = applicantProjectStatusDAO.getApplicationStatus(user, projectName, flatType);
+                    if (status != null){
+                        switch (status) {
+                            case PENDING -> applyView.ApplicationPendingMessage();
+                            case SUCCESSFUL -> applyView.ApplicationSuccessfulMessage();
+                            case BOOKED -> applyView.ApplicationBookedMessage();
+                        }
+                    }
+                }
+            } else {
+                // All flats occupied
+                applyView.NoAvailableFlatsMessage();
+            }
+        } else {
+            // Project Does not Exist
+            applyView.ProjectNotFoundMessage();
+        }
+
+        applicantView.showMenu(user);
+    }
+
+    public void viewMyApplication(ApplicantView applicantView, ApplicantManageApplicationView manageView, User user) {
+
+        boolean success = applicantProjectStatusDAO.viewMyApplication(user);
+        if (!success) {
+            manageView.ApplicationNotFoundMessage();
+        }
+
+        applicantView.showMenu(user);
+    }
+
+    public void withdrawApplication(ApplicantView applicantView, ApplicantManageApplicationView manageView, User user) {
+        // Get Project Name from Existing Application
+        String projectName = applicantProjectStatusDAO.getProjectNameforApplicant(user);
+
+        if(projectName != null) {
+            boolean success = withdrawalRequestDAO.CreateWithdrawalRequest(user,projectName);
+            if (success) {
+                // Requested for Withdrawal Success
+                manageView.ReqWithdrawalSuccessMessage();
+            } else {
+                // Already Requested
+                manageView.RequestedBeforeMessage();
+            }
+        }else{
+            // Application does not exist
+            manageView.ApplicationNotFoundMessage();
+        }
+
+        applicantView.showMenu(user);
+    }
+
+    public Project getProject(String projectName, User user) {
+        List<Project> projectAvailable = getEligibleProjects(user);
+
+        for (Project p : projectAvailable) {
+            if (p.getName().equalsIgnoreCase(projectName)) {
+                return p;
+            }
+        }
+
+        return null;
+    }
 
 
-    public List<FlatType> getAvailableFlatTypes(Project project, User user){
+
+    public List<FlatType> getAvailableFlatTypes(Project project, User user) {
 
         boolean eligibleTwoRoom = (user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single"))
                 || (user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21);
@@ -154,12 +205,11 @@ public class ApplicationController {
                 availableFlatTypes.add(FlatType.THREE_ROOM);
             }
         }
+
         return availableFlatTypes;
     }
-        
-        
-}
 
+}
 
 
 // public class ApplicationController {
@@ -169,24 +219,24 @@ public class ApplicationController {
 //     private ApplicationProjectStatusDAO applicantProjectStatusDAO;
 
 //     private ProjectAvailableView projectAvailableView;
-    
+
 //     public ApplicationController(){
 //         this.roomDAO = new RoomDAO();
 //         this.applicantProjectStatusDAO = new ApplicationProjectStatusDAO();
 
 //         this.projectAvailableView = new ProjectAvailableView();
 //     }
-    
+
 //     public List<Room> displayAvailableProjects(User user) {
 
 //         // Display user eligibility information
 //         System.out.println("\n=== Available Projects ===");
-        
+
 //         // Determine eligibility
 //         boolean canApplyForTwoRoom = (user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single"))
 //                                     || (user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21);
 //         boolean canApplyForThreeRoom = user.getMaritalStatus().equalsIgnoreCase("Married") && user.getAge() >= 21;
-        
+
 //         System.out.println("\nYou are eligible for:");
 //         if (canApplyForTwoRoom && !canApplyForThreeRoom) {
 //             System.out.println("- 2-Room flats only");
@@ -208,7 +258,7 @@ public class ApplicationController {
 //             allRooms.addAll(threerooms);
 //             return allRooms;
 //         }
-        
+
 //         if (!canApplyForTwoRoom && !canApplyForThreeRoom) {
 //             System.out.println("You are not eligible for any flat types at this time.");
 //             System.out.println("Singles must be 35 years or older to apply for 2-Room flats.");
@@ -239,6 +289,6 @@ public class ApplicationController {
 //     public void withdrawApplication(User user){
 //         System.out.println("[TODO] To implement this feature");
 //     }
-        
-        
+
+
 // }

@@ -45,6 +45,7 @@ public class ApplicantView {
 
             //views
             ApplicantViewApplyProjectView applyView = new ApplicantViewApplyProjectView();
+            ApplicantManageApplicationView manageApplicationView = new ApplicantManageApplicationView();
 
             switch (option) {
                 case 1:
@@ -54,10 +55,10 @@ public class ApplicantView {
                     applicationController.applyProject(this,applyView,user);
                     break;
                 case 3:
-                    applicationController.viewMyApplication(this,user);
+                    applicationController.viewMyApplication(this,manageApplicationView, user);
                     break;
                 case 4:
-                    applicationController.withdrawApplication(this,user); // add the call to the applicationController
+                    applicationController.withdrawApplication(this,manageApplicationView,user); // add the call to the applicationController
                     break;
                 case 5:
                     enquiryView.showEnquiryMenu(user);

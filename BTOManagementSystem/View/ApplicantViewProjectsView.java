@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ApplicantViewProjectsView {
 
-    public void DisplayProjects(List<Project> projects,boolean eligibleTwoRoom, boolean eligibleThreeRoom) {
+    public void DisplayProjects(List<Project> projects,List<FlatType> availableTypes) {
 
         System.out.println("Available Projects");
         for (Project p : projects) {
@@ -16,26 +16,26 @@ public class ApplicantViewProjectsView {
             System.out.println("Project Name   : " + p.getName());
             System.out.println("Neighborhood   : " + p.getNeighbourhood());
 
-            if (eligibleTwoRoom) {
-                if (p.getType1().equalsIgnoreCase(FlatType.TWO_ROOM.getDisplayName()) && p.getType1_numofunits() > 0) {
-                    System.out.println("2-Room Units   : " + p.getType1_numofunits() +
-                            " (Price: $" + (int) p.getType1_sellingprice() + ")");
+            FlatType type1 = FlatType.fromString(p.getType1());
+            FlatType type2 = FlatType.fromString(p.getType2());
+
+            if (availableTypes.contains(type1)) {
+                System.out.print(type1.getDisplayName() + " Units   : " +
+                        p.getType1_numofunits() + " (Price: $" + (int) p.getType1_sellingprice() + ")");
+                if(p.getType1_numofunits() == 0) {
+                    System.out.print(" (No Units Available)");
                 }
-                if (p.getType2().equalsIgnoreCase(FlatType.TWO_ROOM.getDisplayName()) && p.getType2_numofunits() > 0) {
-                    System.out.println("2-Room Units   : " + p.getType2_numofunits() +
-                            " (Price: $" + (int) p.getType2_sellling_price() + ")");
-                }
+                System.out.print("\n");
             }
 
-            if (eligibleThreeRoom) {
-                if (p.getType1().equalsIgnoreCase(FlatType.THREE_ROOM.getDisplayName()) && p.getType1_numofunits() > 0) {
-                    System.out.println("3-Room Units   : " + p.getType1_numofunits() +
-                            " (Price: $" + (int) p.getType1_sellingprice() + ")");
+            if (availableTypes.contains(type2)) {
+                System.out.print(type2.getDisplayName() + " Units   : " +
+                        p.getType2_numofunits() + " (Price: $" + (int) p.getType2_sellling_price() + ")");
+
+                if(p.getType2_numofunits() == 0) {
+                    System.out.print(" (No Units Available)");
                 }
-                if (p.getType2().equalsIgnoreCase(FlatType.THREE_ROOM.getDisplayName()) && p.getType2_numofunits() > 0) {
-                    System.out.println("3-Room Units   : " + p.getType2_numofunits() +
-                            " (Price: $" + (int) p.getType2_sellling_price() + ")");
-                }
+                System.out.print("\n");
             }
 
             System.out.println("Opening Date   : " + p.getOpeningDateAsString());

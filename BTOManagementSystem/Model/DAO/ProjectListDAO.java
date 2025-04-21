@@ -33,9 +33,6 @@ public class ProjectListDAO {
     ArrayList<Project> ProjectsList = new ArrayList<>();
 
     public ProjectListDAO() {
-
-
-
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
             String line;
@@ -82,8 +79,6 @@ public class ProjectListDAO {
 
     }
 
-
-
     public void CreateNewProject(ArrayList<String> Data){
 
         Project newProject = new Project(Data.get(0),Data.get(1),Data.get(2),Integer.parseInt(Data.get(3)),
@@ -95,8 +90,6 @@ public class ProjectListDAO {
     }
 
     public void UpdateDB(){
-
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             // Write header
             writer.write("Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Officer Slot,Officer,visibility");
@@ -130,11 +123,31 @@ public class ProjectListDAO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
+    public void decreaseFlatUnits(Project project, FlatType appliedType) {
+        // Check Type 1 if 2 or 3 Room
+        if (FlatType.fromString(project.getType1()) == appliedType) {
+            project.setType1_numofunits(project.getType1_numofunits() - 1);
+        }
+        // Check Type 2 if 2 or 3 Room
+        else if (FlatType.fromString(project.getType2()) == appliedType) {
+            project.setType2_numofunits(project.getType2_numofunits() - 1);
+        }
+        this.UpdateDB();
+    }
 
+    public void increaseFlatUnits(Project project, FlatType appliedType) {
+        // Check Type 1 if 2 or 3 Room
+        if (FlatType.fromString(project.getType1()) == appliedType) {
+            project.setType1_numofunits(project.getType1_numofunits() + 1);
+        }
+        // Check Type 2 if 2 or 3 Room
+        else if (FlatType.fromString(project.getType2()) == appliedType) {
+            project.setType2_numofunits(project.getType2_numofunits() + 1);
+        }
+        this.UpdateDB();
+    }
 
     public void editProjectDetails(Project project, int attribute, String value){
 
