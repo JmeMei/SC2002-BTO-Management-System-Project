@@ -1,2 +1,3 @@
-EnquiryID,ProjectName,ApplicantNRIC,Question,Answer,
-EQ1,Acacia Breeze,S1234567A,test,,
+EnquiryID,ProjectName,ApplicantNRIC,Question,Answer,OfficerIC,ManagerIC
+EQ1,Acacia Breeze,S1234567A,What is the total sqft of a 3 room?,about 980sqft^2,S6543210I,S5678901G
+EQ2,Acacia Breeze,T7654321B,what is the total sq ft of a 2 room flat?,,S6543210I,S5678901G

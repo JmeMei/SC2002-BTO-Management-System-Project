@@ -1,15 +1,12 @@
 package BTOManagementSystem.View;
 
-import java.util.List;
-import java.util.Scanner;
-
-import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.EnquiryController;
 import BTOManagementSystem.Model.Enquiry;
 import BTOManagementSystem.Model.User;
-import BTOManagementSystem.Model.DAO.ProjectListDAO;
+import java.util.List;
+import java.util.Scanner;
 
-public class OfficerEnquiryView {
+public class HDBOfficerEnquiryView {
 
         public static void showEnquiryMenu(User user) {
             
@@ -17,13 +14,12 @@ public class OfficerEnquiryView {
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         do {
-            // first 4 options is similar to applicant
-            System.out.println("\n=== Enquiry Management ===");
-            System.out.println("1. View Your Enquiries");
-            System.out.println("2. Submit a New Enquiry");
-            System.out.println("3. Edit Your Enquiry");
-            System.out.println("4. Delete Own Enquiry");
-            System.out.println("5. Answer Enquiry of Managed Projects");
+            System.out.println("\n=== Enquiry Management for Officers ===");
+            System.out.println("1. View Your Enquiries (Applicant)");
+            System.out.println("2. Submit a New Enquiry (Applicant)");
+            System.out.println("3. Edit Your Enquiry (Applicant)");
+            System.out.println("4. Delete Own Enquiry (Applicant)");
+            System.out.println("5. Reply to enquiries of your Managed Projects");
             System.out.println("6. Back to Dashboard");
             System.out.print("Enter your choice: ");
             
@@ -37,33 +33,19 @@ public class OfficerEnquiryView {
 
             switch (choice) {
                 case 1 -> {
-
                     List<Enquiry> enquiries = enquiryController.viewEnquiriesForApplicant(user.getNric());
                     if(enquiries.isEmpty()){
                         System.out.println("You have not submitted any enquiries");
                         break;
                     }
-                    for (int i = 0; i < enquiries.size(); i++) {
-                        Enquiry e = enquiries.get(i);
-                        System.out.printf("==Enquiry ID: %s==\nProject Name: %s\n Question: %s\n Answer: %s\n", 
-                            e.getEnquiryID(), 
-                            e.getProjectName(), 
-                            e.getQuestion(), 
-                            e.getAnswer().isEmpty() ? "Unanswered" : e.getAnswer());
-
+                    printEnquiryList(enquiries);
                 }
-            }
                 case 2 -> {
-                    // ask for which project
-                    // ask for which project
-                    ProjectListDAO projectDAO = new ProjectListDAO();
+                    List<String> availableProjects = enquiryController.availableProjectList();
 
-                    List<String> availableProjects = enquiryController.availableProjectList(projectDAO);
-
-                    // if no available projects
                     if (availableProjects == null || availableProjects.isEmpty()) {
                         System.out.println("No available projects.");
-                        return;
+                        break;
                     }
             
                     System.out.println("Select a project to ask a question about:");
@@ -84,61 +66,45 @@ public class OfficerEnquiryView {
                         String question = scanner.nextLine();
 
                     // get question from user
-                    //enquiryController.submitEnquiry(user.getNric(), selectedProject, question, "");// dont know officerNRIC for now
+                    enquiryController.submitEnquiry(user.getNric(), selectedProject, question);
                     System.out.println("Enquiry submitted successfully!");
                     }
                 }
 
                 case 3 -> {
-                    // show all the enquiries by the user
-                    List<Enquiry> enquiries = enquiryController.viewEnquiriesForApplicant(user.getNric());
+                    List<Enquiry> enquiries = enquiryController.viewEnquiriesForInCharge(user.getNric());
                     if(enquiries.isEmpty()){
                         System.out.println("You have not submitted any enquiries");
                         break;
                     }
                     System.out.println("\n--- Your submitted enquiries ---");
-                    for (int i = 0; i < enquiries.size(); i++) {
-                        Enquiry e = enquiries.get(i);
-                        System.out.printf("==Enquiry ID: %s==\nProject Name: %s\n Question: %s\n Answer: %s\n", 
-                            e.getEnquiryID(), 
-                            e.getProjectName(), 
-                            e.getQuestion(), 
-                            e.getAnswer().isEmpty() ? "Unanswered" : e.getAnswer());
-                    }
+                    printEnquiryList(enquiries);
 
-                    // edit enquiry by ID
                     System.out.print("Enter Enquiry ID to edit: ");
                     String enquiryID = scanner.nextLine();
 
-                    System.out.print("Enter new question: ");
+                    System.out.print("Enter answer: ");
                     String newQuestion = scanner.nextLine();
 
-                    boolean success = enquiryController.editEnquiry(user.getNric(), enquiryID, newQuestion);
+                    boolean success = enquiryController.replyEnquiry(user.getNric(), enquiryID, newQuestion);
 
                     if (success) {
                         System.out.println("Enquiry updated successfully.");
                     } else {
                         System.out.println("Failed to update enquiry. It might be already answered or not belong to you.");
-                    };
+                    }
                 }
 
                 case 4 -> {
                     List<Enquiry> deletableEnquiries = enquiryController.viewEnquiriesForApplicant(user.getNric());
 
                     if (deletableEnquiries.isEmpty()) {
-                        System.out.println("You have no deletable (unanswered) enquiries.");
+                        System.out.println("You have no deletable enquiries.");
                         return;
                     }
                 
                     System.out.println("\n--- Deletable Enquiries ---");
-                    for (int i = 0; i < deletableEnquiries.size(); i++) {
-                        Enquiry e = deletableEnquiries.get(i);
-                        System.out.printf("==Enquiry ID: %s==\nProject Name: %s\n Question: %s\n Answer: %s\n", 
-                            e.getEnquiryID(), 
-                            e.getProjectName(), 
-                            e.getQuestion(), 
-                            e.getAnswer().isEmpty() ? "Unanswered" : e.getAnswer());
-                    }
+                    printEnquiryList(deletableEnquiries);
 
                     System.out.print("Enter Enquiry ID to Delete: ");
                     String enquiryID = scanner.nextLine();
@@ -149,13 +115,48 @@ public class OfficerEnquiryView {
                         System.out.println("Enquiry deleted successfully.");
                     } else {
                         System.out.println("Failed to delete enquiry.");
-                    };
+                    }
                 }
-                case 5 -> System.out.println("TODO, implement answering enquiries");
+                case 5 -> {
+                    List<Enquiry> unansweredEnquiries = enquiryController.viewEnquiriesForInCharge(user.getNric());
+
+                    if(unansweredEnquiries.isEmpty()){
+                        System.out.println("You have no unanswered enquiries.");
+                        break;
+                    }
+                    System.out.println("\n--- Unanswered Enquiries ---");
+                    printEnquiryList(unansweredEnquiries);
+
+                    System.out.println("Enter enquiry ID to answer");
+                    String enquiryID = scanner.nextLine();
+
+                    System.out.println("Enter answer to enquiry:");
+                    String answer = scanner.nextLine();
+
+                    boolean success = enquiryController.replyEnquiry(user.getNric(), enquiryID, answer);
+                    if(success){
+                        System.out.println("You have successfully replied.");
+                    } else{
+                        System.out.println("You have been unsuccessful in your reply");
+                    }
+
+                }
                 case 6 -> System.out.println("Returning to dashboard...");
                 default -> System.out.println("Invalid choice.");
             }
 
-        } while (choice != 5);
+        } while (choice != 6);
+    }
+
+    public static void printEnquiryList(List<Enquiry> enquiries){
+        for (int i = 0; i < enquiries.size(); i++) {
+            Enquiry e = enquiries.get(i);
+            System.out.printf("\n== Enquiry ID: %s ==\nProject Name: %s\nQuestion: %s\nAnswer: %s\n", 
+                e.getEnquiryID(), 
+                e.getProjectName(), 
+                e.getQuestion(), 
+                e.getAnswer().isEmpty() ? "No answer yet" : e.getAnswer());
+        }
+
     }
 }

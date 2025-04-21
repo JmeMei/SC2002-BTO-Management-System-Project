@@ -442,6 +442,7 @@ public class ProjectListDAO {
         return rows;
     }
 
+    // get list of projectNames(enq)
     public List<String> getProjectNames() {
         List<String> projectNames = new ArrayList<>();
         for (Project project : ProjectsList) {
@@ -450,17 +451,23 @@ public class ProjectListDAO {
         return projectNames;
     }
 
-    // get officers in charge of the project
+    // get officers in charge of the project(enq) 1 officer for now
     public String getOfficerIC(String projectName){
         for (Project p: ProjectsList){
             if(p.getName().equalsIgnoreCase(projectName)){
-                return p.get_officers_as_string_for_csv();
+                List<String> all_officers = p.get_offficers();
+                if(all_officers.isEmpty()){
+                    return "";
+                }
+                else{
+                    return all_officers.get(0);
+                }
             }
         }
         return null;
     }
 
-    // get manager in charge of the project
+    // get manager in charge of the project(enq)
     public String getManagerbyProject(String projectName){
         for (Project p : ProjectsList) {              
             if (p.getName().equalsIgnoreCase(projectName)) {

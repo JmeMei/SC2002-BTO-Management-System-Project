@@ -88,6 +88,7 @@ public class HDBManagerDAO {
         }
     }
 
+    // used in enquiry
     public String managerNametoNRIC(String managerName){
         try(BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))){
             String line = br.readLine(); // skip the header

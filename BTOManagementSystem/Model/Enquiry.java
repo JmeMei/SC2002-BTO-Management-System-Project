@@ -5,22 +5,31 @@ public class Enquiry {
     private String projectName;
     private String applicantNRIC;
     private String question;
-    private String officerNRIC;
+    private String officerIC;
     private String answer;
     private String managerIC;
 
     // constructor without answer
-    public Enquiry(String enquiryID, String projectName, String applicantNRIC, String question, String officerNRIC, String managerIC) {
+    public Enquiry(String enquiryID, String projectName, String applicantNRIC, String question, String officerIC, String managerIC) {
         this.enquiryID = enquiryID;
         this.projectName = projectName;
         this.applicantNRIC = applicantNRIC;
         this.question = question;
-        this.officerNRIC = officerNRIC;
+        this.officerIC = officerIC;
         this.answer = "";
         this.managerIC = managerIC;
     }
 
-    // constructor for answer
+    // constructor for answer (load and save enquiries)
+    public Enquiry(String enquiryID, String projectName, String applicantNRIC, String question,String answer, String officerIC, String managerIC) {
+        this.enquiryID = enquiryID;
+        this.projectName = projectName;
+        this.applicantNRIC = applicantNRIC;
+        this.question = question;
+        this.officerIC = officerIC;
+        this.answer = answer;
+        this.managerIC = managerIC;
+    }
 
     public String getEnquiryID() {
         return enquiryID;
@@ -54,12 +63,12 @@ public class Enquiry {
         this.question = question;
     }
 
-    public String getOfficerNRIC() {
-        return officerNRIC;
+    public String getofficerIC() {
+        return officerIC;
     }
 
-    public void setOfficerNRIC(String officerNRIC) {
-        this.officerNRIC = officerNRIC;
+    public void setofficerIC(String officerIC) {
+        this.officerIC = officerIC;
     }
 
     public String getAnswer() {
@@ -74,7 +83,7 @@ public class Enquiry {
         return managerIC;
     }
 
-    public void setManagerIC(){
+    public void setManagerIC(String managerIC){
         this.managerIC =  managerIC;
     }
 
@@ -86,7 +95,7 @@ public class Enquiry {
             applicantNRIC,
             question,
             answer,
-            officerNRIC,
+            officerIC,
             managerIC
         );
     }

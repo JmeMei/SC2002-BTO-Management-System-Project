@@ -2,9 +2,7 @@ package BTOManagementSystem.View;
 
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.ApplicationController;
-import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
-
 import java.util.Scanner;
 
 public class HDBOfficerView extends ApplicantView{
@@ -13,7 +11,7 @@ public class HDBOfficerView extends ApplicantView{
     public void showMenu(HDBOfficer officer) {
 
         ApplicationController applicationController = new ApplicationController();
-        OfficerEnquiryView officerEnquiryView = new OfficerEnquiryView();
+        HDBOfficerEnquiryView officerEnquiryView = new HDBOfficerEnquiryView();
 
         int option = 0;
 
