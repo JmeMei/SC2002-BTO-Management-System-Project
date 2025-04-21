@@ -1,4 +1,2 @@
-EnquiryID,ProjectName,ApplicantNRIC,Question,OfficerNRIC,Answer
-EQ2,proj,T2109876H,when ready,,
-EQ4,Acacia Breeze,S1234567A,new test,,
-EQ5,Acacia Breeze,S1234567A,hello,,
+EnquiryID,ProjectName,ApplicantNRIC,Question,Answer,
+EQ1,Acacia Breeze,S1234567A,test,,

@@ -1,12 +1,10 @@
 package BTOManagementSystem.Controller;
 
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
-
-import BTOManagementSystem.Model.Enquiry;
 import BTOManagementSystem.Model.DAO.EnquiryDAO;
+import BTOManagementSystem.Model.DAO.HDBManagerDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
+import BTOManagementSystem.Model.Enquiry;
+import java.util.List;
 
 // This class handles all logic to do with enquiries
 // This includes the applicant who can create an enquiry for the project, and the officer who can respond to these enquiries under the officer
@@ -14,12 +12,17 @@ import BTOManagementSystem.Model.DAO.ProjectListDAO;
 public class EnquiryController {
 
     EnquiryDAO enquiryDAO = new EnquiryDAO();
+    ProjectListDAO projectDAO = new ProjectListDAO();
+    HDBManagerDAO managerDAO = new HDBManagerDAO();
     
-    // creating an enquiry
-    public void submitEnquiry(String applicantNRIC, String projectName, String question, String officerNRIC){
+    // creating an enquiry fill
+    public void submitEnquiry(String applicantNRIC, String projectName, String question){
+        String officerNRIC = ""; // TODO - fill in the same way i did for manager
+        String managerIC = managerDAO
+        .managerNametoNRIC(projectDAO.getManagerbyProject(projectName));
 
         String enquiryID = enquiryDAO.generateNewEnquiryID();
-        Enquiry enquiry = new Enquiry(enquiryID, projectName, applicantNRIC, question, officerNRIC);
+        Enquiry enquiry = new Enquiry(enquiryID, projectName, applicantNRIC, question, officerNRIC, managerIC);
 
         enquiryDAO.saveEnquiry(enquiry);
     }

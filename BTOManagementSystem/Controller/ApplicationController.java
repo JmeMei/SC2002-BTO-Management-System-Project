@@ -1,18 +1,17 @@
 package BTOManagementSystem.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
+import BTOManagementSystem.Model.DAO.Enum.FlatType;
+import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.User;
-import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
-import BTOManagementSystem.Model.DAO.ProjectListDAO;
-import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Services.ApplicantActionHandler;
 import BTOManagementSystem.View.ApplicantView;
 import BTOManagementSystem.View.ApplicantViewApplyProjectView;
 import BTOManagementSystem.View.ApplicantViewProjectsView;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ApplicationController {

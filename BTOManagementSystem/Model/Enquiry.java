@@ -7,25 +7,20 @@ public class Enquiry {
     private String question;
     private String officerNRIC;
     private String answer;
+    private String managerIC;
 
     // constructor without answer
-    public Enquiry(String enquiryID, String projectName, String applicantNRIC, String question, String officerNRIC) {
+    public Enquiry(String enquiryID, String projectName, String applicantNRIC, String question, String officerNRIC, String managerIC) {
         this.enquiryID = enquiryID;
         this.projectName = projectName;
         this.applicantNRIC = applicantNRIC;
         this.question = question;
         this.officerNRIC = officerNRIC;
         this.answer = "";
+        this.managerIC = managerIC;
     }
 
-    public Enquiry(String enquiryID, String projectName, String applicantNRIC, String question, String officerNRIC, String answer) {
-        this.enquiryID = enquiryID;
-        this.projectName = projectName;
-        this.applicantNRIC = applicantNRIC;
-        this.question = question;
-        this.officerNRIC = officerNRIC;
-        this.answer = answer;
-    }
+    // constructor for answer
 
     public String getEnquiryID() {
         return enquiryID;
@@ -75,6 +70,14 @@ public class Enquiry {
         this.answer = answer;
     }
 
+    public String getManagerIC(){
+        return managerIC;
+    }
+
+    public void setManagerIC(){
+        this.managerIC =  managerIC;
+    }
+
     @Override
     public String toString() {
         return String.join(",",
@@ -82,8 +85,9 @@ public class Enquiry {
             projectName,
             applicantNRIC,
             question,
+            answer,
             officerNRIC,
-            answer
+            managerIC
         );
     }
 

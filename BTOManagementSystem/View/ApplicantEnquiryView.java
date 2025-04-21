@@ -1,17 +1,12 @@
 package BTOManagementSystem.View;
 
-import java.io.*;
+import BTOManagementSystem.Controller.EnquiryController;
+import BTOManagementSystem.Model.DAO.ProjectListDAO;
+import BTOManagementSystem.Model.Enquiry;
+import BTOManagementSystem.Model.User;
 import java.util.*;
 
-import BTOManagementSystem.Controller.ApplicationController;
-import BTOManagementSystem.Controller.EnquiryController;
-import BTOManagementSystem.Model.Enquiry;
-import BTOManagementSystem.Model.Project;
-import BTOManagementSystem.Model.User;
-import BTOManagementSystem.Model.DAO.ProjectListDAO;
-
 public class ApplicantEnquiryView {
-    private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantProjectStatus.csv";
     private static final Scanner scanner = new Scanner(System.in);
 
     /*
@@ -97,7 +92,7 @@ public class ApplicantEnquiryView {
                         String question = scanner.nextLine();
 
                     // get question from user
-                    enquiryController.submitEnquiry(user.getNric(), selectedProject, question, "");// dont know officerNRIC for now 
+                    enquiryController.submitEnquiry(user.getNric(), selectedProject, question);// let controller get officer name
                     System.out.println("Enquiry submitted successfully!");
                     }
                 }
