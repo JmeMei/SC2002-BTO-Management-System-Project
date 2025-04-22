@@ -3,6 +3,8 @@ package BTOManagementSystem.View;
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.OfficerRegistrationController;
 import BTOManagementSystem.Controller.ProjectListController;
+import BTOManagementSystem.Controller.ReceiptController;
+
 import java.util.Scanner;
 
 public class HDBManagerView {
@@ -21,14 +23,14 @@ public class HDBManagerView {
         System.out.println("5. View officer ALL registration requests");
         System.out.println("6. Approve Officer Registrations");
         System.out.println("7. Enquiry Management"); // for testing
-
+        System.out.println("8. View Receipts");
 
         System.out.print("Enter your option: ");
         int option = scanner.nextInt();
 
         ProjectListController controller = new ProjectListController();
         OfficerRegistrationController officerRegistrationController = new OfficerRegistrationController();
-
+        ReceiptController receiptController = new ReceiptController();
 
         //views
         HDBManagerCreateProjectView createView = new HDBManagerCreateProjectView();
@@ -42,6 +44,10 @@ public class HDBManagerView {
         HDBManagerApproveOfficerView approveOfficerView = new HDBManagerApproveOfficerView();
 
         HDBManagerEnquiryView enquiryView = new HDBManagerEnquiryView();
+
+        ReceiptsView receiptsView = new ReceiptsView();
+
+
         switch (option) {
 
             case 1:
@@ -70,8 +76,10 @@ public class HDBManagerView {
                 break;
             
             case 7:
-                //enquiryView.showEnquiryMenu(manager);
+                enquiryView.showEnquiryMenu(App.userSession);
 
+            case 8:
+                receiptController.ViewReceipts(this, receiptsView);
 
         }
 

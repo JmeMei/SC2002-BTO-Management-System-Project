@@ -13,10 +13,10 @@ public class ReceiptsView {
 
         System.out.print(
                 "Select filter you wish to use:" +
-                "\n1. MartialStatus"
-            + "\n2. flatType"
+                "\n1. Martial Status"
+            + "\n2. Flat Type"
         + "\n3. Age Range"
-        + "\n4. ProjectName"
+        + "\n4. Project Name"
         + "\nEnter choice:");
 
         int option = sc.nextInt();
@@ -81,11 +81,11 @@ public class ReceiptsView {
     public void DisplayReceipts(ArrayList<Receipt> receipts, String[] headers) {
 
         for (String header : headers){
-            System.out.print(String.format("%-30s", header ));
+            System.out.print(String.format("%-30s", header ).toUpperCase());
         }
 
         System.out.print("\n");
-
+        System.out.println("=".repeat(30*6));
         for (Receipt r : receipts){
 
             System.out.print(String.format("%-30s", r.getApplicantName() ));
