@@ -26,7 +26,8 @@ public class OfficerRegistrationRequestDAO {
 
                 ArrayList<String> values = CSV_data_Parse(line);
 
-                OfficerRegistrationRequest request = new OfficerRegistrationRequest(values.get(0),
+                OfficerRegistrationRequest request = new OfficerRegistrationRequest(
+                        values.get(0),
                         values.get(1),
                         values.get(2),
                         values.get(3)
@@ -109,7 +110,7 @@ public class OfficerRegistrationRequestDAO {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             // Write header
-            writer.write("Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Officer Slot,Officer,visibility");
+            writer.write(String.join(",",Headers));
             writer.newLine();
 
             // Write records
@@ -126,7 +127,7 @@ public class OfficerRegistrationRequestDAO {
                 writer.newLine();
             }
 
-            System.out.println("CSV file written successfully.");
+
 
         } catch (IOException e) {
             e.printStackTrace();

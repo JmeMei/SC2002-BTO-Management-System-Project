@@ -35,7 +35,7 @@ public class HDBManagerApproveOfficerView {
 
              System.out.print(String.format("%-30s", request.getOfficerName() ));
              System.out.print(String.format("%-30s", request.getNRIC()) );
-             System.out.print(String.format("%-30s", request.getProjectName() ));
+             System.out.print(String.format("%-30s", request ));
              System.out.print(String.format("%-30s", request.getStatus() ));
              System.out.print("\n");
          }

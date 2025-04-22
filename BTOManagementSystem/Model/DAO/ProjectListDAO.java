@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class ProjectListDAO {
@@ -329,6 +330,8 @@ public class ProjectListDAO {
     public ArrayList<Project> LoadProjects (int filter){
 
         ArrayList<Project> projectsToReturn = new ArrayList<>();
+
+
         if (filter == 1){
 
             for (Project p : ProjectsList) {
@@ -341,14 +344,50 @@ public class ProjectListDAO {
 
             }
 
-            return projectsToReturn;
 
+        } else{
 
-        }else{
-            return this.ProjectsList;
+            for (Project p : ProjectsList) {
+                    projectsToReturn.add(p);
+            }
         }
 
+        projectsToReturn = projectsToReturn.stream()
+                .sorted(Comparator.comparing(Project::getName))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        return projectsToReturn;
     }
+
+    private boolean filterCheck(String code, Project p, String filterValue){
+
+        if(code.charAt(0) == '1'){
+
+            if(!p.getManager().equals(App.userSession.getName())){
+
+                return false;
+            }
+
+        }
+
+        if(code.charAt(1) == '1'){
+
+            if (!p.getNeighbourhood().equals(filterValue)){
+                return false;
+            }
+
+        }
+
+        if (code.charAt(1) == '2'){
+
+            if (!p.getType1().equals(filterValue) && !p.getType2().equals(filterValue)){
+                return false;
+            }
+
+        }
+
+        return true;
+   }
 
 
     public ArrayList<ArrayList<String>> get_all_Projects(){
