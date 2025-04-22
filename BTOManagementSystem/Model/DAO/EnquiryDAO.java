@@ -22,7 +22,7 @@ public class EnquiryDAO {
     public List<Enquiry> loadAllEnquiries() {
         List<Enquiry> enquiries = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line;
+            String line; // skip header
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",", -1);
                 if (fields.length >= 6) {
@@ -32,7 +32,8 @@ public class EnquiryDAO {
                         fields[2],
                         fields[3],
                         fields[4],
-                        fields[5]
+                        fields[5],
+                        fields[6]
                     );
                     enquiries.add(enquiry);
                 }
@@ -43,12 +44,18 @@ public class EnquiryDAO {
         return enquiries;
     }
 
-    // Get enquiries by officer NRIC
-    public List<Enquiry> getEnquiriesByOfficer(String officerNRIC) {
+    // get all enquiries
+    public List<Enquiry> getAllEnquiries(){
+        return loadAllEnquiries();
+    }
+
+    // get enquiries where user is in charge of (officer / manager)
+    public List<Enquiry> getUnansweredEnquiries(String personIC) {
         List<Enquiry> all = loadAllEnquiries();
         List<Enquiry> result = new ArrayList<>();
         for (Enquiry e : all) {
-            if (e.getOfficerNRIC().equals(officerNRIC)) {
+            if ((e.getofficerIC().equals(personIC) || e.getManagerIC().equals(personIC))
+            && e.getAnswer().trim().isEmpty()) {
                 result.add(e);
             }
         }
@@ -67,21 +74,37 @@ public class EnquiryDAO {
         return result;
     }
 
-    //TODO FIX OVERWRITING CSV
-    public boolean editEnquiry(Enquiry enquiry, String applicantNRIC, String newQuestion) {
+    // edit enquiry QUESTION
+    public boolean editEnquiry(Enquiry enquiry, String newQuestion) {
         List<Enquiry> enquiries = loadAllEnquiries();
         boolean updated = false;
     
         for (Enquiry e : enquiries) {
-            if (e.getEnquiryID().equals(enquiry.getEnquiryID()) &&
-                e.getApplicantNRIC().equals(applicantNRIC) &&
-                (e.getAnswer() == null || e.getAnswer().isEmpty())) {
+            if (e.getEnquiryID().equals(enquiry.getEnquiryID())) {
                 e.setQuestion(newQuestion);
                 updated = true;
                 break;
             }
+        } 
+        if (updated) {
+            saveAllEnquiries(enquiries);
         }
     
+        return updated;
+    }
+
+    // answer enquiry
+    public boolean replyEnquiry(Enquiry enquiry, String answer) {
+        List<Enquiry> enquiries = loadAllEnquiries();
+        boolean updated = false;
+    
+        for (Enquiry e : enquiries) {
+            if (e.getEnquiryID().equals(enquiry.getEnquiryID())){
+                e.setAnswer(answer);
+                updated = true;
+                break;
+            }
+        }
         if (updated) {
             saveAllEnquiries(enquiries);
         }
@@ -102,6 +125,7 @@ public class EnquiryDAO {
         return "EQ" + (max + 1);
     }
 
+    // delete enquiry
     public boolean deleteEnquiry(String enquiryID) {
         List<Enquiry> allEnquiries = loadAllEnquiries();
         boolean removed = allEnquiries.removeIf(e -> e.getEnquiryID().equalsIgnoreCase(enquiryID));
@@ -113,6 +137,7 @@ public class EnquiryDAO {
         return removed;
     }
 
+    // write to the csv
     private void saveAllEnquiries(List<Enquiry> enquiries) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (Enquiry e : enquiries) {
@@ -121,8 +146,9 @@ public class EnquiryDAO {
                         e.getProjectName(),
                         e.getApplicantNRIC(),
                         e.getQuestion(),
-                        e.getOfficerNRIC(),
-                        e.getAnswer()));
+                        e.getAnswer(),
+                        e.getofficerIC(),
+                        e.getManagerIC()));
                 writer.newLine();
             }
         } catch (IOException e) {

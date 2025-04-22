@@ -6,13 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import BTOManagementSystem.Model.ApplicantProjectStatus;
-import BTOManagementSystem.Model.DAO.Enum.WithdrawalStatus;
-import BTOManagementSystem.Model.Project;
-import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
@@ -36,14 +31,12 @@ public class ApplicationProjectStatusDAO {
                         values[1].trim(),                                     // NRIC
                         Integer.parseInt(values[2].trim()),                   // Age
                         values[3].trim(),                                     // Marital Status
-                        values[4].trim(),                                     // Password
-                        values[5].trim(),                                     // Role
-                        values[6].trim(),                                     // Project Name
-                        FlatType.fromString(values[7].trim()),                // Flat Type
-                        ApplicationStatus.valueOf(values[8].trim()),          // Application Status
-                        WithdrawalStatus.valueOf(values[9].trim()),           // Withdrawal Status
-                        values[10].trim(),                                     // Enquiry
-                        values[11].trim()                                     // Reply
+                        values[4].trim(),                                     // Role
+                        values[5].trim(),                                     // Project Name
+                        FlatType.fromString(values[6].trim()),                // Flat Type
+                        ApplicationStatus.valueOf(values[7].trim()),          // Application Status
+                        values[8].trim(),                                     // Enquiry
+                        values[9].trim()                                     // Reply
 
                 );
                 statusList.add(applicantProjectStatus);
@@ -57,7 +50,6 @@ public class ApplicationProjectStatusDAO {
     public boolean applyForProject(User user, String projectName, FlatType flatType) {
         for (ApplicantProjectStatus status : statusList) {
             if (status.getNric().equals(user.getNric())) {
-                System.out.println("You have already applied for a project.");
                 return false;
             }
         }
@@ -67,18 +59,36 @@ public class ApplicationProjectStatusDAO {
                 user.getNric(),
                 user.getAge(),
                 user.getMaritalStatus(),
-                user.getPassword(),
                 user.getRole(),
                 projectName,
                 flatType,
                 ApplicationStatus.PENDING,
-                WithdrawalStatus.NA,
                 "NA",
                 "NA"
         );
         statusList.add(newApplication);
+
+        // subtract from existing no of flats
         this.updateDB();
         return true;
+    }
+
+    public ApplicationStatus getApplicationStatus(User user, String projectName, FlatType flatType) {
+        for (ApplicantProjectStatus status : statusList) {
+            if (status.getNric().equals(user.getNric()) && status.getProjectName().equals(projectName) && flatType.equals(status.getFlatType())) {
+                return status.getApplicationStatus();
+            }
+        }
+        return null;
+    }
+
+    public String getProjectNameforApplicant(User user) {
+        for (ApplicantProjectStatus status : statusList) {
+            if (status.getNric().equals(user.getNric())) {
+                return status.getProjectName();
+            }
+        }
+        return null;
     }
 
     public boolean viewMyApplication(User user) {
@@ -88,30 +98,13 @@ public class ApplicationProjectStatusDAO {
                 System.out.println("\n=== Your Application Details ===");
                 System.out.println("Name: " + status.getName());
                 System.out.println("NRIC: " + status.getNric());
-                System.out.println("Project Name: " + status.getRole());
+                System.out.println("Project Name: " + status.getProjectName());
                 System.out.println("Flat Type: " + status.getFlatType());
                 System.out.println("Application Status: " + status.getApplicationStatus());
-                System.out.println("WithdrawalStatus: " + status.getWithdrawalStatus());
                 System.out.println("Enquiry: " + (status.getEnquiry().isEmpty() ? "None" : status.getEnquiry()));
                 System.out.println("Reply: " + (status.getReply().isEmpty() ? "None" : status.getReply()));
                 return true; // Exit after first match
             }
-        }
-        return false;
-    }
-
-    public boolean requestApplicationWithdrawal(User user) {
-        for (ApplicantProjectStatus status : statusList) {
-            if (status.getNric().equals(user.getNric())) {
-                if(status.getWithdrawalStatus().equals(WithdrawalStatus.NA)) {
-                    status.setWithdrawalStatus(WithdrawalStatus.REQUESTED);
-                    this.updateDB();
-                    return true;
-                }
-                } else if (status.getWithdrawalStatus().equals(WithdrawalStatus.REQUESTED)) {
-                    System.out.println("You have already requested to withdraw the application.");
-                    return true;
-                }
         }
         return false;
     }
@@ -129,12 +122,10 @@ public class ApplicationProjectStatusDAO {
                         s.getNric(),
                         String.valueOf(s.getAge()),
                         s.getMaritalStatus(),
-                        s.getPassword(),
                         s.getRole(),
                         s.getProjectName(),
                         s.getFlatType().getDisplayName(),
                         s.getApplicationStatus().name(),
-                        s.getWithdrawalStatus().name(),
                         s.getEnquiry(),
                         s.getReply()
                 );

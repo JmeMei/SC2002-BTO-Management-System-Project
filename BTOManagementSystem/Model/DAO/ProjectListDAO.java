@@ -35,9 +35,6 @@ public class ProjectListDAO {
     ArrayList<Project> ProjectsList = new ArrayList<>();
 
     public ProjectListDAO() {
-
-
-
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
             String line;
@@ -84,8 +81,6 @@ public class ProjectListDAO {
 
     }
 
-
-
     public void CreateNewProject(ArrayList<String> Data){
 
         Project newProject = new Project(Data.get(0),Data.get(1),Data.get(2),Integer.parseInt(Data.get(3)),
@@ -97,8 +92,6 @@ public class ProjectListDAO {
     }
 
     public void UpdateDB(){
-
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             // Write header
             writer.write("Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Officer Slot,Officer,visibility");
@@ -132,11 +125,31 @@ public class ProjectListDAO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
+    public void decreaseFlatUnits(Project project, FlatType appliedType) {
+        // Check Type 1 if 2 or 3 Room
+        if (FlatType.fromString(project.getType1()) == appliedType) {
+            project.setType1_numofunits(project.getType1_numofunits() - 1);
+        }
+        // Check Type 2 if 2 or 3 Room
+        else if (FlatType.fromString(project.getType2()) == appliedType) {
+            project.setType2_numofunits(project.getType2_numofunits() - 1);
+        }
+        this.UpdateDB();
+    }
 
+    public void increaseFlatUnits(Project project, FlatType appliedType) {
+        // Check Type 1 if 2 or 3 Room
+        if (FlatType.fromString(project.getType1()) == appliedType) {
+            project.setType1_numofunits(project.getType1_numofunits() + 1);
+        }
+        // Check Type 2 if 2 or 3 Room
+        else if (FlatType.fromString(project.getType2()) == appliedType) {
+            project.setType2_numofunits(project.getType2_numofunits() + 1);
+        }
+        this.UpdateDB();
+    }
 
     public void editProjectDetails(Project project, int attribute, String value){
 
@@ -483,6 +496,7 @@ public class ProjectListDAO {
         return rows;
     }
 
+    // get list of projectNames(enq)
     public List<String> getProjectNames() {
         List<String> projectNames = new ArrayList<>();
         for (Project project : ProjectsList) {
@@ -508,17 +522,24 @@ public class ProjectListDAO {
 
     }
 
-    // get officers in charge of the project
+    
+    // get officers in charge of the project(enq) 1 officer for now
     public String getOfficerIC(String projectName){
         for (Project p: ProjectsList){
             if(p.getName().equalsIgnoreCase(projectName)){
-                return p.get_officers_as_string_for_csv();
+                List<String> all_officers = p.get_offficers();
+                if(all_officers.isEmpty()){
+                    return "";
+                }
+                else{
+                    return all_officers.get(0);
+                }
             }
         }
         return null;
     }
 
-    // get manager in charge of the project
+    // get manager in charge of the project(enq)
     public String getManagerbyProject(String projectName){
         for (Project p : ProjectsList) {              
             if (p.getName().equalsIgnoreCase(projectName)) {

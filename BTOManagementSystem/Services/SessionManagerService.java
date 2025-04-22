@@ -3,10 +3,6 @@ import BTOManagementSystem.App.*;
 import BTOManagementSystem.Model.DAO.ApplicantDAO;
 import BTOManagementSystem.Model.DAO.HDBManagerDAO;
 import BTOManagementSystem.Model.DAO.HDBOfficerDAO;
-import BTOManagementSystem.Model.DAO.UserDAO;
-import BTOManagementSystem.Model.Roles.Applicant;
-import BTOManagementSystem.Model.Roles.HDBManager;
-import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.Model.User;
 
 

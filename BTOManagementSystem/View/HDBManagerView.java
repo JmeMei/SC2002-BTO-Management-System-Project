@@ -3,15 +3,13 @@ package BTOManagementSystem.View;
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.OfficerRegistrationController;
 import BTOManagementSystem.Controller.ProjectListController;
-import BTOManagementSystem.Controller.ReceiptController;
-import BTOManagementSystem.Model.Roles.HDBManager;
 import java.util.Scanner;
 
 public class HDBManagerView {
     private static final Scanner scanner = new Scanner(System.in);
 
 
-
+    // need HDBManager manager for enquiry use
     public void showMenu() {
 
         System.out.println("\n=== HDB Manager Dashboard ===");
@@ -22,7 +20,7 @@ public class HDBManagerView {
         System.out.println("4. View Projects");
         System.out.println("5. View officer ALL registration requests");
         System.out.println("6. Approve Officer Registrations");
-        System.out.println("7. View Receipts");
+        System.out.println("7. Enquiry Management"); // for testing
 
 
         System.out.print("Enter your option: ");
@@ -43,9 +41,7 @@ public class HDBManagerView {
 
         HDBManagerApproveOfficerView approveOfficerView = new HDBManagerApproveOfficerView();
 
-        ReceiptsView receiptsView = new ReceiptsView();
-        ReceiptController receiptController = new ReceiptController();
-
+        HDBManagerEnquiryView enquiryView = new HDBManagerEnquiryView();
         switch (option) {
 
             case 1:
@@ -72,10 +68,9 @@ public class HDBManagerView {
             case 6:
                 officerRegistrationController.ApproveARequest(this, approveOfficerView);
                 break;
-
+            
             case 7:
-                receiptController.ViewReceipts(this, receiptsView);
-                break;
+                //enquiryView.showEnquiryMenu(manager);
 
 
         }

@@ -3,21 +3,24 @@ package BTOManagementSystem.View;
 import BTOManagementSystem.Controller.EnquiryController;
 import BTOManagementSystem.Model.Enquiry;
 import BTOManagementSystem.Model.User;
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
-public class ApplicantEnquiryView {
+public class HDBOfficerEnquiryView {
 
-    public static void showEnquiryMenu(User user) {
+        public static void showEnquiryMenu(User user) {
+            
         EnquiryController enquiryController = new EnquiryController();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         do {
-            System.out.println("\n=== Enquiry Management for Applicants ===");
-            System.out.println("1. View Your Enquiries");
-            System.out.println("2. Submit a New Enquiry");
-            System.out.println("3. Edit Your Enquiry");
-            System.out.println("4. Delete Enquiry");
-            System.out.println("5. Back to Main Menu");
+            System.out.println("\n=== Enquiry Management for Officers ===");
+            System.out.println("1. View Your Enquiries (Applicant)");
+            System.out.println("2. Submit a New Enquiry (Applicant)");
+            System.out.println("3. Edit Your Enquiry (Applicant)");
+            System.out.println("4. Delete Own Enquiry (Applicant)");
+            System.out.println("5. Reply to enquiries of your Managed Projects");
+            System.out.println("6. Back to Main Menu");
             System.out.print("Enter your choice: ");
             
             String input = scanner.nextLine();
@@ -30,21 +33,16 @@ public class ApplicantEnquiryView {
 
             switch (choice) {
                 case 1 -> {
-                    // view all enquiries submitted by user 
-                    // can consider App.userSession.getNric() if necessary
                     List<Enquiry> enquiries = enquiryController.viewEnquiriesForApplicant(user.getNric());
                     if(enquiries.isEmpty()){
                         System.out.println("You have not submitted any enquiries");
                         break;
                     }
                     printEnquiryList(enquiries);
-
                 }
                 case 2 -> {
-                    // ask for which project
                     List<String> availableProjects = enquiryController.availableProjectList();
 
-                    // if no available projects
                     if (availableProjects == null || availableProjects.isEmpty()) {
                         System.out.println("No available projects.");
                         break;
@@ -67,15 +65,13 @@ public class ApplicantEnquiryView {
                         System.out.print("Enter your question: ");
                         String question = scanner.nextLine();
 
-                    // submit enquiry for user
-                    enquiryController.submitEnquiry(user.getNric(), selectedProject, question);// let controller get officer name
+                    // get question from user
+                    enquiryController.submitEnquiry(user.getNric(), selectedProject, question);
                     System.out.println("Enquiry submitted successfully!");
                     }
                 }
 
                 case 3 -> {
-
-                    // show all the enquiries by the user
                     List<Enquiry> enquiries = enquiryController.viewEnquiriesForApplicant(user.getNric());
                     if(enquiries.isEmpty()){
                         System.out.println("You have not submitted any enquiries");
@@ -84,15 +80,15 @@ public class ApplicantEnquiryView {
                     System.out.println("\n--- Your submitted enquiries ---");
                     printEnquiryList(enquiries);
 
-                    // edit enquiry by ID
                     System.out.print("Enter Enquiry ID to edit: ");
                     String enquiryID = scanner.nextLine();
 
-                    System.out.print("Enter new question: ");
+                    System.out.print("Enter answer: ");
                     String newQuestion = scanner.nextLine();
 
                     String result = enquiryController.editEnquiry(user.getNric(), enquiryID, newQuestion);
                     System.out.println(result);
+
                 }
 
                 case 4 -> {
@@ -100,7 +96,7 @@ public class ApplicantEnquiryView {
 
                     if (deletableEnquiries.isEmpty()) {
                         System.out.println("You have no deletable enquiries.");
-                        break;
+                        return;
                     }
                 
                     System.out.println("\n--- Deletable Enquiries ---");
@@ -111,13 +107,35 @@ public class ApplicantEnquiryView {
                 
                     String result = enquiryController.deleteEnquiry(enquiryID, user.getNric());
                     System.out.println(result);
+
                 }
-                case 5 -> {scanner.close();
-                    System.out.println("Returning to main menu.");}
+                case 5 -> {
+                    List<Enquiry> unansweredEnquiries = enquiryController.getUnansweredEnquiries(user.getNric());
+
+                    if(unansweredEnquiries.isEmpty()){
+                        System.out.println("You have no unanswered enquiries.");
+                        break;
+                    }
+                    System.out.println("\n--- Unanswered Enquiries ---");
+                    printEnquiryList(unansweredEnquiries);
+
+                    System.out.print("Enter enquiry ID to answer: ");
+                    String enquiryID = scanner.nextLine();
+
+                    System.out.print("Enter answer to enquiry: ");
+                    String answer = scanner.nextLine();
+
+                    String result = enquiryController.replyEnquiry(user.getNric(), enquiryID, answer);
+                    System.out.println(result);
+                }
+                case 6 -> {
+                    scanner.close();
+                    System.out.println("Returning to main menu.");
+                }
                 default -> System.out.println("Invalid choice.");
             }
 
-        } while (choice != 5);
+        } while (choice != 6);
     }
 
     public static void printEnquiryList(List<Enquiry> enquiries){
@@ -131,5 +149,4 @@ public class ApplicantEnquiryView {
         }
 
     }
-
 }

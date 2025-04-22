@@ -2,9 +2,7 @@ package BTOManagementSystem.View;
 
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.ApplicationController;
-import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
-
 import java.util.Scanner;
 
 public class HDBOfficerView extends ApplicantView{
@@ -13,7 +11,7 @@ public class HDBOfficerView extends ApplicantView{
     public void showMenu(HDBOfficer officer) {
 
         ApplicationController applicationController = new ApplicationController();
-        OfficerEnquiryView officerEnquiryView = new OfficerEnquiryView();
+        HDBOfficerEnquiryView officerEnquiryView = new HDBOfficerEnquiryView();
 
         int option = 0;
 
@@ -38,19 +36,22 @@ public class HDBOfficerView extends ApplicantView{
                 continue;
             }
 
+            //views
+            ApplicantViewApplyProjectView applyView = new ApplicantViewApplyProjectView();
+            ApplicantManageApplicationView manageApplicationView = new ApplicantManageApplicationView();
+
             switch (option) {
                 case 1: // display projects
                     applicationController.displayAvailableProjects(this,officer);
                     break;
                 case 2: // apply for projects
-                    applicationController.displayAvailableProjects(this,officer);
-                    //applicationController.applyForProject(officer, null); // to implement
+                    applicationController.applyProject(this,applyView,officer);
                     break;
                 case 3: // view application
-                    applicationController.viewMyApplication(this,officer);
+                    applicationController.viewMyApplication(this,manageApplicationView,officer);
                     break;
                 case 4: // withdraw application
-                    applicationController.withdrawApplication(this,officer);
+                    applicationController.withdrawApplication(this,manageApplicationView,officer);
                     break;
                 case 5: // enquiry management
                     officerEnquiryView.showEnquiryMenu(officer);

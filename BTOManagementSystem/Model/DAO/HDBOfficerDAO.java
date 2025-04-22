@@ -89,6 +89,22 @@ public class HDBOfficerDAO {
         }
     }
 
+    //for enquiry use
+    public String officerNametoNRIC(String officerName){
+        try(BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))){
+            String line = br.readLine(); // skip the header
+            while((line = br.readLine()) != null){
+                String[] fields = line.split(",",-1);
+                if(fields[0].equals(officerName)){
+                    return fields[1];
+                }
+            }
+        } catch(IOException e){
+            System.out.println("Error reading Manager File" + e.getMessage());
+        }
+        return null;
+    }
+
 
 
 }
