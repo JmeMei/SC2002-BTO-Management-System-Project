@@ -75,9 +75,15 @@ public class ProjectListController {
     public void ViewProjects(HDBManagerView managerView, HDBManagerViewProjectsView viewProjectsView){
 
         int filter = viewProjectsView.prompt();
+        ArrayList<Project> projectArrayList = dao.LoadProjects(filter);
 
+        int neighbourhood_filter = viewProjectsView.prompt_wantneightbourhoodfilter();
 
-        viewProjectsView.DisplayProjects(dao.getHeaders(), dao.LoadProjects(filter));
+        if (neighbourhood_filter == 1){
+            String Neightbourhood = viewProjectsView.PromptNeightbourhoodfilterValue();
+            projectArrayList = dao.filterByNeightbourhood(projectArrayList, Neightbourhood);
+        }
+        viewProjectsView.DisplayProjects(dao.getHeaders(), projectArrayList);
 
         managerView.showMenu();
     }

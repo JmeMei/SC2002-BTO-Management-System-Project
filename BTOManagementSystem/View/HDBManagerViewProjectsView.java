@@ -28,7 +28,39 @@ public class HDBManagerViewProjectsView {
                 this.prompt();
         }
 
+
         return -1;
+    }
+
+    public int prompt_wantneightbourhoodfilter(){
+
+        System.out.print("Filter by neighbourhood? (Y/N): ");
+
+        String answer = sc.nextLine().toUpperCase();
+
+        switch (answer){
+
+            case "Y":
+                return 1;
+            case "N":
+                return 0;
+
+            default:
+                System.out.print("Enter Y or N only! ");
+                this.prompt();
+        }
+
+        return -1;
+
+    }
+
+
+    public String PromptNeightbourhoodfilterValue(){
+
+        System.out.print("Enter Neighbourhood: ");
+        String answer = sc.nextLine().toUpperCase();
+        return answer;
+
     }
 
 

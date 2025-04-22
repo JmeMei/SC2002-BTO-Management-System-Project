@@ -91,6 +91,10 @@ public class ProjectListDAO {
 
     }
 
+    public ArrayList<Project> filterByNeightbourhood(ArrayList<Project> projects ,String value){
+        return projects.stream().filter( r -> value.equalsIgnoreCase(r.getNeighbourhood())).collect(Collectors.toCollection(ArrayList::new));
+    }
+
     public void UpdateDB(){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             // Write header
