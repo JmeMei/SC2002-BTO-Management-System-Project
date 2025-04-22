@@ -18,7 +18,7 @@ public class HDBManagerEnquiryView {
             System.out.println("1. View All Enquiries");
             System.out.println("2. View Unanswered Enquiries for Managed Projects");
             System.out.println("3. Reply to Unanswered Enquiries for Managed Projects");
-            System.out.println("4. Back to Dashboard");
+            System.out.println("4. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
             String input = scanner.nextLine();
@@ -32,13 +32,44 @@ public class HDBManagerEnquiryView {
             switch (choice) {
                 case 1 -> {
                     List<Enquiry> allEnquiries = enquiryController.getAllEnquiries();
+                    if(allEnquiries.isEmpty()){
+                        System.out.println("There are no enquiries.");
+                        break;
+                    }
                     printEnquiryList(allEnquiries);
                 }
                 case 2 -> {
-                    //todo implement
+                    List<Enquiry> unansweredEnquiries =  enquiryController.getUnansweredEnquiries(user.getNric());
+                    
+                    if(unansweredEnquiries.isEmpty()){
+                        System.out.println("You have no unanswered enquiries.");
+                        break;
+                    }
+                    System.out.println("\n--- Unanswered Enquiries ---");
+                    printEnquiryList(unansweredEnquiries);
                 }
                 case 3 -> {
-                    //todo implement
+                    List<Enquiry> unansweredEnquiries =  enquiryController.getUnansweredEnquiries(user.getNric());
+                    
+                    if(unansweredEnquiries.isEmpty()){
+                        System.out.println("You have no unanswered enquiries.");
+                        break;
+                    }
+                    System.out.println("\n--- Unanswered Enquiries ---");
+                    printEnquiryList(unansweredEnquiries);
+
+                    System.out.print("Enter enquiry ID to answer: ");
+                    String enquiryID = scanner.nextLine();
+
+                    System.out.print("Enter answer to enquiry: ");
+                    String answer = scanner.nextLine();
+
+                    String result = enquiryController.replyEnquiry(user.getNric(), enquiryID, answer);
+                    System.out.println(result);
+                }
+                case 4 -> {
+                    scanner.close();
+                    System.out.println("Returning to main menu.");
                 }
                 default-> System.out.println("Invalid choice.");
             }

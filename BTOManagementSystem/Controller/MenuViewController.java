@@ -4,7 +4,6 @@ import BTOManagementSystem.Model.*;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBManager;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
-import BTOManagementSystem.Services.HDB_Manager_ActionHandler;
 import BTOManagementSystem.View.ApplicantView;
 import BTOManagementSystem.View.HDBManagerView;
 import BTOManagementSystem.View.HDBOfficerView;
@@ -21,7 +20,7 @@ public class MenuViewController {
         } else if (user instanceof HDBManager) {
             HDBManagerView managerView = new HDBManagerView();
 
-            managerView.showMenu();
+            managerView.showMenu(); // enquiry need .showMenu((HDBManager) user)
 
 
                 //HDB_Manager_ActionHandler actionHandler = new HDB_Manager_ActionHandler();

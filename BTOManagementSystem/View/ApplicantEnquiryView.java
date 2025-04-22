@@ -17,7 +17,7 @@ public class ApplicantEnquiryView {
             System.out.println("2. Submit a New Enquiry");
             System.out.println("3. Edit Your Enquiry");
             System.out.println("4. Delete Enquiry");
-            System.out.println("5. Back to Dashboard");
+            System.out.println("5. Back to Main Menu");
             System.out.print("Enter your choice: ");
             
             String input = scanner.nextLine();
@@ -30,7 +30,8 @@ public class ApplicantEnquiryView {
 
             switch (choice) {
                 case 1 -> {
-                    // view all enquiries submitted by user
+                    // view all enquiries submitted by user 
+                    // can consider App.userSession.getNric() if necessary
                     List<Enquiry> enquiries = enquiryController.viewEnquiriesForApplicant(user.getNric());
                     if(enquiries.isEmpty()){
                         System.out.println("You have not submitted any enquiries");
@@ -90,13 +91,8 @@ public class ApplicantEnquiryView {
                     System.out.print("Enter new question: ");
                     String newQuestion = scanner.nextLine();
 
-                    boolean success = enquiryController.editEnquiry(user.getNric(), enquiryID, newQuestion);
-
-                    if (success) {
-                        System.out.println("Enquiry updated successfully.");
-                    } else {
-                        System.out.println("Failed to update enquiry. It might be already answered or not belong to you.");
-                    }
+                    String result = enquiryController.editEnquiry(user.getNric(), enquiryID, newQuestion);
+                    System.out.println(result);
                 }
 
                 case 4 -> {
@@ -113,16 +109,11 @@ public class ApplicantEnquiryView {
                     System.out.print("Enter Enquiry ID to Delete: ");
                     String enquiryID = scanner.nextLine();
                 
-                    boolean success = enquiryController.deleteEnquiry(enquiryID, user.getNric());
-                
-                    if (success) {
-                        System.out.println("Enquiry deleted successfully.");
-                    } else {
-                        System.out.println("Failed to delete enquiry.");
-                    }
+                    String result = enquiryController.deleteEnquiry(enquiryID, user.getNric());
+                    System.out.println(result);
                 }
                 case 5 -> {scanner.close();
-                    System.out.println("Returning to dashboard...");}
+                    System.out.println("Returning to main menu.");}
                 default -> System.out.println("Invalid choice.");
             }
 

@@ -20,7 +20,7 @@ public class HDBOfficerEnquiryView {
             System.out.println("3. Edit Your Enquiry (Applicant)");
             System.out.println("4. Delete Own Enquiry (Applicant)");
             System.out.println("5. Reply to enquiries of your Managed Projects");
-            System.out.println("6. Back to Dashboard");
+            System.out.println("6. Back to Main Menu");
             System.out.print("Enter your choice: ");
             
             String input = scanner.nextLine();
@@ -72,7 +72,7 @@ public class HDBOfficerEnquiryView {
                 }
 
                 case 3 -> {
-                    List<Enquiry> enquiries = enquiryController.getUnansweredEnquiries(user.getNric());
+                    List<Enquiry> enquiries = enquiryController.viewEnquiriesForApplicant(user.getNric());
                     if(enquiries.isEmpty()){
                         System.out.println("You have not submitted any enquiries");
                         break;
@@ -86,13 +86,9 @@ public class HDBOfficerEnquiryView {
                     System.out.print("Enter answer: ");
                     String newQuestion = scanner.nextLine();
 
-                    boolean success = enquiryController.replyEnquiry(user.getNric(), enquiryID, newQuestion);
+                    String result = enquiryController.editEnquiry(user.getNric(), enquiryID, newQuestion);
+                    System.out.println(result);
 
-                    if (success) {
-                        System.out.println("Enquiry updated successfully.");
-                    } else {
-                        System.out.println("Failed to update enquiry. It might be already answered or not belong to you.");
-                    }
                 }
 
                 case 4 -> {
@@ -109,13 +105,9 @@ public class HDBOfficerEnquiryView {
                     System.out.print("Enter Enquiry ID to Delete: ");
                     String enquiryID = scanner.nextLine();
                 
-                    boolean success = enquiryController.deleteEnquiry(enquiryID, user.getNric());
-                
-                    if (success) {
-                        System.out.println("Enquiry deleted successfully.");
-                    } else {
-                        System.out.println("Failed to delete enquiry.");
-                    }
+                    String result = enquiryController.deleteEnquiry(enquiryID, user.getNric());
+                    System.out.println(result);
+
                 }
                 case 5 -> {
                     List<Enquiry> unansweredEnquiries = enquiryController.getUnansweredEnquiries(user.getNric());
@@ -127,23 +119,18 @@ public class HDBOfficerEnquiryView {
                     System.out.println("\n--- Unanswered Enquiries ---");
                     printEnquiryList(unansweredEnquiries);
 
-                    System.out.println("Enter enquiry ID to answer");
+                    System.out.print("Enter enquiry ID to answer: ");
                     String enquiryID = scanner.nextLine();
 
-                    System.out.println("Enter answer to enquiry:");
+                    System.out.print("Enter answer to enquiry: ");
                     String answer = scanner.nextLine();
 
-                    boolean success = enquiryController.replyEnquiry(user.getNric(), enquiryID, answer);
-                    if(success){
-                        System.out.println("You have successfully replied.");
-                    } else{
-                        System.out.println("Please ensure correct enquiry ID");
-                    }
-
+                    String result = enquiryController.replyEnquiry(user.getNric(), enquiryID, answer);
+                    System.out.println(result);
                 }
                 case 6 -> {
                     scanner.close();
-                    System.out.println("Returning to dashboard...");
+                    System.out.println("Returning to main menu.");
                 }
                 default -> System.out.println("Invalid choice.");
             }

@@ -48,42 +48,46 @@ public class EnquiryController {
     }
 
     // delete enquiry by enquiryID
-    public boolean deleteEnquiry(String enquiryID, String applicantNRIC) {
+    public String deleteEnquiry(String enquiryID, String applicantNRIC) {
         Enquiry enquiry = enquiryDAO.getEnquiryById(enquiryID);
         if (enquiry == null || !enquiry.getApplicantNRIC().equals(applicantNRIC)) {
-            return false; // Enquiry not found or doesn't belong to applicant
+            return "Unsuccessful, please check Enquiry ID."; // Enquiry not found or doesn't belong to applicant
         }
     
         if (!enquiry.getAnswer().trim().isEmpty()) {
-            return false; // Cannot delete an enquiry that has already been answered
+            return "Enquiry already has been answered."; // Cannot delete an enquiry that has already been answered
         }
-        
-        return enquiryDAO.deleteEnquiry(enquiryID);
+
+        enquiryDAO.deleteEnquiry(enquiryID);
+        return "Enquiry successfully deleted.";
     }
 
     // edit enquiries method
-    public boolean editEnquiry(String applicantNRIC, String enquiryID, String newQuestion) {
+    public String editEnquiry(String applicantNRIC, String enquiryID, String newQuestion) {
         Enquiry enquiry = enquiryDAO.getEnquiryById(enquiryID);
     
         // edit enquiry only if it belongs to applicant and no answer
         if (enquiry.getAnswer().trim().isEmpty() && enquiry.getApplicantNRIC().equals(applicantNRIC)) {
             enquiryDAO.editEnquiry(enquiry, newQuestion);
-            return true;
+            return "Enquiry edited successfully.";
         }
 
-        return false;
+        return "Unsuccessful, please check Enquiry ID.";
     }
 
     // answer enquiry
-    public boolean replyEnquiry(String personIC, String enquiryID, String answer) {
+    public String replyEnquiry(String personIC, String enquiryID, String answer) {
         Enquiry enquiry = enquiryDAO.getEnquiryById(enquiryID);
+        if(enquiry == null){
+            return "Unsuccessful, please check Enquiry ID.";
+        }
 
         // only answer enquiry if ID is the same and not answered
         if (enquiryID.equals(enquiry.getEnquiryID()) && enquiry.getAnswer().trim().isEmpty()) {
             enquiryDAO.replyEnquiry(enquiry, answer);
-            return true; 
+            return "Successfully replied to enquiry"; 
         }
-        return false;
+        return "Unsuccessful, please check Enquiry ID.";
     }
 
     public List<String> availableProjectList() {
