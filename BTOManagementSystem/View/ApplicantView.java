@@ -16,7 +16,7 @@ public class ApplicantView {
 
     public static List<Project> projectsAvailable; //Global static variable to store the available rooms
 
-    public void showMenu(User user)  { //Applicant view has a user
+    public void showApplicantMenu(User user)  { //Applicant view has a user
 
         ApplicationController applicationController = new ApplicationController();
         ApplicantEnquiryView enquiryView = new ApplicantEnquiryView();
@@ -28,8 +28,8 @@ public class ApplicantView {
             System.out.println("Welcome, " + App.userSession.getName());
             System.out.println("1. View Available Projects");
             System.out.println("2. Apply for a Project");
-            System.out.println("3. View My Application");
-            System.out.println("4. Withdraw My Application");
+            System.out.println("3. View My Applications");
+            System.out.println("4. Withdraw An Application");
             System.out.println("5. Enquiry Management");
             System.out.println("6. Change Password");
             System.out.println("7. Logout");
@@ -56,7 +56,7 @@ public class ApplicantView {
                     applicationController.applyProject(this,applyView,user);
                     break;
                 case 3:
-                    applicationController.viewMyApplication(this,manageApplicationView, user);
+                    applicationController.viewMyApplications(this,manageApplicationView, user);
                     break;
                 case 4:
                     applicationController.withdrawApplication(this,manageApplicationView,user); // add the call to the applicationController
@@ -83,6 +83,7 @@ public class ApplicantView {
                     App.main(null);
                     break;
                 case 8:
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");

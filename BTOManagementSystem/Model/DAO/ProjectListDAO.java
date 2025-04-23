@@ -16,25 +16,13 @@ import java.util.stream.Collectors;
 
 public class ProjectListDAO {
 
-    private String[] headers = {"Project Name",
-            "Neighborhood",
-            "Type 1",
-            "Number of units for Type 1",
-            "Selling price for Type 1",
-            "Type 2",
-            "Number of units for Type 2",
-            "Selling price for Type 2",
-            "Application opening date",
-            "Application closing date",
-            "Manager",
-            "Officer Slot",
-            "Officer",
-            "visibility"};
+    private String[] headers = {"Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Officer Slot,Officer,visibility"};
 
     private String filePath = "BTOManagementSystem/Data/ProjectList.csv";
     private static ArrayList<Project> ProjectsList = new ArrayList<>();
 
     public ProjectListDAO() {
+        ProjectsList.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
             String line;
@@ -105,7 +93,6 @@ public class ProjectListDAO {
             // Write records
             for (Project p :ProjectsList) {
                 writer.write(String.format("%s,%s,%s,%d,%f,%s,%d,%f,%s,%s,%s,%d,%s,%d",
-
                         p.getName(),
                         p.getNeighbourhood(),
                         p.getType1(),
@@ -115,7 +102,7 @@ public class ProjectListDAO {
                         p.getType2_numofunits(),
                         p.getType2_selling_price(),
                         p.getOpeningDateAsString(),
-                        p.getOpeningDateAsString(),
+                        p.getClosingDateAsString(),
                         p.getManager(),
                         p.getOfficerslots(),
                         p.get_officers_as_string_for_csv(),
@@ -124,9 +111,6 @@ public class ProjectListDAO {
                 );
                 writer.newLine();
             }
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }

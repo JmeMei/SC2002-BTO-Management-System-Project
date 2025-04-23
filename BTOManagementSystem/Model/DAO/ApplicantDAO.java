@@ -1,6 +1,8 @@
 package BTOManagementSystem.Model.DAO;
 
 import BTOManagementSystem.App.App;
+import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
+import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Model.Roles.Applicant;
 
 import java.io.BufferedReader;
@@ -19,6 +21,7 @@ public class ApplicantDAO {
     private static List<Applicant> applicants = new ArrayList<Applicant>();
 
     public ApplicantDAO(){
+        applicants.clear();
         //init Applicants from CSV
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
             // Skip Header
@@ -36,6 +39,14 @@ public class ApplicantDAO {
             e.printStackTrace();
         }
 
+    }
+
+    public void UpdateApplicantProfile(String applicantNRIC, String projectName, ApplicationStatus status, FlatType flatType) {
+        Applicant applicant = this.getUser(applicantNRIC);
+        applicant.setAppliedProject(projectName);
+        applicant.setApplicationStatus(status);
+        applicant.setBookedFlatType(flatType);
+        this.updateDB();
     }
 
     public List<Applicant> getAllUsers(){

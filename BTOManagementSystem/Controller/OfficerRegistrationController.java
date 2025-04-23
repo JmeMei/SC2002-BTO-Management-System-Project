@@ -1,16 +1,83 @@
 package BTOManagementSystem.Controller;
 
 import BTOManagementSystem.App.App;
+import BTOManagementSystem.Model.ApplicantProjectStatus;
+import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
 import BTOManagementSystem.Model.DAO.OfficerRegistrationRequestDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
+import BTOManagementSystem.Model.OfficerRegistrationRequest;
+import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
-import BTOManagementSystem.View.HDBManagerApproveOfficerView;
-import BTOManagementSystem.View.HDBManagerView;
-import BTOManagementSystem.View.HDBOfficerAssignedProjectView;
+import BTOManagementSystem.View.*;
+
+import java.util.List;
 
 public class OfficerRegistrationController {
 
     OfficerRegistrationRequestDAO dao = new OfficerRegistrationRequestDAO();
+    ProjectListDAO projectListDAO = new ProjectListDAO();
+    ApplicationProjectStatusDAO statusDAO = new ApplicationProjectStatusDAO();
+
+    public void CreateARequest(HDBOfficerView officerView,HDBOfficerProjectRegistrationView regView,HDBOfficer officer) {
+
+        // Check that request does not already exist
+        OfficerRegistrationRequest req = dao.GetOfficerRegRequestByNRIC(officer.getNric());
+        if(req != null) {
+            // Reg already exists
+            regView.RegistationAlreadyExistsMessage();
+            officerView.showOfficerMenu(officer);
+        }
+
+        // User input project name
+        String projectName = regView.promptOfficerChooseProject();
+
+        List<String> projectNamesList = projectListDAO.getProjectNames();
+
+        String project = null;
+
+        for (String pNameList : projectNamesList) {
+            if (pNameList.trim().equalsIgnoreCase(projectName.trim())){
+                project = pNameList;
+            }
+        }
+        // Project does not exist
+        if (project == null) {
+            regView.ProjectNotFoundMessage();
+            officerView.showOfficerMenu(officer);
+        }
+
+        // Check that officer has not already applied for this project
+        ApplicantProjectStatus appProjStatus = statusDAO.getAnApplication(officer.getNric(),project);
+        if (appProjStatus != null) {
+            regView.AppliedForProjectBeforeMessage();
+            officerView.showOfficerMenu(officer);
+        }
+
+        // Successful
+        OfficerRegistrationRequest registerRequest = new OfficerRegistrationRequest(officer.getName(),officer.getNric(),project,"Pending");
+
+        // Call To DB
+        dao.CreateOfficerRegistrationRequest(registerRequest);
+
+        // Reload RegList
+        dao.ReloadFromFile();
+
+        regView.RegistationSuccessMessage();
+
+        officerView.showOfficerMenu(officer);
+    }
+
+    public void ViewOfficerRequest(HDBOfficerView officerView, HDBOfficerProjectRegistrationView regView, HDBOfficer officer){
+        OfficerRegistrationRequest req = dao.GetOfficerRegRequestByNRIC(officer.getNric());
+        if(req == null){
+            // Reg does not exist
+            regView.RegistationNotFoundMessage();
+            officerView.showOfficerMenu(officer);
+        }
+
+        regView.displayRegistrationStatus(req);
+        officerView.showOfficerMenu(officer);
+    }
 
     public void ViewApproveRequests(HDBManagerView managerView, HDBManagerApproveOfficerView approveOfficerView ){
 

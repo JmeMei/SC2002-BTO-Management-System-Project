@@ -1,5 +1,6 @@
 package BTOManagementSystem.View;
 
+import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.EnquiryController;
 import BTOManagementSystem.Model.Enquiry;
 import BTOManagementSystem.Model.User;
@@ -112,8 +113,12 @@ public class ApplicantEnquiryView {
                     String result = enquiryController.deleteEnquiry(enquiryID, user.getNric());
                     System.out.println(result);
                 }
-                case 5 -> {scanner.close();
-                    System.out.println("Returning to main menu.");}
+                case 5 -> {
+                    System.out.println("Returning to main menu.");
+                    ApplicantView applicantView = new ApplicantView();
+                    applicantView.showApplicantMenu(user);
+                }
+
                 default -> System.out.println("Invalid choice.");
             }
 

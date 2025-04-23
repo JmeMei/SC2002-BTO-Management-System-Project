@@ -4,10 +4,13 @@ import BTOManagementSystem.Model.ApplicantProjectStatus;
 import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
+import BTOManagementSystem.Model.DAO.OfficerRegistrationRequestDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.DAO.WithdrawalRequestDAO;
+import BTOManagementSystem.Model.OfficerRegistrationRequest;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.Applicant;
+import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Services.ApplicantActionHandler;
 import BTOManagementSystem.View.*;
@@ -22,15 +25,37 @@ public class ApplicationController {
     private ProjectListDAO projectListDAO;
     private ApplicationProjectStatusDAO applicantProjectStatusDAO;
     private WithdrawalRequestDAO withdrawalRequestDAO;
+    private OfficerRegistrationRequestDAO requestDAO;
     private ApplicantViewProjectsView viewProjectsView;
     private HDBOfficerAssignedProjectView assignedProjectView;
+    private ApplicantView applicantView;
+    private HDBOfficerView officerView;
+    private HDBManagerView managerView;
 
     public ApplicationController() {
         this.applicantProjectStatusDAO = new ApplicationProjectStatusDAO();
         this.projectListDAO = new ProjectListDAO();
         this.withdrawalRequestDAO = new WithdrawalRequestDAO();
+        this.requestDAO = new OfficerRegistrationRequestDAO();
         this.viewProjectsView = new ApplicantViewProjectsView();
         this.assignedProjectView = new HDBOfficerAssignedProjectView();
+        this.applicantView = new ApplicantView();
+        this.officerView = new HDBOfficerView();
+        this.managerView = new HDBManagerView();
+    }
+
+    public void returntoMenu(User user) {
+        switch (user.getRole().toLowerCase()) {
+            case "applicant":
+                applicantView.showApplicantMenu(user);
+                break;
+            case "officer":
+                officerView.showOfficerMenu((HDBOfficer) user);
+                break;
+            case "manager":
+                managerView.showMenu();
+                break;
+        }
     }
 
     public List<FlatType> getEligibleFlatTypes(User user) {
@@ -84,11 +109,10 @@ public class ApplicationController {
         List<FlatType> eligibleFlatTypes = getEligibleFlatTypes(user);
 
         if (eligibleFlatTypes.contains(FlatType.TWO_ROOM)) {
-            eligibleProjects.addAll(projectListDAO.loadAvailableTwoRooms(user));
+            eligibleProjects = projectListDAO.loadAvailableTwoRooms(user);
         }
-
-        if (eligibleFlatTypes.contains(FlatType.THREE_ROOM)) {
-            eligibleProjects.addAll(projectListDAO.loadAvailableThreeRooms(user));
+        else if (eligibleFlatTypes.contains(FlatType.THREE_ROOM)) {
+            eligibleProjects = projectListDAO.loadAvailableThreeRooms(user);
         }
 
         return eligibleProjects;
@@ -105,7 +129,7 @@ public class ApplicationController {
             viewProjectsView.DisplayProjects(eligibleProjects, eligibleFlatTypes);
         }
 
-        applicantView.showMenu(user);
+       returntoMenu(user);
     }
 
     public void applyProject(ApplicantView applicantView, ApplicantViewApplyProjectView applyView, User user) {
@@ -124,6 +148,19 @@ public class ApplicationController {
         }
 
         if (project != null) {
+            // Check if applicant is the HDBOfficer of the project
+            if(project.get_officers().contains(user.getNric())){
+                applyView.CannotApplyIfHDBOfficerMessage();
+                returntoMenu(user);
+            }
+
+            // Check if applicant is pending approval to handle this project
+            OfficerRegistrationRequest req = requestDAO.GetOfficerRegRequest(user.getNric(), project.getName());
+            if(req != null){
+                applyView.CannotApplyIfPendingHDBOfficerMessage();
+                returntoMenu(user);
+            }
+
             // Show available flat types for this project
             List<FlatType> availableTypes = this.getAvailableFlatTypes(project, user);
 
@@ -133,22 +170,24 @@ public class ApplicationController {
 
                 if(userinput.equals("Cancel")){
                     applyView.CancelApplyProjectMessage();
-                    applicantView.showMenu(user);
+                    returntoMenu(user);
                 }
 
                 FlatType inputType = FlatType.fromString(userinput);
 
                 // Apply for Project
-                boolean success = applicantProjectStatusDAO.applyForProject(user, projectName, inputType);
+                boolean success = applicantProjectStatusDAO.applyForProject(user, project.getName(), inputType);
                 if (success) {
                     applicantProjectStatusDAO.reloadFromFile();
                     applyView.ApplySuccessMessage();
                 } else {
-                    // Already applied
-                    ApplicationStatus status = applicantProjectStatusDAO.getApplicationStatus(user.getNric(), projectName, inputType);
-                    if (status != null) {
+                    // Already applied to this project
+                    ApplicationStatus status = applicantProjectStatusDAO.getApplicationStatus(user.getNric(), project.getName(), inputType);
+                    if(status != null) {
+                        // Current project Status
                         applyView.ApplicationInProcessMessage(status.name());
                     }else{
+                        // Past project in Process
                         applyView.AppliedBeforeMessage();
                     }
                 }
@@ -161,64 +200,84 @@ public class ApplicationController {
             applyView.ProjectNotFoundMessage();
         }
 
-        applicantView.showMenu(user);
+        returntoMenu(user);
     }
 
-    public void viewMyApplication(ApplicantView applicantView, ApplicantManageApplicationView manageView, User user) {
-        ApplicantProjectStatus status = applicantProjectStatusDAO.getApplication(user.getNric());
-        if (status != null) {
-            manageView.DisplayApplicationStatus(status);
+    public void viewMyApplications(ApplicantView applicantView, ApplicantManageApplicationView manageView, User user) {
+        List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplications(user.getNric());
+        if (!statusList.isEmpty()) {
+            manageView.DisplayApplicationStatus(statusList);
         } else {
             manageView.ApplicationNotFoundMessage();
         }
 
-        applicantView.showMenu(user);
+        returntoMenu(user);
     }
 
     public void withdrawApplication(ApplicantView applicantView, ApplicantManageApplicationView manageView, User user) {
-        // Get Project Name from Existing Application
-        String projectName = applicantProjectStatusDAO.getProjectNameforApplicant(user);
+        // Get current Application that is PENDING
+        List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplications(user.getNric());
 
-        if (projectName != null) {
-            boolean success = withdrawalRequestDAO.CreateWithdrawalRequest(user, projectName);
-            if (success) {
-                // Requested for Withdrawal Success
-                manageView.ReqWithdrawalSuccessMessage();
-            } else {
-                // Already Requested
-                manageView.RequestedBeforeMessage();
+        if(statusList.isEmpty()) {
+            manageView.ApplicationsToWithdrawNotFoundMessage();
+            returntoMenu(user);
+        }
+
+        ApplicantProjectStatus statusToWithdraw = null;
+
+        for (ApplicantProjectStatus status : statusList) {
+            if (status.getNric().equals(user.getNric()) && status.getApplicationStatus().equals(ApplicationStatus.PENDING)) {
+                statusToWithdraw = status;
             }
+        }
+        List<ApplicantProjectStatus> statusListDisplay = new ArrayList<>();
+        statusListDisplay.add(statusToWithdraw);
+
+        manageView.DisplayApplicationStatus(statusListDisplay);
+        boolean confirm = manageView.PromptWithdrawConfirmation();
+
+        if (!confirm){
+            returntoMenu(user);
+        }
+
+        boolean success = withdrawalRequestDAO.CreateWithdrawalRequest(user, statusToWithdraw.getProjectName());
+        if (success) {
+            // Requested for Withdrawal Success
+            manageView.ReqWithdrawalSuccessMessage();
         } else {
-            // Application does not exist
-            manageView.ApplicationNotFoundMessage();
+            // Already Requested
+            manageView.RequestedBeforeMessage();
         }
 
-        applicantView.showMenu(user);
+        returntoMenu(user);
     }
 
-    public Project getProject(String projectName, User user) {
-        List<Project> projectAvailable = getEligibleProjects(user);
+//    public Project getProject(String projectName, User user) {
+//        List<Project> projectAvailable = getEligibleProjects(user);
+//
+//        for (Project p : projectAvailable) {
+//            if (p.getName().equalsIgnoreCase(projectName)) {
+//                return p;
+//            }
+//        }
+//        return null;
+//    }
 
-        for (Project p : projectAvailable) {
-            if (p.getName().equalsIgnoreCase(projectName)) {
-                return p;
-            }
-        }
-        return null;
-    }
+    public void getApplicantProjectStatus(String applicantNRIC, String projectName,User user) {
+        List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplications(applicantNRIC);
 
-    public ApplicantProjectStatus getApplicantProjectStatus(String applicantNRIC, String projectName) {
-        ApplicantProjectStatus status = applicantProjectStatusDAO.getApplication(applicantNRIC);
-        if (status != null) {
-            if (status.getProjectName().equalsIgnoreCase(projectName)) {
-                return status;
-            } else {
-                assignedProjectView.AssignedApplicantNotFoundMessage();
+        if (!statusList.isEmpty()) {
+            for (ApplicantProjectStatus s : statusList) {
+                if (s.getProjectName().equalsIgnoreCase(projectName)) {
+                    assignedProjectView.DisplayApplicationStatus(s);
+                } else {
+                    assignedProjectView.AssignedApplicantNotFoundMessage();
+                }
             }
         } else {
             assignedProjectView.ApplicationNotFoundMessage();
         }
-        return null;
+        returntoMenu(user);
     }
 
 }

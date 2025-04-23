@@ -17,7 +17,7 @@ public class WithdrawalRequestDAO {
     private String[] Headers;
 
     public WithdrawalRequestDAO() {
-
+       withdrawalRequests.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
             String line;
@@ -42,7 +42,7 @@ public class WithdrawalRequestDAO {
     public boolean CreateWithdrawalRequest(User user, String projectName) {
         // Check if Request was already made
         for (WithdrawalRequest wReq : withdrawalRequests) {
-            if(wReq.getNric().equals(user.getNric())) {
+            if(wReq.getNric().equals(user.getNric()) && wReq.getProjectName().equals(projectName)) {
                 return false;
             }
         }

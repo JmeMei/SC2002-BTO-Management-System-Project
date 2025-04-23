@@ -1,6 +1,7 @@
 package BTOManagementSystem.Controller;
 
 import BTOManagementSystem.Model.ApplicantProjectStatus;
+import BTOManagementSystem.Model.DAO.ApplicantDAO;
 import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
@@ -11,16 +12,18 @@ import BTOManagementSystem.View.HDBOfficerAssignedProjectView;
 public class BookingController {
     private ApplicationProjectStatusDAO applicantProjectStatusDAO;
     private ProjectListDAO projectListDAO;
+    private ApplicantDAO applicantDAO;
 
     public BookingController() {
         this.applicantProjectStatusDAO = new ApplicationProjectStatusDAO();
         this.projectListDAO = new ProjectListDAO();
+        this.applicantDAO = new ApplicantDAO();
     }
 
     public boolean bookFlatForApplicant(HDBOfficerAssignedProjectView projectView, String applicantNRIC, String projectName) {
 
         // Check if application exists
-        ApplicantProjectStatus status = applicantProjectStatusDAO.getApplication(applicantNRIC);
+        ApplicantProjectStatus status = applicantProjectStatusDAO.getAnApplication(applicantNRIC,projectName);
         if (status == null) {
             projectView.ApplicationNotFoundMessage();
             return false;
@@ -57,6 +60,9 @@ public class BookingController {
 
                 // decrease flat unit count in project
                 projectListDAO.decreaseFlatUnits(currproject, status.getFlatType());
+
+                // Set Project Details in Applicant Profile
+                //applicantDAO.UpdateApplicantProfile(applicantNRIC,status.getProjectName(),status.getApplicationStatus(),status.getFlatType());
             } else {
                 return false;
             }

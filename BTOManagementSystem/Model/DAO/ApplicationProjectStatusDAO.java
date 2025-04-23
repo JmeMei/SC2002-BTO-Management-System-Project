@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.*;
 
 import BTOManagementSystem.Model.ApplicantProjectStatus;
@@ -26,7 +27,7 @@ public class ApplicationProjectStatusDAO {
     }
 
     public void LoadAllApplicantProjectStatuses(){
-        statusList = new ArrayList<>();
+       statusList.clear();
         //init Applicants from CSV
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
             // Skip Header
@@ -56,7 +57,9 @@ public class ApplicationProjectStatusDAO {
 
     public boolean applyForProject(User user, String projectName, FlatType flatType) {
         for (ApplicantProjectStatus status : statusList) {
-            if (status.getNric().equals(user.getNric())) {
+            // If current project exists or past project is either PENDING, SUCCESSFUL, BOOKED
+            if (status.getNric().equals(user.getNric()) && status.getProjectName().equals(projectName) ||
+                    status.getNric().equals(user.getNric()) && status.getApplicationStatus() != ApplicationStatus.UNSUCCESSFUL) {
                 return false;
             }
         }
@@ -96,10 +99,20 @@ public class ApplicationProjectStatusDAO {
         return null;
     }
 
-    public ApplicantProjectStatus getApplication(String applicantNRIC) {
+    public List<ApplicantProjectStatus> getApplications(String applicantNRIC) {
+        List<ApplicantProjectStatus> applicantstatusList = new ArrayList<>();
         for (ApplicantProjectStatus status : statusList) {
             if (status.getNric().equals(applicantNRIC)) {
-                return status;
+                applicantstatusList.add(status);
+            }
+        }
+        return applicantstatusList;
+    }
+
+    public ApplicantProjectStatus getAnApplication(String applicantNRIC,String projectName) {
+        for (ApplicantProjectStatus status : statusList) {
+            if (status.getNric().equals(applicantNRIC) && status.getProjectName().equals(projectName)) {
+               return status;
             }
         }
         return null;

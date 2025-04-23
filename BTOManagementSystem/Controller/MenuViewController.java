@@ -16,7 +16,7 @@ public class MenuViewController {
 
         if (user instanceof HDBOfficer) {
             HDBOfficerView officerView = new HDBOfficerView();
-            officerView.showMenu((HDBOfficer)user);
+            officerView.showOfficerMenu((HDBOfficer)user);
         } else if (user instanceof HDBManager) {
             HDBManagerView managerView = new HDBManagerView();
 
@@ -31,7 +31,7 @@ public class MenuViewController {
 
         } else if (user instanceof Applicant) {
             ApplicantView applicantView = new ApplicantView();
-            applicantView.showMenu((Applicant)user);
+            applicantView.showApplicantMenu((Applicant)user);
         }
 
     }

@@ -15,6 +15,7 @@ public class HDBManagerDAO {
 
     public HDBManagerDAO(){
         //init Managers from CSV
+        managers.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
             // Skip Header
             br.readLine();

@@ -50,14 +50,21 @@ public class ApplicantViewApplyProjectView {
         return normInput;
     }
 
+    public void CannotApplyIfHDBOfficerMessage(){
+        System.out.println("Application denied: HDB officers assigned to this project are not permitted to apply for it as applicants.");
+    }
+
+    public void CannotApplyIfPendingHDBOfficerMessage(){
+        System.out.println("Application denied: HDB officers pending to be assigned to this project are not permitted to apply for it as applicants.");
+    }
+
     public void CancelApplyProjectMessage(){
         System.out.println("You have canceled applying for this project.");
     }
 
     public void AppliedBeforeMessage(){
-        System.out.println("You have already applied for a project before.");
+        System.out.println("You have already applied for a project before and it is being processed.");
     }
-
 
     public void ApplySuccessMessage(){
         System.out.println("Successfully applied. Now pending.");
@@ -68,8 +75,8 @@ public class ApplicantViewApplyProjectView {
     }
 
     public void ApplicationInProcessMessage(String status){
-        System.out.println("You have already successfully applied to this project and it is now currently " + status + ".");
-        System.out.println("You are not able to apply for any more projects at this time.");
+        System.out.println("You have already applied to this project and it is now currently " + status + ".");
+        System.out.println("You are not able to apply to this project at this time.");
     }
 
     public void NotEligibleForProjectsMessage(){

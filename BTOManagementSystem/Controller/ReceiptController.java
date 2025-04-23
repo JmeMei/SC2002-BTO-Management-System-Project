@@ -9,6 +9,7 @@ import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.View.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReceiptController {
 
@@ -93,12 +94,13 @@ public class ReceiptController {
         ArrayList<Receipt> filtered_receipts_list = receiptsDAO.LoadReciepts(filter_option,filter_value);
         receiptsView.DisplayReceipts(filtered_receipts_list, receiptsDAO.getHeaders());
 
-        officerView.showMenu((HDBOfficer)App.userSession);
+        officerView.showOfficerMenu((HDBOfficer)App.userSession);
 
     }
 
     public void generateReceipt(String applicantNRIC, String projectName) {
-        ApplicantProjectStatus status = statusDAO.getApplication(applicantNRIC);
+        // Get Status
+        ApplicantProjectStatus status = statusDAO.getAnApplication(applicantNRIC,projectName);
 
         // Create the receipt
         Receipt receipt = new Receipt(

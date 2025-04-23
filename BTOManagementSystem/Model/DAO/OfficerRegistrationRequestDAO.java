@@ -10,12 +10,19 @@ public class OfficerRegistrationRequestDAO {
 
 
     private String filePath = "BTOManagementSystem/Data/OfficerRegistrationRequests.csv";
-    private ArrayList<OfficerRegistrationRequest> officerRegistrationRequests = new ArrayList<>();
+    private static ArrayList<OfficerRegistrationRequest> officerRegistrationRequests = new ArrayList<>();
     private String[] Headers;
 
     public OfficerRegistrationRequestDAO() {
+        this.LoadAllOfficerRegistrationRequests();
+    }
 
+    public void ReloadFromFile() {
+        this.LoadAllOfficerRegistrationRequests();
+    }
 
+    public void LoadAllOfficerRegistrationRequests() {
+        officerRegistrationRequests.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
             String line;
@@ -33,15 +40,13 @@ public class OfficerRegistrationRequestDAO {
                         values.get(3)
                 );
 
-               this.officerRegistrationRequests.add(request);
+                this.officerRegistrationRequests.add(request);
 
             }
         } catch (IOException e) {
             System.out.println("Error reading the file.");
             e.printStackTrace();
         }
-
-
     }
 
     public String[] getHeaders() {
@@ -103,7 +108,28 @@ public class OfficerRegistrationRequestDAO {
         return false;
     }
 
+    public OfficerRegistrationRequest GetOfficerRegRequest(String NRIC,String projectName){
+        for (OfficerRegistrationRequest request : this.officerRegistrationRequests){
+            if (request.getNRIC().equals(NRIC) && request.getProjectName().equals(projectName)){
+                return request;
+            }
+        }
+        return null;
+    }
 
+    public OfficerRegistrationRequest GetOfficerRegRequestByNRIC(String NRIC){
+        for (OfficerRegistrationRequest request : this.officerRegistrationRequests){
+            if (request.getNRIC().equals(NRIC)){
+                return request;
+            }
+        }
+        return null;
+    }
+
+    public void CreateOfficerRegistrationRequest(OfficerRegistrationRequest OfficerRegistrationRequest){
+        this.officerRegistrationRequests.add(OfficerRegistrationRequest);
+        updateDB();
+    }
 
 
     public void updateDB(){

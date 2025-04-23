@@ -15,7 +15,7 @@ public class ReceiptsDAO {
     private static ArrayList<Receipt> receipts = new ArrayList<>();
 
     public ReceiptsDAO() {
-
+        receipts.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
             String line;

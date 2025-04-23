@@ -2,6 +2,7 @@ package BTOManagementSystem.View;
 
 import BTOManagementSystem.Controller.EnquiryController;
 import BTOManagementSystem.Model.Enquiry;
+import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.Model.User;
 import java.util.List;
 import java.util.Scanner;
@@ -132,7 +133,7 @@ public class HDBOfficerEnquiryView {
                     scanner.close();
                     System.out.println("Returning to main menu.");
                     HDBOfficerView officerView = new HDBOfficerView();
-                    officerView.showMenu(user);
+                    officerView.showOfficerMenu((HDBOfficer)user);
                 }
                 default -> System.out.println("Invalid choice.");
             }

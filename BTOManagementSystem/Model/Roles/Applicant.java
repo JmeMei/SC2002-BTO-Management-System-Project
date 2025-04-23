@@ -1,24 +1,29 @@
 package BTOManagementSystem.Model.Roles;
 
+import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 
 //APPLICANT IS CONNECTED TO APPLICANTPROJECTSTATS.CSV
 
 //Name,NRIC,Age,Marital Status,Password,role,ProjectID, Application Status, Enquiry, Reply
-public class Applicant extends User{
+public class Applicant extends User {
     public int ProjectID;
-    public ApplicationStatus applicationStatus;
     public String Enquiry;
     public String Reply;
+    public FlatType FlatType;
+
+    // Applicant-specific
+    private String AppliedProject;        // Only one project
+    private ApplicationStatus ApplicationStatus;     // "Pending", "Successful", "Unsuccessful", "Booked"
+    private FlatType BookedFlatType;
 
     public Applicant(String name, String nric, int age, String password, String maritalStatus, String role,
-            int projectID, ApplicationStatus applicationStatus, String enquiry, String reply) {
+                     String appliedProject, ApplicationStatus applicationStatus, FlatType bookedFlatType) {
         super(name, nric, age, password, maritalStatus, role);
-        ProjectID = projectID;
-        this.applicationStatus = applicationStatus;
-        Enquiry = enquiry;
-        Reply = reply;
+        this.AppliedProject = appliedProject;
+        this.ApplicationStatus = applicationStatus;
+        this.BookedFlatType = bookedFlatType;
     }
 
     //If there are missing parameters, it assigned default
@@ -27,27 +32,27 @@ public class Applicant extends User{
         // Default role is "Applicant"
         super(name, nric, age, password, maritalStatus, "Applicant");
         // Set defaults
-        this.ProjectID = -1;
-        this.applicationStatus = ApplicationStatus.NA;
+        this.AppliedProject = null;
+        this.ApplicationStatus = ApplicationStatus.NA;
         this.Enquiry = "";
         this.Reply = "";
     }
-    
-    public int getProjectID() {
-        return ProjectID;
-    }
 
-    public void setProjectID(int projectID) {
-        ProjectID = projectID;
-    }
+    public String getAppliedProject() { return AppliedProject; }
+
+    public void setAppliedProject(String appliedProject) { this.AppliedProject = AppliedProject; }
 
     public ApplicationStatus getApplicationStatus() {
-        return applicationStatus;
+        return ApplicationStatus;
     }
 
     public void setApplicationStatus(ApplicationStatus applicationStatus) {
-        this.applicationStatus = applicationStatus;
+        this.ApplicationStatus = applicationStatus;
     }
+
+    public FlatType getBookedFlatType() { return BookedFlatType; }
+
+    public void setBookedFlatType(FlatType bookedFlatType) { this.BookedFlatType = bookedFlatType; }
 
     public String getEnquiry() {
         return Enquiry;
@@ -64,14 +69,4 @@ public class Applicant extends User{
     public void setReply(String reply) {
         Reply = reply;
     }
-
-//    @Override
-//    public String toString() {
-//        return "Applicant{" +
-//                "name='" + name + '\'' +
-//                ", nric='" + nric + '\'' +
-//                ", age=" + age +
-//                ", maritalstatus='" + password + '\'' +
-//                '}';
-//    }
 }

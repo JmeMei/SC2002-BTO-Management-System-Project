@@ -49,11 +49,8 @@ public class HDBOfficerAssignedProjectView {
                     System.out.print("Enter Applicant NRIC:");
                     String applicantNRIC = scanner.nextLine();
 
-                    // get Status
-                    ApplicantProjectStatus status = applicationController.getApplicantProjectStatus(applicantNRIC,projectName);
+                    applicationController.getApplicantProjectStatus(applicantNRIC,projectName,officer);
 
-                    // display status
-                    this.DisplayApplicationStatus(status);
                     break;
                 case 3:
                     // Get the Applicant's application
@@ -76,7 +73,7 @@ public class HDBOfficerAssignedProjectView {
                 case 4:
                     // Go back to Officer View
                     HDBOfficerView officerView = new HDBOfficerView();
-                    officerView.showMenu(officer);
+                    officerView.showOfficerMenu(officer);
                     break;
                 default:
                     System.out.println("Invalid option.");
@@ -86,17 +83,17 @@ public class HDBOfficerAssignedProjectView {
 
     public void showProjectDetails(Project project) {
         System.out.println("========== Project Details ==========");
-        System.out.println("Project Name      : " + project.getName());
-        System.out.println("Neighborhood      : " + project.getNeighbourhood());
-        System.out.println("Application Period: " + project.getOpeningDate() + " to " + project.getClosingDate());
+        System.out.println("Project Name       : " + project.getName());
+        System.out.println("Neighborhood       : " + project.getNeighbourhood());
+        System.out.println("Application Period : " + project.getOpeningDate() + " to " + project.getClosingDate());
 
-        System.out.println(project.getType1() + " Units      : " + project.getType1_numofunits() + " remaining");
-        System.out.println(project.getType2() + " Units      : " + project.getType2_numofunits() + " remaining");
+        System.out.println(project.getType1() + " Units       : " + project.getType1_numofunits() + " remaining");
+        System.out.println(project.getType2() + " Units       : " + project.getType2_numofunits() + " remaining");
 
         System.out.println("Assigned Manager   : " + project.getManager());
-        System.out.println("Assigned Officers : " + project.get_officers().toString());
-        System.out.println("Officer Slots : " + project.getOfficerslots());
-        System.out.println("Visibility    : " + (project.getVisibility() == 1 ? "Visible" : "Not Visible"));
+        System.out.println("Assigned Officers  : " + project.get_officers().toString());
+        System.out.println("Officer Slots      : " + project.getOfficerslots());
+        System.out.println("Visibility         : " + (project.getVisibility() == 1 ? "Visible" : "Not Visible"));
     }
 
     public void DisplayApplicationStatus(ApplicantProjectStatus status) {
@@ -117,7 +114,7 @@ public class HDBOfficerAssignedProjectView {
     }
 
     public void AssignedApplicantNotFoundMessage(){
-        System.out.println("No applications found for this applicant in this project");
+        System.out.println("No applications found for this applicant in this project.");
     }
 
     public void BookingNotAllowedMessage(String status){
