@@ -530,7 +530,7 @@ public class ProjectListDAO {
     public String getOfficerIC(String projectName){
         for (Project p: ProjectsList){
             if(p.getName().equals(projectName)){
-                return p.get_officers().getFirst();
+                return p.get_officers().get(0);
             }
         }
         return null;
