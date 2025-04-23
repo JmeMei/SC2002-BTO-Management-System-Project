@@ -1,9 +1,7 @@
 package BTOManagementSystem.View;
 
 import BTOManagementSystem.App.App;
-import BTOManagementSystem.Controller.OfficerRegistrationController;
-import BTOManagementSystem.Controller.ProjectListController;
-import BTOManagementSystem.Controller.ReceiptController;
+import BTOManagementSystem.Controller.*;
 
 import java.util.Scanner;
 
@@ -24,6 +22,9 @@ public class HDBManagerView {
         System.out.println("6. Approve Officer Registrations");
         System.out.println("7. Enquiry Management"); // for testing
         System.out.println("8. View Receipts");
+        System.out.println("9. Handle Withdrawal Requests");
+        System.out.println("10. View BTO applications");
+        System.out.println("11. Approve BTO application");
 
         System.out.print("Enter your option: ");
         int option = scanner.nextInt();
@@ -31,6 +32,8 @@ public class HDBManagerView {
         ProjectListController controller = new ProjectListController();
         OfficerRegistrationController officerRegistrationController = new OfficerRegistrationController();
         ReceiptController receiptController = new ReceiptController();
+        WithdrawalRequestController  withdrawalRequestController = new WithdrawalRequestController();
+        ApplicationStatusController applicationStatusController = new ApplicationStatusController();
 
         //views
         HDBManagerCreateProjectView createView = new HDBManagerCreateProjectView();
@@ -46,6 +49,10 @@ public class HDBManagerView {
         HDBManagerEnquiryView enquiryView = new HDBManagerEnquiryView();
 
         ReceiptsView receiptsView = new ReceiptsView();
+
+        HDBManagerWithdrawalRequestView withdrawalRequestView = new HDBManagerWithdrawalRequestView();
+
+        HDBManagerApproveBTOApplicationView approveBTOApplicationView = new HDBManagerApproveBTOApplicationView();
 
 
         switch (option) {
@@ -80,6 +87,15 @@ public class HDBManagerView {
 
             case 8:
                 receiptController.ViewReceipts(this, receiptsView);
+
+            case 9:
+                withdrawalRequestController.HandleWithdrawalRequest(this, withdrawalRequestView);
+
+            case 10:
+                applicationStatusController.ViewApplication(this, approveBTOApplicationView);
+
+            case 11:
+                applicationStatusController.approveApplication(this, approveBTOApplicationView);
 
         }
 

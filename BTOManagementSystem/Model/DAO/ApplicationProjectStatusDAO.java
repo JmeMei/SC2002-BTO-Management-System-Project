@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.*;
 
 import BTOManagementSystem.Model.ApplicantProjectStatus;
 import BTOManagementSystem.Model.User;
@@ -132,6 +133,91 @@ public class ApplicationProjectStatusDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    //HDB manager
+
+    public void mark_unsuccessful(String nric, String projectName) {
+
+        for(ApplicantProjectStatus s : statusList){
+
+            if (s.getNric().equalsIgnoreCase(nric)){
+
+                if (s.getProjectName().equalsIgnoreCase(projectName)){
+
+                    s.setApplicationStatus(ApplicationStatus.UNSUCCESSFUL);
+                    updateDB();
+                    return;
+                }
+            }
+        }
+
+    }
+
+    public int mark_successful(String nric, String projectName) {
+
+        for(ApplicantProjectStatus s : statusList){
+
+            if (s.getNric().equalsIgnoreCase(nric)){
+
+                if (s.getProjectName().equalsIgnoreCase(projectName)){
+
+                    s.setApplicationStatus(ApplicationStatus.SUCCESSFUL);
+                    updateDB();
+                    return 1;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    public ArrayList<ApplicantProjectStatus> LoadApplications(String[] FilterData){
+
+        String ProjectName = FilterData[0];
+        String AgeGroup = FilterData[1];
+        int status = Integer.parseInt(FilterData[2]);
+
+        int[] Formatted_AgeGroup = {};
+        ArrayList<ApplicantProjectStatus> filteredList = new ArrayList<>();
+
+        if (!AgeGroup.equalsIgnoreCase("N")){
+
+            Formatted_AgeGroup = Arrays
+                    .stream(AgeGroup.split(","))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+        }
+
+        for (ApplicantProjectStatus s : statusList) {
+
+            if(status != 4){
+                if(! (s.getApplicationStatus().ordinal() == status) ){
+                    continue;
+                }
+            }
+
+
+            if (!ProjectName.equalsIgnoreCase("N")){
+                if (!s.getProjectName().equalsIgnoreCase(ProjectName)){
+                    continue;
+                }
+            }
+
+            if (!AgeGroup.equalsIgnoreCase("N")){
+
+                if (! (s.getAge() <= Formatted_AgeGroup[1] &&  s.getAge() >= Formatted_AgeGroup[0] )){
+                    continue;
+                }
+
+            }
+
+            //System.out.println("HELLOOOOOO");
+            filteredList.add(s);
+
+
+        }
+        return filteredList;
     }
 }
 

@@ -1,2 +1,5 @@
 Name,NRIC,Age,Marital Status,role,Project Name,FlatType,Application Status
 James,T2345678D,30,Married,Applicant,Coral Edge,2-Room,PENDING
+Grace,S9856543C,37,Married,Applicant,Coral Edge,2-Room,UNSUCCESSFUL
+Tracer,S9876543C,59,Married,Applicant,Coral Edge,2-Room,PENDING
+Genji,S9876543A,37,Married,Applicant,SengkangFlats,2-Room,SUCCESSFUL

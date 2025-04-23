@@ -10,11 +10,13 @@ public class HDBManagerWithdrawalRequestView {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    void ShowRequests(ArrayList<WithdrawalRequest> requests, String[] headers) {
+    public void ShowRequests(ArrayList<WithdrawalRequest> requests, String[] headers) {
 
-        for (String header : headers){
-            System.out.print(String.format("%-30s", header ));
+        for(int i = 0; i < headers.length - 1; i++){
+
+            System.out.print(String.format("%-30s", headers[i] ));
         }
+
 
         System.out.print("\n");
 
@@ -23,15 +25,20 @@ public class HDBManagerWithdrawalRequestView {
             System.out.print(String.format("%-30s", request.getName()));
             System.out.print(String.format("%-30s", request.getNric()) );
             System.out.print(String.format("%-30s", request.getProjectName()));
+
             System.out.print("\n");
         }
 
     }
 
-    public String PromptForWithdrawal() {
+    public String[] PromptForWithdrawal() {
 
-        System.out.print("Enter Applicant Name to withdraw: ");
-        String data = scanner.nextLine();
+        String[] data = {"" , ""};
+        System.out.print("Enter Applicant NRIC to withdraw: ");
+        data[0] = scanner.nextLine();
+
+        System.out.print("Enter corresponding Project Name: ");
+        data[1] = scanner.nextLine();
 
         return data;
     }

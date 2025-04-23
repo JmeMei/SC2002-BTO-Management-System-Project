@@ -7,3 +7,4 @@ public enum ApplicationStatus {
     UNSUCCESSFUL,
     BOOKED
 }
+// DO NOT TOUCH THIS

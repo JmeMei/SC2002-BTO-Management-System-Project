@@ -86,7 +86,10 @@ public class ProjectListController {
         viewProjectsView.DisplayProjects(dao.getHeaders(), projectArrayList);
 
         managerView.showMenu();
+
     }
+
+
 
 
 

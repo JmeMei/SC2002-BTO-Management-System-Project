@@ -119,6 +119,9 @@ public class WithdrawalRequestDAO {
         return requests;
     }
 
+    public String[] getHeaders() {
+        return Headers;
+    }
 
     public void UpdateDB(){
 
@@ -154,6 +157,26 @@ public class WithdrawalRequestDAO {
         this.withdrawalRequests.add(request);
         this.UpdateDB();
 
+    }
+
+
+    public int UpdateWithdrawalRequest(String ApplicantNRIC,  String ProjectName){
+
+        for (WithdrawalRequest wReq : withdrawalRequests) {
+
+            if(wReq.getNric().equalsIgnoreCase(ApplicantNRIC)){
+
+                if(wReq.getProjectName().equalsIgnoreCase(ProjectName)){
+
+                    wReq.setProcessed(1);
+                    this.UpdateDB();
+                    return 1;
+                }
+
+            }
+
+        }
+        return 0;
     }
 
     public static void main(String[] args) {
