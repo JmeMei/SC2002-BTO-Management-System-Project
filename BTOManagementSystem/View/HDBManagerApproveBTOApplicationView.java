@@ -20,6 +20,7 @@ public class HDBManagerApproveBTOApplicationView {
 
         int status = 0;
 
+
         while(status < 1 || status > 4){
             System.out.print("Select Status Type: \n"
                     + "1. Pending\n"
