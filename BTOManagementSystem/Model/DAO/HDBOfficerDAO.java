@@ -11,7 +11,7 @@ import java.util.List;
 public class HDBOfficerDAO {
 
     private static final String FILE_PATH = "BTOManagementSystem/Data/OfficerList.csv"; // um what is the point of this line
-    private List<HDBOfficer> officers = new ArrayList<HDBOfficer>();
+    private static List<HDBOfficer> officers = new ArrayList<HDBOfficer>();
 
     public HDBOfficerDAO(){
         //init officers from CSV

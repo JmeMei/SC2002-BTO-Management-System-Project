@@ -32,7 +32,7 @@ public class ProjectListDAO {
             "visibility"};
 
     private String filePath = "BTOManagementSystem/Data/ProjectList.csv";
-    ArrayList<Project> ProjectsList = new ArrayList<>();
+    private static ArrayList<Project> ProjectsList = new ArrayList<>();
 
     public ProjectListDAO() {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -112,7 +112,7 @@ public class ProjectListDAO {
                         p.getType1_sellingprice(),
                         p.getType2(),
                         p.getType2_numofunits(),
-                        p.getType2_sellling_price(),
+                        p.getType2_selling_price(),
                         p.getOpeningDateAsString(),
                         p.getOpeningDateAsString(),
                         p.getManager(),
@@ -186,7 +186,7 @@ public class ProjectListDAO {
                 project.setType2_numofunits(Integer.parseInt(value));
                 break;
             case 8:
-                project.setType2_sellling_price(Double.parseDouble(value));
+                project.setType2_selling_price(Double.parseDouble(value));
                 break;
 
             case 9:
@@ -526,22 +526,25 @@ public class ProjectListDAO {
 
     }
 
-    
-    // get officers in charge of the project(enq) 1 officer for now
     public String getOfficerIC(String projectName){
         for (Project p: ProjectsList){
-            if(p.getName().equalsIgnoreCase(projectName)){
-                List<String> all_officers = p.get_offficers();
-                if(all_officers.isEmpty()){
-                    return "";
-                }
-                else{
-                    return all_officers.get(0);
-                }
+            if(p.getName().equals(projectName)){
+                return p.get_officers().getFirst();
             }
         }
         return null;
     }
+
+    
+    // get officers in charge of the project(enq) 1 officer for now
+    public String getProjectNamefromOfficerIC(String officerNRIC){
+        for (Project p: ProjectsList){
+            if(p.get_officers().contains(officerNRIC))
+                return p.getName();
+            }
+        return null;
+    }
+
 
     // get manager in charge of the project(enq)
     public String getManagerbyProject(String projectName){
@@ -586,11 +589,7 @@ public class ProjectListDAO {
 
         return availableThreeRooms;
     }
-
-    public void getRoomType(String projectName) {
-
-    }
-
+}
 
 //    public List<Room> loadAvailableThreeRooms(User user){
 //        //final String FILE_PATH = "BTOManagementSystem/Data/ProjectList.csv";
@@ -689,7 +688,3 @@ public class ProjectListDAO {
 //        }
 //        return records; //return null i the tworrom csv is not found.
 //    }
-
-
-
-}

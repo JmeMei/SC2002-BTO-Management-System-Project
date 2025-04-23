@@ -30,7 +30,7 @@ public class ApplicantViewProjectsView {
 
             if (availableTypes.contains(type2)) {
                 System.out.print(type2.getDisplayName() + " Units   : " +
-                        p.getType2_numofunits() + " (Price: $" + (int) p.getType2_sellling_price() + ")");
+                        p.getType2_numofunits() + " (Price: $" + (int) p.getType2_selling_price() + ")");
 
                 if(p.getType2_numofunits() == 0) {
                     System.out.print(" (No Units Available)");

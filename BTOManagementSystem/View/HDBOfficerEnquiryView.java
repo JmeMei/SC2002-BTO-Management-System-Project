@@ -131,6 +131,8 @@ public class HDBOfficerEnquiryView {
                 case 6 -> {
                     scanner.close();
                     System.out.println("Returning to main menu.");
+                    HDBOfficerView officerView = new HDBOfficerView();
+                    officerView.showMenu(user);
                 }
                 default -> System.out.println("Invalid choice.");
             }

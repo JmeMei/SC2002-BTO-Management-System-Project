@@ -1,5 +1,7 @@
 package BTOManagementSystem.Controller;
 
+import BTOManagementSystem.Model.ApplicantProjectStatus;
+import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
 import BTOManagementSystem.Model.DAO.ReceiptsDAO;
 import BTOManagementSystem.Model.Receipt;
 import BTOManagementSystem.View.*;
@@ -8,9 +10,12 @@ import java.util.ArrayList;
 
 public class ReceiptController {
 
+    ReceiptsDAO receiptsDAO = new ReceiptsDAO();
+    ApplicationProjectStatusDAO statusDAO = new ApplicationProjectStatusDAO();
+
     public void ViewReceipts(HDBManagerView managerView, ReceiptsView receiptsView) {
 
-        ReceiptsDAO receiptsDAO = new ReceiptsDAO();
+
 
         int filter_option = receiptsView.PromptFilters();
         String filter_value = null;
@@ -42,6 +47,22 @@ public class ReceiptController {
 
         managerView.showMenu();
 
+    }
+
+    public void generateReceipt(String applicantNRIC, String projectName) {
+        ApplicantProjectStatus status = statusDAO.getApplication(applicantNRIC);
+
+        // Create the receipt
+        Receipt receipt = new Receipt(
+                status.getName(),
+                status.getNric(),
+                status.getMaritalStatus(),
+                status.getFlatType().getDisplayName(),
+                status.getAge(),
+                status.getProjectName()
+        );
+
+        receiptsDAO.AddReceipt(receipt);
     }
 
 }

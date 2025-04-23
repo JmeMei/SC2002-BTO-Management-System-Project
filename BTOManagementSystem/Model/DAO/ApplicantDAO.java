@@ -16,7 +16,7 @@ import java.util.List;
 public class ApplicantDAO {
 
     private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantList.csv"; // um what is the point of this line
-    private List<Applicant> applicants = new ArrayList<Applicant>();
+    private static List<Applicant> applicants = new ArrayList<Applicant>();
 
     public ApplicantDAO(){
         //init Applicants from CSV

@@ -2,6 +2,7 @@ package BTOManagementSystem.View;
 
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.ApplicationController;
+import BTOManagementSystem.Controller.ProjectListController;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
 import java.util.Scanner;
 
@@ -11,6 +12,7 @@ public class HDBOfficerView extends ApplicantView{
     public void showMenu(HDBOfficer officer) {
 
         ApplicationController applicationController = new ApplicationController();
+        ProjectListController projectListController = new ProjectListController();
         HDBOfficerEnquiryView officerEnquiryView = new HDBOfficerEnquiryView();
 
         int option = 0;
@@ -22,11 +24,10 @@ public class HDBOfficerView extends ApplicantView{
             System.out.println("2. Apply for a Project");
             System.out.println("3. View My Application");
             System.out.println("4. Withdraw My Application");
-            System.out.println("5. Enquiry Management");
-            System.out.println("6. View Applicants");
-            System.out.println("7. Book Flat for Applicant");
-            System.out.println("8. Logout");
-            System.out.println("9. Exit");
+            System.out.println("5. Assigned Project Management");
+            System.out.println("6. Enquiry Management");
+            System.out.println("7. Logout");
+            System.out.println("8. Exit");
             System.out.print("Enter your option: ");
 
             try {
@@ -39,6 +40,7 @@ public class HDBOfficerView extends ApplicantView{
             //views
             ApplicantViewApplyProjectView applyView = new ApplicantViewApplyProjectView();
             ApplicantManageApplicationView manageApplicationView = new ApplicantManageApplicationView();
+            HDBOfficerAssignedProjectView assignedProjectView = new HDBOfficerAssignedProjectView();
 
             switch (option) {
                 case 1: // display projects
@@ -53,13 +55,17 @@ public class HDBOfficerView extends ApplicantView{
                 case 4: // withdraw application
                     applicationController.withdrawApplication(this,manageApplicationView,officer);
                     break;
-                case 5: // enquiry management
+                case 5: // manage assigned project
+                    // Check if Officer is assigned to a project
+                    String projectName = projectListController.getApprovedProjectName(officer);
+                    if(projectName != null){
+                        assignedProjectView.showMenu(officer,projectName);
+                    }else{
+                        System.out.println("You are not assigned to any project.");
+                    }
+                    break;
+                case 6: // enquiry management
                     officerEnquiryView.showEnquiryMenu(officer);
-                    break;
-                case 6: // view applicants for managed project
-                    //projectController.viewProject(officer);
-                    break;
-                case 7: // book flat for applicant
                     break;
                 case 8: // logout
                     System.out.println(officer.getName() + " logging out...");

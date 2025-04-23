@@ -22,7 +22,7 @@ public class Project {
 
     String Type2;
     int Type2_numofunits;
-    double type2_sellling_price;
+    double type2_selling_price;
     LocalDate openingDate;
     LocalDate closingDate;
     String manager;
@@ -32,7 +32,7 @@ public class Project {
     private int visibility = 0;
 
     public Project(String name, String Neighbourhood, String type1 ,int Type1_numofunits, double Type1_sellingprice,
-                   String Type2, int Type2_numofunits, double type2_sellling_price,
+                   String Type2, int Type2_numofunits, double type2_selling_price,
                    String openingDate, String closingDate, String manager, int officerslots , String officers ,int visibility) {
 
         this.name = name;
@@ -43,7 +43,7 @@ public class Project {
 
         this.Type2 = Type2;
         this.Type2_numofunits = Type2_numofunits;
-        this.type2_sellling_price = type2_sellling_price;
+        this.type2_selling_price = type2_selling_price;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -123,12 +123,12 @@ public class Project {
         this.Type2_numofunits = Type2_numofunits;
     }
 
-    public double getType2_sellling_price() {
-        return type2_sellling_price;
+    public double getType2_selling_price() {
+        return type2_selling_price;
     }
 
-    public void setType2_sellling_price(double type2_sellling_price) {
-        this.type2_sellling_price = type2_sellling_price;
+    public void setType2_selling_price(double type2_selling_price) {
+        this.type2_selling_price = type2_selling_price;
     }
 
     public LocalDate getOpeningDate() {
@@ -184,7 +184,7 @@ public class Project {
         this.officerslots = officerslots;
     }
 
-    public List<String> get_offficers(){
+    public List<String> get_officers(){
         return this.officers;
     }
 

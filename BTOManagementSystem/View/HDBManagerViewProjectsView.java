@@ -84,14 +84,14 @@ public class HDBManagerViewProjectsView {
 
             System.out.print(String.format("%-30s", p.getType2()));
             System.out.print(String.format("%-30d", p.getType2_numofunits()));
-            System.out.print(String.format("%-30f", p.getType2_sellling_price()));
+            System.out.print(String.format("%-30f", p.getType2_selling_price()));
 
             System.out.print(String.format("%-30s", p.getOpeningDateAsString()));
             System.out.print(String.format("%-30s", p.getClosingDateAsString()));
 
             System.out.print(String.format("%-30s", p.getManager()));
             System.out.print(String.format("%-30d", p.getOfficerslots()));
-            System.out.print(String.format("%-30s", p.get_offficers() ));
+            System.out.print(String.format("%-30s", p.get_officers() ));
             System.out.print(String.format("%-30d", p.getVisibility()));
 
             System.out.print("\n");

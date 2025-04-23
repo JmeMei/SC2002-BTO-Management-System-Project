@@ -19,10 +19,8 @@ public class ApplicantManageApplicationView {
         System.out.println("Name: " + status.getName());
         System.out.println("NRIC: " + status.getNric());
         System.out.println("Project Name: " + status.getProjectName());
-        System.out.println("Flat Type: " + status.getFlatType());
+        System.out.println("Flat Type: " + status.getFlatType().getDisplayName());
         System.out.println("Application Status: " + status.getApplicationStatus());
-        //System.out.println("Enquiry: " + (status.getEnquiry().isEmpty() ? "None" : status.getEnquiry()));
-        //System.out.println("Reply: " + (status.getReply().isEmpty() ? "None" : status.getReply()));
     }
 
     public void ApplicationNotFoundMessage(){

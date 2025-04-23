@@ -1,2 +1,5 @@
 Name,NRIC,Age,Marital Status,role,Project Name,FlatType,Application Status
-James,T2345678D,30,Married,Applicant,Coral Edge,2-Room,PENDING
+Grace,S9876543C,37,Married,Applicant,NA,NA,NA
+James,T2345678D,30,Married,Applicant,Acacia Breeze,2-Room,BOOKED
+John,S1234567A,35,Single,Applicant,Coral Edge,2-Room,PENDING
+David,T1234567J,29,Married,Officer,Coral Edge,3-Room,PENDING

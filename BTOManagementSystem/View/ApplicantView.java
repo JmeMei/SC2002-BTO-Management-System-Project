@@ -25,6 +25,7 @@ public class ApplicantView {
         while (option != 8) {
             //System.out.println("Welcome, " + user.getName());
             System.out.println("\n=== Applicant Dashboard ===");
+            System.out.println("Welcome, " + App.userSession.getName());
             System.out.println("1. View Available Projects");
             System.out.println("2. Apply for a Project");
             System.out.println("3. View My Application");
@@ -88,6 +89,4 @@ public class ApplicantView {
             }
         }
     }
-
-
 }
