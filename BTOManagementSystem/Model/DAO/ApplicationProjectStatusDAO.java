@@ -34,9 +34,9 @@ public class ApplicationProjectStatusDAO {
                         values[4].trim(),                                     // Role
                         values[5].trim(),                                     // Project Name
                         FlatType.fromString(values[6].trim()),                // Flat Type
-                        ApplicationStatus.valueOf(values[7].trim()),          // Application Status
-                        values[8].trim(),                                     // Enquiry
-                        values[9].trim()                                     // Reply
+                        ApplicationStatus.valueOf(values[7].trim())          // Application Status
+                        //values[8].trim(),                                     // Enquiry
+                        //values[9].trim()                                     // Reply
 
                 );
                 statusList.add(applicantProjectStatus);
@@ -62,9 +62,7 @@ public class ApplicationProjectStatusDAO {
                 user.getRole(),
                 projectName,
                 flatType,
-                ApplicationStatus.PENDING,
-                "NA",
-                "NA"
+                ApplicationStatus.PENDING
         );
         statusList.add(newApplication);
 
@@ -101,8 +99,7 @@ public class ApplicationProjectStatusDAO {
                 System.out.println("Project Name: " + status.getProjectName());
                 System.out.println("Flat Type: " + status.getFlatType());
                 System.out.println("Application Status: " + status.getApplicationStatus());
-                System.out.println("Enquiry: " + (status.getEnquiry().isEmpty() ? "None" : status.getEnquiry()));
-                System.out.println("Reply: " + (status.getReply().isEmpty() ? "None" : status.getReply()));
+
                 return true; // Exit after first match
             }
         }
@@ -112,7 +109,7 @@ public class ApplicationProjectStatusDAO {
     public boolean updateDB() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             // Write the header
-            bw.write("Name,NRIC,Age,Marital Status,Password,role,Project Name,FlatType,Application Status,Withdrawal Status,Enquiry,Reply");
+            bw.write("Name,NRIC,Age,Marital Status,role,Project Name,FlatType,Application Status");
             bw.newLine();
 
             // Write each status
@@ -125,9 +122,7 @@ public class ApplicationProjectStatusDAO {
                         s.getRole(),
                         s.getProjectName(),
                         s.getFlatType().getDisplayName(),
-                        s.getApplicationStatus().name(),
-                        s.getEnquiry(),
-                        s.getReply()
+                        s.getApplicationStatus().name()
                 );
                 bw.write(line);
                 bw.newLine();

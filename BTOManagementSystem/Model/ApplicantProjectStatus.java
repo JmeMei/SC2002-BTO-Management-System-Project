@@ -15,13 +15,11 @@ public class ApplicantProjectStatus {
     private FlatType flatType;
     private ApplicationStatus applicationStatus;
 
-    private String enquiry;
-    private String reply;
+
 
     // Constructor
     public ApplicantProjectStatus(String name, String nric, int age, String maritalStatus, String role,
-                                  String projectName, FlatType flatType, ApplicationStatus applicationStatus,
-                                  String enquiry, String reply) {
+                                  String projectName, FlatType flatType, ApplicationStatus applicationStatus) {
         this.name = name;
         this.nric = nric;
         this.age = age;
@@ -30,8 +28,7 @@ public class ApplicantProjectStatus {
         this.projectName = projectName;
         this.flatType = flatType;
         this.applicationStatus = applicationStatus;
-        this.enquiry = enquiry;
-        this.reply = reply;
+
     }
 
     // Getters and Setters
@@ -45,14 +42,12 @@ public class ApplicantProjectStatus {
     public FlatType getFlatType() { return flatType; }
     public ApplicationStatus getApplicationStatus() { return applicationStatus; }
 
-    public String getEnquiry() { return enquiry; }
-    public String getReply() { return reply; }
+
 
     public void setProjectName(String projectName) { this.projectName = projectName; }
     public void setFlatType(FlatType flatType) { this.flatType = flatType; }
     public void setApplicationStatus(ApplicationStatus applicationStatus) { this.applicationStatus = applicationStatus; }
 
-    public void setEnquiry(String enquiry) { this.enquiry = enquiry; }
-    public void setReply(String reply) { this.reply = reply; }
+
 }
 

@@ -1,5 +1,2 @@
-Name,NRIC,Age,Marital Status,Password,role,Project Name,FlatType,Application Status,Withdrawal Status,Enquiry,Reply
-Grace,S9876543C,37,Married,Applicant,NA,NA,NA,NA,NA
-James,T2345678D,30,Married,Applicant,NA,NA,NA,NA,NA
-Daniel,T2109876H,36,Single,Officer,Coral Edge,2-Room,PENDING,NA,NA
-John,S1234567A,35,Single,Applicant,Coral Edge,2-Room,PENDING,NA,NA
+Name,NRIC,Age,Marital Status,role,Project Name,FlatType,Application Status
+James,T2345678D,30,Married,Applicant,Coral Edge,2-Room,PENDING
