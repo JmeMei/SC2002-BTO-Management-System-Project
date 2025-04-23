@@ -25,6 +25,7 @@ public class HDBManagerView {
         System.out.println("9. Handle Withdrawal Requests");
         System.out.println("10. View BTO applications");
         System.out.println("11. Approve BTO application");
+        System.out.println("12. LogOut");
 
         System.out.print("Enter your option: ");
         int option = scanner.nextInt();
@@ -97,6 +98,9 @@ public class HDBManagerView {
             case 11:
                 applicationStatusController.approveApplication(this, approveBTOApplicationView);
 
+            case 12:
+                System.out.println("logging out...");
+                App.main(null);
         }
 
 
