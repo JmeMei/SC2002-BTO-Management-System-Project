@@ -15,7 +15,8 @@ public class ApplicantProjectStatus {
     private FlatType flatType;
     private ApplicationStatus applicationStatus;
 
-
+    private String enquiry;
+    private String reply;
 
     // Constructor
     public ApplicantProjectStatus(String name, String nric, int age, String maritalStatus, String role,
@@ -28,7 +29,6 @@ public class ApplicantProjectStatus {
         this.projectName = projectName;
         this.flatType = flatType;
         this.applicationStatus = applicationStatus;
-
     }
 
     // Getters and Setters
@@ -42,12 +42,8 @@ public class ApplicantProjectStatus {
     public FlatType getFlatType() { return flatType; }
     public ApplicationStatus getApplicationStatus() { return applicationStatus; }
 
-
-
     public void setProjectName(String projectName) { this.projectName = projectName; }
     public void setFlatType(FlatType flatType) { this.flatType = flatType; }
     public void setApplicationStatus(ApplicationStatus applicationStatus) { this.applicationStatus = applicationStatus; }
-
-
 }
 

@@ -11,7 +11,7 @@ import java.util.List;
 public class HDBManagerDAO {
 
     private static final String FILE_PATH = "BTOManagementSystem/Data/ManagerList.csv";
-    private List<HDBManager> managers = new ArrayList<HDBManager>();
+    private static List<HDBManager> managers = new ArrayList<HDBManager>();
 
     public HDBManagerDAO(){
         //init Managers from CSV

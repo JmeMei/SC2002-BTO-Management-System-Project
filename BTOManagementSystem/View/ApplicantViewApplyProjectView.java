@@ -11,12 +11,12 @@ public class ApplicantViewApplyProjectView {
     private Scanner scanner = new Scanner(System.in);
 
     public String promptApplicantChooseProject() {
-        System.out.println("Enter the Project Name: ");
+        System.out.print("Enter the Project Name: ");
         String projectName = scanner.nextLine();
         return projectName;
     }
 
-    public FlatType PromptAvailableFlatTypesforProject(Project project, List<FlatType> availableTypes) {
+    public String PromptAvailableFlatTypesforProject(Project project, List<FlatType> availableTypes) {
         System.out.println("You are eligible for the following flat types for this project:");
         for (FlatType type : availableTypes) {
             if (FlatType.fromString(project.getType1()) == type) {
@@ -24,24 +24,38 @@ public class ApplicantViewApplyProjectView {
                         " (Price: $" + (int) project.getType1_sellingprice() + ")");
             } else if (FlatType.fromString(project.getType2()) == type) {
                 System.out.println(project.getType2() + " units: " + project.getType2_numofunits() +
-                        " (Price: $" + (int) project.getType2_sellling_price() + ")");
+                        " (Price: $" + (int) project.getType2_selling_price() + ")");
             }
         }
 
-        FlatType chosenType = null;
-        while (chosenType == null) {
-            System.out.print("Choose flat type (e.g., 2-Room or 3-Room): ");
-            String roomTypeInput = scanner.nextLine().trim();
-            FlatType inputType = FlatType.fromString(roomTypeInput);
+        System.out.print("Choose flat type (e.g., 2-Room, 3-Room or 'C' to cancel): ");
+        String roomTypeInput = scanner.nextLine().trim().toLowerCase();
+        String normInput = null;
 
-            if (inputType != null && availableTypes.contains(inputType)) {
-                chosenType = inputType;
+        do {
+            // Normalize common variants for flat type
+            if (roomTypeInput.equals("2room") || roomTypeInput.equals("2-room")) {
+                normInput = "2-Room";
+            } else if (roomTypeInput.equals("3room") || roomTypeInput.equals("3-room")) {
+                normInput = "3-Room";
+            } else if (roomTypeInput.equals("c")) {
+                normInput = "Cancel";
+                break;
             } else {
-                System.out.println("Invalid flat type. Please choose from the available types.");
+                normInput = null;
+                System.out.println("Invalid input. Please try again.");
             }
+        } while (normInput == null);
 
-        }
-        return chosenType;
+        return normInput;
+    }
+
+    public void CancelApplyProjectMessage(){
+        System.out.println("You have canceled applying for this project.");
+    }
+
+    public void AppliedBeforeMessage(){
+        System.out.println("You have already applied for a project before.");
     }
 
 
@@ -53,22 +67,8 @@ public class ApplicantViewApplyProjectView {
         System.out.println("You are eligible, but there are no available flats.");
     }
 
-    public void AppliedBeforeMessage(){
-        System.out.println("You have already applied for this project before.");
-    }
-
-    public void ApplicationPendingMessage(){
-        System.out.println("Your application is currently pending.");
-        System.out.println("You are not able to apply for any more projects at this time.");
-    }
-
-    public void ApplicationBookedMessage(){
-        System.out.println("Your flat has already been booked.");
-        System.out.println("You are not able to apply for any more projects at this time.");
-    }
-
-    public void ApplicationSuccessfulMessage(){
-        System.out.println("Your application has been successful.");
+    public void ApplicationInProcessMessage(String status){
+        System.out.println("You have already successfully applied to this project and it is now currently " + status + ".");
         System.out.println("You are not able to apply for any more projects at this time.");
     }
 

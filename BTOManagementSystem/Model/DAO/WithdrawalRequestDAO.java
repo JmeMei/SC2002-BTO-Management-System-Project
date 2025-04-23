@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class WithdrawalRequestDAO {
 
-    ArrayList<WithdrawalRequest> withdrawalRequests = new ArrayList<WithdrawalRequest>();
+    private static ArrayList<WithdrawalRequest> withdrawalRequests = new ArrayList<WithdrawalRequest>();
 
 
     private String filePath = "BTOManagementSystem/Data/WithdrawalRequests.csv";

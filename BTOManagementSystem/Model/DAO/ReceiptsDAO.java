@@ -12,7 +12,7 @@ public class ReceiptsDAO {
     private String filePath = "BTOManagementSystem/Data/Receipts.csv";
     private String[] Headers;
 
-    private ArrayList<Receipt> receipts = new ArrayList<>();
+    private static ArrayList<Receipt> receipts = new ArrayList<>();
 
     public ReceiptsDAO() {
 

@@ -3,8 +3,10 @@ package BTOManagementSystem.Controller;
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Model.DAO.OfficerRegistrationRequestDAO;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
+import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.View.HDBManagerApproveOfficerView;
 import BTOManagementSystem.View.HDBManagerView;
+import BTOManagementSystem.View.HDBOfficerAssignedProjectView;
 
 public class OfficerRegistrationController {
 

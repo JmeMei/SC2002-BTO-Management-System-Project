@@ -3,6 +3,7 @@ package BTOManagementSystem.Controller;
 import BTOManagementSystem.App.App;
 import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.Project;
+import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.View.*;
 
 import java.util.ArrayList;
@@ -86,14 +87,15 @@ public class ProjectListController {
         viewProjectsView.DisplayProjects(dao.getHeaders(), projectArrayList);
 
         managerView.showMenu();
-
     }
 
+    public String getApprovedProjectName(HDBOfficer officer){
+        String projectName = dao.getProjectNamefromOfficerIC(officer.getNric());
+        return projectName;
+    }
 
-
-
-
-
-
-
+    public Project getProjectDetails(String projectName){
+        Project project = dao.getProjectFromStringName(projectName);
+        return project;
+    }
 }
