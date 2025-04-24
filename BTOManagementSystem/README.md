@@ -4,7 +4,9 @@
 The project is organized into multiple packages as follows:
 
 ### 1. App
-- **App.java**### 2. Authentication
+- **App.java**
+
+### 2. Authentication
 - **SessionManagerService.java**: Handles account-related operations.
 - **AuthenticatorService.java**: Handles user authentication using NRIC and password credentials.
 
