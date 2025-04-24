@@ -1,12 +1,9 @@
 package BTOManagementSystem.Controller;
 
 import BTOManagementSystem.Model.ApplicantProjectStatus;
-import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
+import BTOManagementSystem.Model.DAO.*;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
-import BTOManagementSystem.Model.DAO.OfficerRegistrationRequestDAO;
-import BTOManagementSystem.Model.DAO.ProjectListDAO;
-import BTOManagementSystem.Model.DAO.WithdrawalRequestDAO;
 import BTOManagementSystem.Model.OfficerRegistrationRequest;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.Applicant;
@@ -26,6 +23,7 @@ public class ApplicationController {
     private ApplicationProjectStatusDAO applicantProjectStatusDAO;
     private WithdrawalRequestDAO withdrawalRequestDAO;
     private OfficerRegistrationRequestDAO requestDAO;
+    private HDBOfficerDAO hdbOfficerDAO;
     private ApplicantViewProjectsView viewProjectsView;
     private HDBOfficerAssignedProjectView assignedProjectView;
     private ApplicantView applicantView;
@@ -37,6 +35,7 @@ public class ApplicationController {
         this.projectListDAO = new ProjectListDAO();
         this.withdrawalRequestDAO = new WithdrawalRequestDAO();
         this.requestDAO = new OfficerRegistrationRequestDAO();
+        this.hdbOfficerDAO = new HDBOfficerDAO();
         this.viewProjectsView = new ApplicantViewProjectsView();
         this.assignedProjectView = new HDBOfficerAssignedProjectView();
         this.applicantView = new ApplicantView();
@@ -149,9 +148,13 @@ public class ApplicationController {
 
         if (project != null) {
             // Check if applicant is the HDBOfficer of the project
-            if(project.get_officers().contains(user.getNric())){
-                applyView.CannotApplyIfHDBOfficerMessage();
-                returntoMenu(user);
+
+            for (String officerName : project.get_officers()){
+                String officerNRIC = hdbOfficerDAO.officerNametoNRIC(officerName);
+                if(officerNRIC.contains(user.getNric())){
+                    applyView.CannotApplyIfHDBOfficerMessage();
+                    returntoMenu(user);
+                }
             }
 
             // Check if applicant is pending approval to handle this project
@@ -166,14 +169,48 @@ public class ApplicationController {
 
             // Check the available flat types for project based on user eligibility
             if (!availableTypes.isEmpty()) {
-                String userinput = applyView.PromptAvailableFlatTypesforProject(project, availableTypes);
 
-                if(userinput.equals("Cancel")){
+                applyView.DisplayAvailableFlatTypesforProject(project, availableTypes);
+
+                String normInput = null;
+                FlatType inputType = null;
+
+                do {
+                    String roomTypeInput = applyView.PromptUserInputFlatType();
+
+                    // Normalize common variants for flat type
+                    if (roomTypeInput.equals("2room") || roomTypeInput.equals("2-room")) {
+                        normInput = "2-Room";
+                    } else if (roomTypeInput.equals("3room") || roomTypeInput.equals("3-room")) {
+                        normInput = "3-Room";
+                    } else if (roomTypeInput.equals("c")) {
+                        normInput = "Cancel";
+                        break;
+                    } else {
+                       applyView.UserInputInvalidMessage();
+                        continue;
+                    }
+
+                    // Validate against available flat types
+                    boolean isValidFlatType = false;
+                    for (FlatType ft : availableTypes) {
+                        if(ft.getDisplayName().equalsIgnoreCase(normInput)){
+                            isValidFlatType = true;
+                            inputType = FlatType.fromString(normInput);
+                        }
+                    }
+
+                    if (!isValidFlatType) {
+                       applyView.UserInputFlatTypeInvalidMessage();
+                        normInput = null; // reset to loop again
+                    }
+
+                } while (normInput == null);
+
+                if ("Cancel".equalsIgnoreCase(normInput)) {
                     applyView.CancelApplyProjectMessage();
                     returntoMenu(user);
                 }
-
-                FlatType inputType = FlatType.fromString(userinput);
 
                 // Apply for Project
                 boolean success = applicantProjectStatusDAO.applyForProject(user, project.getName(), inputType);

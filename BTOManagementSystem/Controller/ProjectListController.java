@@ -44,14 +44,14 @@ public class ProjectListController {
 
             editProjectView.ProjectUpdateSuccessMessage();
 
-            managerView.showMenu();
+
 
         }else{
 
             editProjectView.ProjectDoesNotExistErrorMessage();
         }
 
-
+        managerView.showMenu();
 
     }
 
@@ -76,6 +76,7 @@ public class ProjectListController {
     public void ViewProjects(HDBManagerView managerView, HDBManagerViewProjectsView viewProjectsView){
 
         int filter = viewProjectsView.prompt();
+
         ArrayList<Project> projectArrayList = dao.LoadProjects(filter);
 
         int neighbourhood_filter = viewProjectsView.prompt_wantneightbourhoodfilter();
@@ -90,7 +91,7 @@ public class ProjectListController {
     }
 
     public String getApprovedProjectName(HDBOfficer officer){
-        String projectName = dao.getProjectNamefromOfficerIC(officer.getNric());
+        String projectName = dao.getProjectNamefromOfficerName(officer.getName());
         return projectName;
     }
 

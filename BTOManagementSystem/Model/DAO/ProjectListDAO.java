@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class ProjectListDAO {
 
-    private String[] headers = {"Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Officer Slot,Officer,visibility"};
+    private String[] headers;
 
     private String filePath = "BTOManagementSystem/Data/ProjectList.csv";
     private static ArrayList<Project> ProjectsList = new ArrayList<>();
@@ -26,7 +26,9 @@ public class ProjectListDAO {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
             String line;
-            br.readLine();
+            line = br.readLine();
+            this.headers = line.split(",");
+
             while ((line = br.readLine()) != null) {
                 ArrayList<String> values = CSV_data_Parse(line);
 
@@ -51,7 +53,7 @@ public class ProjectListDAO {
                 String manager = values.get(10);
                 int officerslots =  Integer.parseInt(values.get(11));
 
-                String officers = values.get(12).substring(1, values.get(12).length()-1);
+                String officers = values.get(12).replaceAll("^\"+|\"+$", "");
 
                 int visibility = Integer.parseInt(values.get(13));
 
@@ -198,7 +200,7 @@ public class ProjectListDAO {
 
         for (Project p : ProjectsList) {
 
-            if (p.getName().equals(ProjectName)) {
+            if (p.getName().equalsIgnoreCase(ProjectName)) {
 
                 return p;
             }
@@ -212,7 +214,7 @@ public class ProjectListDAO {
 
         for (Project p : ProjectsList) {
 
-            if (p.getName().equals(ProjectName)) {
+            if (p.getName().equalsIgnoreCase(ProjectName)) {
 
                 if (p.getNumberofCurrentOfficers() > 0 ){
                     p.add_Officer(officerName);
@@ -238,9 +240,9 @@ public class ProjectListDAO {
 
         for (Project p : ProjectsList) {
 
-            if (p.getName().equals(ProjectName)) {
+            if (p.getName().equalsIgnoreCase(ProjectName)) {
 
-                if (p.getManager().equals(MangerName)) {
+                if (p.getManager().equalsIgnoreCase(MangerName)) {
 
                     return true;
                 }
@@ -522,10 +524,14 @@ public class ProjectListDAO {
 
     
     // get officers in charge of the project(enq) 1 officer for now
-    public String getProjectNamefromOfficerIC(String officerNRIC){
+    public String getProjectNamefromOfficerName(String officerName){
         for (Project p: ProjectsList){
-            if(p.get_officers().contains(officerNRIC))
-                return p.getName();
+            for (String officer : p.get_officers()){
+                if (officer.equalsIgnoreCase(officerName)){
+                    return p.getName();
+                }
+            }
+
             }
         return null;
     }
@@ -551,7 +557,7 @@ public class ProjectListDAO {
             // Check Flat Type
             FlatType flatType1 = FlatType.fromString(p.getType1());
             FlatType flatType2 = FlatType.fromString(p.getType2());
-            if(flatType1 == FlatType.TWO_ROOM|| flatType2 == FlatType.TWO_ROOM && p.getVisibility() == 1){
+            if(flatType1 == FlatType.TWO_ROOM && p.getVisibility() == 1 || flatType2 == FlatType.TWO_ROOM && p.getVisibility() == 1){
                 availableTwoRooms.add(p);
             }
         }
@@ -567,7 +573,7 @@ public class ProjectListDAO {
         for (Project p : ProjectsList) {
             FlatType flatType1 = FlatType.fromString(p.getType1());
             FlatType flatType2 = FlatType.fromString(p.getType2());
-            if(flatType1 == FlatType.THREE_ROOM || flatType2 == FlatType.THREE_ROOM && p.getVisibility() == 1){
+            if(flatType1 == FlatType.THREE_ROOM && p.getVisibility() == 1 || flatType2 == FlatType.THREE_ROOM && p.getVisibility() == 1){
                 availableThreeRooms.add(p);
             }
         }

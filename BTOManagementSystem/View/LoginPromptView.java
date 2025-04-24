@@ -22,6 +22,10 @@ public class LoginPromptView {
         return Data;
     }
 
+    public void IncorrectNRICFormat(){
+        System.out.println("Invalid NRIC format. Please enter a valid NRIC (e.g., T1234567A).");
+    }
+
     public void LoginSucessOrFail(boolean status){
 
         if(status){

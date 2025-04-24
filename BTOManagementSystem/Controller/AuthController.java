@@ -69,8 +69,17 @@ public class AuthController {
 
         do{
             loginData = LoginView.getLoginData();
-            LoggedInStatus = AuthService.authenticate(loginData[0],loginData[1]);
-            LoginView.LoginSucessOrFail(LoggedInStatus);
+            String userInputNRIC = loginData[0];
+
+            // Regex: Start with S, T, F, or G; followed by 7 digits; end with a capital letter
+            String regex = "^[STFG]\\d{7}[A-Z]$";
+
+            if (userInputNRIC != null && userInputNRIC.matches(regex)) {
+                LoggedInStatus = AuthService.authenticate(loginData[0], loginData[1]);
+                LoginView.LoginSucessOrFail(LoggedInStatus);
+            }else{
+                LoginView.IncorrectNRICFormat();
+            }
         }while (!LoggedInStatus);
 
         sessionManager.InstantiateSession(loginData[0]);

@@ -1,10 +1,7 @@
 package BTOManagementSystem.View;
 
 import BTOManagementSystem.App.App;
-import BTOManagementSystem.Controller.ApplicationController;
-import BTOManagementSystem.Controller.OfficerRegistrationController;
-import BTOManagementSystem.Controller.ProjectListController;
-import BTOManagementSystem.Controller.ReceiptController;
+import BTOManagementSystem.Controller.*;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
 import java.util.Scanner;
 
@@ -16,7 +13,7 @@ public class HDBOfficerView extends ApplicantView{
 
         while (option != 9) {
             System.out.println("\n=== HDB Officer Dashboard ===");
-            System.out.println("Welcome, Officer " + officer.getName());
+            System.out.println("Welcome, Officer " + officer.getName() +  "[" + officer.getAge()  + "," + officer.getMaritalStatus() +"]");
             System.out.println("1. View Available Projects");
             System.out.println("2. Apply for a Project");
             System.out.println("3. View My Application");
@@ -26,8 +23,9 @@ public class HDBOfficerView extends ApplicantView{
             System.out.println("7. Assigned Project Management");
             System.out.println("8. Enquiry Management");
             System.out.println("9. View Bookings");
-            System.out.println("10. Logout");
-            System.out.println("11. Exit");
+            System.out.println("10. Change Password");
+            System.out.println("11. Logout");
+            System.out.println("12. Exit");
             System.out.print("Enter your option: ");
 
             try {
@@ -83,11 +81,24 @@ public class HDBOfficerView extends ApplicantView{
                 case 9:
                     receiptController.OfficerViewReciept(this, receiptsView);
                     break;
-                case 10: // logout
+                case 10:
+                    System.out.print("Enter the new password: ");
+                    String newPassword = scanner.nextLine();
+                    boolean success = PasswordController.changePassword(App.userSession.getNric(),newPassword);
+
+                    if (success) {
+                        System.out.print("Password updated. Please log in again.\n");
+                        App.main(null);
+                        return; // Exit menu to force re-login
+                    } else {
+                        System.out.println("Failed to update password."); //May happen if the FILE_PATH is wrong
+                    }
+                    break;
+                case 11: // logout
                     System.out.println(officer.getName() + " logging out...");
                     App.main(null);
                     return;
-                case 11: // exit program
+                case 12: // exit program
                     break;
                 default:
                     System.out.println("Invalid option.");

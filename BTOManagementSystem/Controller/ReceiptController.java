@@ -84,7 +84,6 @@ public class ReceiptController {
                         filter_option = receiptsView.PromptFilters();
                 }
 
-
             }
         }
 
