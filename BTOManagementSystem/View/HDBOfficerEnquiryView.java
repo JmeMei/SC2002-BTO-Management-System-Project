@@ -130,7 +130,7 @@ public class HDBOfficerEnquiryView implements EnquiryView{
                     System.out.println(result);
                 }
                 case 6 -> {
-                    scanner.close();
+
                     System.out.println("Returning to main menu.");
                     HDBOfficerView officerView = new HDBOfficerView();
                     officerView.showOfficerMenu((HDBOfficer)user);

@@ -69,7 +69,7 @@ public class HDBManagerEnquiryView implements EnquiryView {
                     System.out.println(result);
                 }
                 case 4 -> {
-                    scanner.close();
+
                     System.out.println("Returning to main menu.");
                 }
                 default-> System.out.println("Invalid choice.");

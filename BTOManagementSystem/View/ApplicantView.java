@@ -36,13 +36,15 @@ public class ApplicantView {
             System.out.println("8. Exit");
             System.out.print("Enter your option: ");
 
-            String input = scanner.nextLine(); // safer than nextInt()
+
+            //String input = scanner.nextLine(); // safer than nextInt()
             try {
-                option = Integer.parseInt(input);
+                option = scanner.nextInt();
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
                 continue;
             }
+            scanner.nextLine();
 
             //views
             ApplicantViewApplyProjectView applyView = new ApplicantViewApplyProjectView();
