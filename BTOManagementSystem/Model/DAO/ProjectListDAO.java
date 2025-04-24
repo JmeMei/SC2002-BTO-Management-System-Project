@@ -551,7 +551,7 @@ public class ProjectListDAO {
             // Check Flat Type
             FlatType flatType1 = FlatType.fromString(p.getType1());
             FlatType flatType2 = FlatType.fromString(p.getType2());
-            if(flatType1 == FlatType.TWO_ROOM|| flatType2 == FlatType.TWO_ROOM && p.getVisibility() == 1){
+            if(flatType1 == FlatType.TWO_ROOM && p.getVisibility() == 1 || flatType2 == FlatType.TWO_ROOM && p.getVisibility() == 1){
                 availableTwoRooms.add(p);
             }
         }
@@ -567,7 +567,7 @@ public class ProjectListDAO {
         for (Project p : ProjectsList) {
             FlatType flatType1 = FlatType.fromString(p.getType1());
             FlatType flatType2 = FlatType.fromString(p.getType2());
-            if(flatType1 == FlatType.THREE_ROOM || flatType2 == FlatType.THREE_ROOM && p.getVisibility() == 1){
+            if(flatType1 == FlatType.THREE_ROOM && p.getVisibility() == 1 || flatType2 == FlatType.THREE_ROOM && p.getVisibility() == 1){
                 availableThreeRooms.add(p);
             }
         }

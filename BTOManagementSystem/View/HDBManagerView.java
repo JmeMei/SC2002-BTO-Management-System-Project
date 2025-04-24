@@ -25,7 +25,8 @@ public class HDBManagerView {
         System.out.println("9. Handle Withdrawal Requests");
         System.out.println("10. View BTO applications");
         System.out.println("11. Approve BTO application");
-        System.out.println("12. LogOut");
+        System.out.println("12. Change Password");
+        System.out.println("13. Logout");
 
         System.out.print("Enter your option: ");
         int option = scanner.nextInt();
@@ -99,6 +100,20 @@ public class HDBManagerView {
                 applicationStatusController.approveApplication(this, approveBTOApplicationView);
 
             case 12:
+                System.out.print("Enter the new password: ");
+                String newPassword = scanner.nextLine();
+                boolean success = PasswordController.changePassword(App.userSession.getNric(),newPassword);
+
+                if (success) {
+                    System.out.print("Password updated. Please log in again.\n");
+                    App.main(null);
+                    return; // Exit menu to force re-login
+                } else {
+                    System.out.println("Failed to update password."); //May happen if the FILE_PATH is wrong
+                    //showMenu();
+                }
+                break;
+            case 13:
                 System.out.println("logging out...");
                 App.main(null);
         }
