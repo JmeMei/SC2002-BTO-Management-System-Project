@@ -152,9 +152,11 @@ public class ApplicationController {
 
             for (String officerName : project.get_officers()){
                 String officerNRIC = hdbOfficerDAO.officerNametoNRIC(officerName);
-                if(officerNRIC.contains(user.getNric())){
-                    applyView.CannotApplyIfHDBOfficerMessage();
-                    returntoMenu(user);
+                if (officerNRIC != null) {
+                    if (officerNRIC.contains(user.getNric())) {
+                        applyView.CannotApplyIfHDBOfficerMessage();
+                        returntoMenu(user);
+                    }
                 }
             }
 
