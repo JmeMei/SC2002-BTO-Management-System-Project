@@ -90,7 +90,7 @@ public class ProjectListController {
     }
 
     public String getApprovedProjectName(HDBOfficer officer){
-        String projectName = dao.getProjectNamefromOfficerIC(officer.getNric());
+        String projectName = dao.getProjectNamefromOfficerName(officer.getName());
         return projectName;
     }
 

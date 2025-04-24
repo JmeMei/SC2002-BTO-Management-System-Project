@@ -522,9 +522,9 @@ public class ProjectListDAO {
 
     
     // get officers in charge of the project(enq) 1 officer for now
-    public String getProjectNamefromOfficerIC(String officerNRIC){
+    public String getProjectNamefromOfficerName(String officerName){
         for (Project p: ProjectsList){
-            if(p.get_officers().contains(officerNRIC))
+            if(p.get_officers().contains(officerName))
                 return p.getName();
             }
         return null;
