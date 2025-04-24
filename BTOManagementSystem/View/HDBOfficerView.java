@@ -99,9 +99,10 @@ public class HDBOfficerView extends ApplicantView{
                     App.main(null);
                     return;
                 case 12: // exit program
+                    System.exit(0);
                     break;
                 default:
-                    System.out.println("Invalid option.");
+                    System.out.println("Invalid option. Please try again.");
             }
         }
     }

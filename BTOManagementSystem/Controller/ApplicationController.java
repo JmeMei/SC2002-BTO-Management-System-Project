@@ -1,5 +1,6 @@
 package BTOManagementSystem.Controller;
 
+import BTOManagementSystem.App.App;
 import BTOManagementSystem.Model.ApplicantProjectStatus;
 import BTOManagementSystem.Model.DAO.*;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
@@ -241,7 +242,7 @@ public class ApplicationController {
     }
 
     public void viewMyApplications(ApplicantView applicantView, ApplicantManageApplicationView manageView, User user) {
-        List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplications(user.getNric());
+        List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplicationsByNRIC(user.getNric());
         if (!statusList.isEmpty()) {
             manageView.DisplayApplicationStatus(statusList);
         } else {
@@ -253,7 +254,7 @@ public class ApplicationController {
 
     public void withdrawApplication(ApplicantView applicantView, ApplicantManageApplicationView manageView, User user) {
         // Get current Application that is PENDING
-        List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplications(user.getNric());
+        List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplicationsByNRIC(user.getNric());
 
         if(statusList.isEmpty()) {
             manageView.ApplicationsToWithdrawNotFoundMessage();
@@ -300,21 +301,25 @@ public class ApplicationController {
 //        return null;
 //    }
 
-    public void getApplicantProjectStatus(String applicantNRIC, String projectName,User user) {
-        List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplications(applicantNRIC);
-
-        if (!statusList.isEmpty()) {
-            for (ApplicantProjectStatus s : statusList) {
+    public void getApplicantProjectStatus(HDBOfficerAssignedProjectView assignedProjectView,String projectName,HDBOfficer officer) {
+        List<ApplicantProjectStatus> allstatusList = applicantProjectStatusDAO.getApplications();
+        List<ApplicantProjectStatus> projectstatusList = new ArrayList<>();
+        if (!allstatusList.isEmpty()) {
+            for (ApplicantProjectStatus s : allstatusList) {
                 if (s.getProjectName().equalsIgnoreCase(projectName)) {
-                    assignedProjectView.DisplayApplicationStatus(s);
-                } else {
-                    assignedProjectView.AssignedApplicantNotFoundMessage();
+                   projectstatusList.add(s);
                 }
             }
         } else {
             assignedProjectView.ApplicationNotFoundMessage();
         }
-        returntoMenu(user);
+
+        if(!projectstatusList.isEmpty()){
+            assignedProjectView.DisplayAllApplicationStatus(projectstatusList);
+        }else{
+            assignedProjectView.ApplicationNotFoundMessage();
+        }
+        assignedProjectView.showMenu(officer,projectName);
     }
 
 }
