@@ -40,7 +40,7 @@ public class OfficerRegistrationRequestDAO {
                         values.get(3)
                 );
 
-                this.officerRegistrationRequests.add(request);
+                officerRegistrationRequests.add(request);
 
             }
         } catch (IOException e) {

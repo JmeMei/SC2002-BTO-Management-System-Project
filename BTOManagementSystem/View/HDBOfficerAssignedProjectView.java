@@ -87,9 +87,8 @@ public class HDBOfficerAssignedProjectView {
         System.out.println("Neighborhood       : " + project.getNeighbourhood());
         System.out.println("Application Period : " + project.getOpeningDate() + " to " + project.getClosingDate());
 
-        System.out.println(project.getType1() + " Units       : " + project.getType1_numofunits() + " remaining");
-        System.out.println(project.getType2() + " Units       : " + project.getType2_numofunits() + " remaining");
-
+        System.out.println(project.getType1() + " Units       : " + project.getType1_numofunits() + " total (Price: $" + project.getType1_sellingprice() + ")");
+        System.out.println(project.getType2() + " Units       : " + project.getType2_numofunits() + " total (Price: $" + project.getType2_selling_price() + ")");
         System.out.println("Assigned Manager   : " + project.getManager());
         System.out.println("Assigned Officers  : " + project.get_officers().toString());
         System.out.println("Officer Slots      : " + project.getOfficerslots());

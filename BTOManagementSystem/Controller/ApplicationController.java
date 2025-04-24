@@ -1,12 +1,9 @@
 package BTOManagementSystem.Controller;
 
 import BTOManagementSystem.Model.ApplicantProjectStatus;
-import BTOManagementSystem.Model.DAO.ApplicationProjectStatusDAO;
+import BTOManagementSystem.Model.DAO.*;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
-import BTOManagementSystem.Model.DAO.OfficerRegistrationRequestDAO;
-import BTOManagementSystem.Model.DAO.ProjectListDAO;
-import BTOManagementSystem.Model.DAO.WithdrawalRequestDAO;
 import BTOManagementSystem.Model.OfficerRegistrationRequest;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.Applicant;
@@ -26,6 +23,7 @@ public class ApplicationController {
     private ApplicationProjectStatusDAO applicantProjectStatusDAO;
     private WithdrawalRequestDAO withdrawalRequestDAO;
     private OfficerRegistrationRequestDAO requestDAO;
+    private HDBOfficerDAO hdbOfficerDAO;
     private ApplicantViewProjectsView viewProjectsView;
     private HDBOfficerAssignedProjectView assignedProjectView;
     private ApplicantView applicantView;
@@ -37,6 +35,7 @@ public class ApplicationController {
         this.projectListDAO = new ProjectListDAO();
         this.withdrawalRequestDAO = new WithdrawalRequestDAO();
         this.requestDAO = new OfficerRegistrationRequestDAO();
+        this.hdbOfficerDAO = new HDBOfficerDAO();
         this.viewProjectsView = new ApplicantViewProjectsView();
         this.assignedProjectView = new HDBOfficerAssignedProjectView();
         this.applicantView = new ApplicantView();
@@ -149,9 +148,13 @@ public class ApplicationController {
 
         if (project != null) {
             // Check if applicant is the HDBOfficer of the project
-            if(project.get_officers().contains(user.getNric())){
-                applyView.CannotApplyIfHDBOfficerMessage();
-                returntoMenu(user);
+
+            for (String officerName : project.get_officers()){
+                String officerNRIC = hdbOfficerDAO.officerNametoNRIC(officerName);
+                if(officerNRIC.contains(user.getNric())){
+                    applyView.CannotApplyIfHDBOfficerMessage();
+                    returntoMenu(user);
+                }
             }
 
             // Check if applicant is pending approval to handle this project
