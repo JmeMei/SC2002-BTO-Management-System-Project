@@ -9,13 +9,15 @@ public class EnquiryDAO {
     private static final String FILE_PATH = "BTOManagementSystem/Data/Enquiries.csv";
 
     // Save a new enquiry
-    public void saveEnquiry(Enquiry enquiry) {
+    public boolean saveEnquiry(Enquiry enquiry) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(enquiry.toString());
             writer.newLine();
+            return true;
         } catch (IOException e) {
             System.out.println("Error saving enquiry: " + e.getMessage());
         }
+        return false;
     }
 
     // Load all enquiries

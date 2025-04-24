@@ -21,7 +21,7 @@ public class EnquiryController {
     HDBOfficerDAO officerDAO = new HDBOfficerDAO();
     
     // creating an enquiry
-    public void submitEnquiry(String applicantNRIC, String projectName, String question){
+    public String submitEnquiry(String applicantNRIC, String projectName, String question){
         String officerIC = officerDAO
         .officerNametoNRIC(projectDAO.getOfficerIC(projectName));
         String managerIC = managerDAO
@@ -30,7 +30,11 @@ public class EnquiryController {
         String enquiryID = enquiryDAO.generateNewEnquiryID();
         Enquiry enquiry = new Enquiry(enquiryID, projectName, applicantNRIC, question, officerIC, managerIC);
 
-        enquiryDAO.saveEnquiry(enquiry);
+        if(enquiryDAO.saveEnquiry(enquiry)){
+            return "Enquiry successfully submitted";
+        }
+        return "Failed to submit enquiry";
+        
     }
 
     // view all enquiries for applicant
