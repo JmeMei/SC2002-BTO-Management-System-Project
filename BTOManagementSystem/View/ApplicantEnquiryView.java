@@ -1,14 +1,14 @@
 package BTOManagementSystem.View;
 
-import BTOManagementSystem.Controller.ApplicationController;
 import BTOManagementSystem.Controller.EnquiryController;
 import BTOManagementSystem.Model.Enquiry;
 import BTOManagementSystem.Model.User;
 import java.util.*;
 
-public class ApplicantEnquiryView {
+public class ApplicantEnquiryView implements EnquiryView {
 
-    public static void showEnquiryMenu(User user) {
+    @Override
+    public void showEnquiryMenu(User user) {
         EnquiryController enquiryController = new EnquiryController();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
@@ -125,7 +125,8 @@ public class ApplicantEnquiryView {
         } while (choice != 5);
     }
 
-    public static void printEnquiryList(List<Enquiry> enquiries){
+    @Override
+    public void printEnquiryList(List<Enquiry> enquiries){
         for (int i = 0; i < enquiries.size(); i++) {
             Enquiry e = enquiries.get(i);
             System.out.printf("\n== Enquiry ID: %s ==\nProject Name: %s\nQuestion: %s\nAnswer: %s\n", 

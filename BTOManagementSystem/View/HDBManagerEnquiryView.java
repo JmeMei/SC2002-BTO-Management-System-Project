@@ -6,9 +6,10 @@ import BTOManagementSystem.Model.User;
 import java.util.List;
 import java.util.Scanner;
 
-public class HDBManagerEnquiryView {
+public class HDBManagerEnquiryView implements EnquiryView {
     
-    public static void showEnquiryMenu(User user){
+    @Override
+    public void showEnquiryMenu(User user){
         EnquiryController enquiryController = new EnquiryController();
         Scanner scanner = new Scanner(System.in);
         
@@ -76,7 +77,8 @@ public class HDBManagerEnquiryView {
         } while (choice != 4);
     }
 
-    public static void printEnquiryList(List<Enquiry> enquiries){
+    @Override
+    public void printEnquiryList(List<Enquiry> enquiries){
         for (int i = 0; i < enquiries.size(); i++) {
             Enquiry e = enquiries.get(i);
             System.out.printf("\n== Enquiry ID: %s ==\nProject Name: %s\nQuestion: %s\nAnswer: %s\n", 
