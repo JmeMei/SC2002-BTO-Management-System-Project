@@ -16,7 +16,13 @@ public class ApplicantViewApplyProjectView {
         return projectName;
     }
 
-    public String PromptAvailableFlatTypesforProject(Project project, List<FlatType> availableTypes) {
+    public String PromptUserInputFlatType() {
+        System.out.print("Choose flat type (e.g., 2-Room, 3-Room or 'C' to cancel): ");
+        String roomTypeInput = scanner.nextLine().trim().toLowerCase();
+        return roomTypeInput;
+    }
+
+    public void DisplayAvailableFlatTypesforProject(Project project, List<FlatType> availableTypes) {
         System.out.println("You are eligible for the following flat types for this project:");
         for (FlatType type : availableTypes) {
             if (FlatType.fromString(project.getType1()) == type) {
@@ -27,27 +33,14 @@ public class ApplicantViewApplyProjectView {
                         " (Price: $" + (int) project.getType2_selling_price() + ")");
             }
         }
+    }
 
-        System.out.print("Choose flat type (e.g., 2-Room, 3-Room or 'C' to cancel): ");
-        String roomTypeInput = scanner.nextLine().trim().toLowerCase();
-        String normInput = null;
+    public void UserInputInvalidMessage(){
+        System.out.println("Invalid input. Please try again.");
+    }
 
-        do {
-            // Normalize common variants for flat type
-            if (roomTypeInput.equals("2room") || roomTypeInput.equals("2-room")) {
-                normInput = "2-Room";
-            } else if (roomTypeInput.equals("3room") || roomTypeInput.equals("3-room")) {
-                normInput = "3-Room";
-            } else if (roomTypeInput.equals("c")) {
-                normInput = "Cancel";
-                break;
-            } else {
-                normInput = null;
-                System.out.println("Invalid input. Please try again.");
-            }
-        } while (normInput == null);
-
-        return normInput;
+    public void UserInputFlatTypeInvalidMessage(){
+        System.out.println("Invalid flat type. Please select from the available types.");
     }
 
     public void CannotApplyIfHDBOfficerMessage(){
