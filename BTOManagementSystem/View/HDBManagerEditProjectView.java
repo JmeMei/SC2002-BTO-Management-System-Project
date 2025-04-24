@@ -5,11 +5,21 @@ import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.Project;
 
 import java.util.Scanner;
-
+/**
+ * View class used by HDB Managers to edit existing project details.
+ * <p>
+ * Provides methods to prompt user input for project selection, choosing attributes to edit,
+ * and entering new values. Also handles success and error messaging.
+ */
 public class HDBManagerEditProjectView {
 
     Scanner sc = new Scanner(System.in);
 
+    /**
+     * Prompts the manager to enter the name of the project they want to edit.
+     *
+     * @return the name of the project entered by the manager.
+     */
     public String PromptProjectName(){
 
 
@@ -26,15 +36,25 @@ public class HDBManagerEditProjectView {
 
     }
 
+    /**
+     * Displays an error message indicating the specified project was not found.
+     */
     public void ProjectDoesNotExistErrorMessage(){
         System.out.println("Error! Project doesn't exist! ");
     }
 
+    /**
+     * Displays a success message after the project has been successfully updated.
+     */
     public void ProjectUpdateSuccessMessage(){
         System.out.println("Project updated successfully! ");
     }
 
-
+    /**
+     * Prompts the manager to select an attribute of the project to edit from a list of options.
+     *
+     * @return the integer representing the selected attribute.
+     */
     public int PromptAttribute(){
 
         System.out.println("Select the data column you want to edit:");
@@ -59,7 +79,11 @@ public class HDBManagerEditProjectView {
 
     }
 
-
+    /**
+     * Prompts the manager to input the new value for the selected attribute.
+     *
+     * @return the new value entered by the manager.
+     */
     public String PromptNewValue(){
 
         System.out.print("Enter New Value: ");

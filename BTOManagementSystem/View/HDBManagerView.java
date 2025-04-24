@@ -5,11 +5,32 @@ import BTOManagementSystem.Controller.*;
 
 import java.util.Scanner;
 
+/**
+ * View class for the HDB Manager dashboard interface.
+ * <p>
+ * Allows the manager to perform various administrative operations such as:
+ * <ul>
+ *     <li>Creating, editing, and deleting BTO projects</li>
+ *     <li>Viewing all projects and filtering by conditions</li>
+ *     <li>Managing officer registration requests</li>
+ *     <li>Handling applicant enquiries and BTO applications</li>
+ *     <li>Viewing receipts and processing withdrawals</li>
+ *     <li>Changing their account password</li>
+ * </ul>
+ * This class provides a command-line interface for interaction.
+ */
 public class HDBManagerView {
     private static final Scanner scanner = new Scanner(System.in);
 
 
     // need HDBManager manager for enquiry use
+    /**
+     * Displays the HDB Manager main menu and routes actions based on user input.
+     * <p>
+     * Handles input for creating projects, managing officer registration,
+     * answering enquiries, viewing receipts, processing withdrawal requests,
+     * approving BTO applications, and account management.
+     */
     public void showMenu() {
 
         System.out.println("\n=== HDB Manager Dashboard ===");

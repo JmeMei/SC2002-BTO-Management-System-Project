@@ -10,12 +10,22 @@ import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.User;
-
+/**
+ * The main user interface for applicants in the BTO Management System.
+ * <p>
+ * Provides options for applicants to view and apply for BTO projects, manage applications,
+ * submit enquiries, and update passwords.
+ */
 public class ApplicantView {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static List<Project> projectsAvailable; //Global static variable to store the available rooms
 
+    /**
+     * Displays the main menu interface for applicants and handles navigation to appropriate features.
+     *
+     * @param user the currently logged-in applicant
+     */
     public void showApplicantMenu(User user)  { //Applicant view has a user
 
         ApplicationController applicationController = new ApplicationController();

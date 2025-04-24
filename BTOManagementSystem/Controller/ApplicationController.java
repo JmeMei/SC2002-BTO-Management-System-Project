@@ -1,22 +1,21 @@
 package BTOManagementSystem.Controller;
 
-import BTOManagementSystem.App.App;
 import BTOManagementSystem.Model.ApplicantProjectStatus;
 import BTOManagementSystem.Model.DAO.*;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 import BTOManagementSystem.Model.OfficerRegistrationRequest;
 import BTOManagementSystem.Model.Project;
-import BTOManagementSystem.Model.Roles.Applicant;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.Model.User;
-import BTOManagementSystem.Services.ApplicantActionHandler;
 import BTOManagementSystem.View.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ *  Controller class responsible for handling Applicant applications
+ */
 public class ApplicationController {
     //ApplicationController “has a” projectListDAO
     //ApplicationController “has a” ProjectAvailableView
@@ -31,6 +30,9 @@ public class ApplicationController {
     private HDBOfficerView officerView;
     private HDBManagerView managerView;
 
+    /**
+     * Constructs a new {@code ApplicationController} and initializes the required DAOs.
+     */
     public ApplicationController() {
         this.applicantProjectStatusDAO = new ApplicationProjectStatusDAO();
         this.projectListDAO = new ProjectListDAO();
@@ -44,6 +46,11 @@ public class ApplicationController {
         this.managerView = new HDBManagerView();
     }
 
+    /**
+     * returning users to their respective main menu views
+     * based on their role (Applicant, HDB Officer, or HDB Manager).
+     * @param user the user whose role is being checked
+     */
     public void returntoMenu(User user) {
         switch (user.getRole().toLowerCase()) {
             case "applicant":
@@ -58,7 +65,15 @@ public class ApplicationController {
         }
     }
 
+
+    /**
+     * Determines the list of flat types that a given user is eligible for based on
+     * their age and marital status.
+     * @param user the user whose eligibility for flat types is being checked
+     * @return a list of {@link FlatType} values the user is eligible for
+     */
     public List<FlatType> getEligibleFlatTypes(User user) {
+
         List<FlatType> eligible = new ArrayList<>();
 
         if ((user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single")) ||
@@ -73,6 +88,23 @@ public class ApplicationController {
         return eligible;
     }
 
+    /**
+     * Returns a list of flat types available to the specified user for the given project,
+     * based on the user's eligibility and the availability of flat units in the project.
+     * <p>
+     * Eligibility Rules:
+     * <ul>
+     *   <li>Single applicants aged 35 and above are eligible only for 2-Room flats.</li>
+     *   <li>Married applicants aged 21 and above are eligible for both 2-Room and 3-Room flats.</li>
+     * </ul>
+     * <p>
+     * A flat type is added to the available list only if the user is eligible for it
+     * and the project has available units of that flat type.
+     *
+     * @param project the BTO project to check availability from
+     * @param user the user applying for the flat
+     * @return a list of available {@link FlatType} options the user can apply for
+     */
     public List<FlatType> getAvailableFlatTypes(Project project, User user) {
 
         boolean eligibleTwoRoom = (user.getAge() >= 35 && user.getMaritalStatus().equalsIgnoreCase("Single"))
@@ -104,6 +136,12 @@ public class ApplicationController {
         return availableFlatTypes;
     }
 
+    /**
+     * Get the eligible projects for the user based on the eligible flat types.
+     * Load the available Projects (either 2-Room or 3-Room)
+     * @param user the user to check eligble types for
+     * @return
+     */
     public List<Project> getEligibleProjects(User user) {
         List<Project> eligibleProjects = new ArrayList<>();
         List<FlatType> eligibleFlatTypes = getEligibleFlatTypes(user);
@@ -118,6 +156,12 @@ public class ApplicationController {
         return eligibleProjects;
     }
 
+    /***
+     * Displays all the available projects to be seen by the applicant
+     * based on applicant's eligible FlatTypes and Eligible Projects
+     * @param applicantView the applicantView to return to the View
+     * @param user to check eligible flat types and eligible projects
+     */
     public void displayAvailableProjects(ApplicantView applicantView, User user) {
 
         List<FlatType> eligibleFlatTypes = getEligibleFlatTypes(user);
@@ -132,6 +176,28 @@ public class ApplicationController {
        returntoMenu(user);
     }
 
+    /***
+     * Handles the process for a user to apply for a housing project.
+     * <p>
+     * This method guides the applicant through selecting an eligible project,
+     * validating their eligibility based on project and flat type availability,
+     * and submitting an application if all conditions are met. It also handles
+     * special conditions such as if the user is an HDB officer of the project
+     * or has a pending officer registration request for the same project.
+     * </p>
+     *
+     * <p>Key Steps:</p>
+     * <ul>
+     *   <li>Prompt user to choose a project</li>
+     *   <li>Check if the selected project is valid and user is not a related HDB officer</li>
+     *   <li>Display available flat types for that project</li>
+     *   <li>Prompt user to select a flat type</li>
+     *   <li>Submit application and notify based on application status</li>
+     * </ul>
+     * @param applicantView used to return to the applicant view
+     * @param applyView used to prompt the user to prompt and show applyView Messages
+     * @param user user to verify eligible projects
+     */
     public void applyProject(ApplicantView applicantView, ApplicantViewApplyProjectView applyView, User user) {
 
         // Prompt user view to return name of project to apply for
@@ -243,6 +309,18 @@ public class ApplicationController {
         returntoMenu(user);
     }
 
+    /**
+     * Displays all housing project applications submitted by the current user.
+     * <p>
+     * This method retrieves the list of applications associated with the user's NRIC
+     * and displays their statuses using the provided view. If no applications are found,
+     * a corresponding message is shown. Afterwards, the user is returned to the main menu.
+     * </p>
+     *
+     * @param applicantView used to return to the applicantView
+     * @param manageView used to display the application status
+     * @param user the user whose applications are being retrieved and displayed
+     */
     public void viewMyApplications(ApplicantView applicantView, ApplicantManageApplicationView manageView, User user) {
         List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplicationsByNRIC(user.getNric());
         if (!statusList.isEmpty()) {
@@ -254,6 +332,19 @@ public class ApplicationController {
         returntoMenu(user);
     }
 
+    /**
+     * Allows the user to submit a withdrawal request for a pending project application.
+     * <p>
+     * This method checks if the user has any pending applications. If such an application
+     * exists, it is displayed to the user for confirmation. Upon confirmation, a withdrawal
+     * request is created. Appropriate success or error messages are shown based on whether
+     * a request has already been made or not. After the process, the user is returned to the main menu.
+     * </p>
+     *
+     * @param applicantView the main view interface used for general applicant navigation
+     * @param manageView the view responsible for managing and displaying application statuses
+     * @param user the user requesting to withdraw their pending housing application
+     */
     public void withdrawApplication(ApplicantView applicantView, ApplicantManageApplicationView manageView, User user) {
         // Get current Application that is PENDING
         List<ApplicantProjectStatus> statusList = applicantProjectStatusDAO.getApplicationsByNRIC(user.getNric());
@@ -292,17 +383,19 @@ public class ApplicationController {
         returntoMenu(user);
     }
 
-//    public Project getProject(String projectName, User user) {
-//        List<Project> projectAvailable = getEligibleProjects(user);
-//
-//        for (Project p : projectAvailable) {
-//            if (p.getName().equalsIgnoreCase(projectName)) {
-//                return p;
-//            }
-//        }
-//        return null;
-//    }
-
+    /**
+     * Retrieves and displays the application statuses for a specific project.
+     * <p>
+     * This method filters all applications to find those that match the specified project name
+     * and displays them to the assigned HDB officer. If no applications are found, an appropriate
+     * message is shown. After displaying the information (or message), the officer is returned
+     * to the project menu.
+     * </p>
+     *
+     * @param assignedProjectView the view used to display application statuses and navigate officer options
+     * @param projectName the name of the project whose applications are to be retrieved
+     * @param officer the HDB officer assigned to the project, used for view navigation
+     */
     public void getApplicantProjectStatus(HDBOfficerAssignedProjectView assignedProjectView,String projectName,HDBOfficer officer) {
         List<ApplicantProjectStatus> allstatusList = applicantProjectStatusDAO.getApplications();
         List<ApplicantProjectStatus> projectstatusList = new ArrayList<>();

@@ -5,7 +5,12 @@ import BTOManagementSystem.Model.Project;
 
 import java.io.*;
 import java.util.ArrayList;
-
+/**
+ * DAO (Data Access Object) class for managing officer registration requests.
+ * <p>
+ * Handles creation, retrieval, filtering, updating, and persistence of registration
+ * requests for HDB officers who wish to be assigned to BTO projects.
+ */
 public class OfficerRegistrationRequestDAO {
 
 
@@ -13,14 +18,23 @@ public class OfficerRegistrationRequestDAO {
     private static ArrayList<OfficerRegistrationRequest> officerRegistrationRequests = new ArrayList<>();
     private String[] Headers;
 
+    /**
+     * Constructs the DAO and loads all registration requests from file.
+     */
     public OfficerRegistrationRequestDAO() {
         this.LoadAllOfficerRegistrationRequests();
     }
 
+    /**
+     * Reloads the request list from the CSV file.
+     */
     public void ReloadFromFile() {
         this.LoadAllOfficerRegistrationRequests();
     }
 
+    /**
+     * Loads all officer registration requests from the CSV file into memory.
+     */
     public void LoadAllOfficerRegistrationRequests() {
         officerRegistrationRequests.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -49,10 +63,21 @@ public class OfficerRegistrationRequestDAO {
         }
     }
 
+    /**
+     * Gets the CSV header row for Officer Registration Requests.
+     *
+     * @return an array of column headers
+     */
     public String[] getHeaders() {
         return Headers;
     }
 
+    /**
+     * Loads officer registration requests based on filter choice.
+     *
+     * @param choice filter option: 1 = Approved, 2 = Pending, 3 = All
+     * @return a filtered list of {@link OfficerRegistrationRequest}
+     */
     public ArrayList<OfficerRegistrationRequest> LoadOfficerRegistrationRequests(int choice){
 
             String filter_Status = "";
@@ -79,6 +104,13 @@ public class OfficerRegistrationRequestDAO {
             return FilteredRequests;
     }
 
+    /**
+     * Updates a registration request's status to "Approved".
+     *
+     * @param Name        the name of the officer
+     * @param ProjectName the project they requested
+     * @return {@code true} if successful, {@code false} otherwise
+     */
     public boolean UpdateApprovalStatus(String Name, String ProjectName){
 
         for (OfficerRegistrationRequest request : this.officerRegistrationRequests){
@@ -95,6 +127,13 @@ public class OfficerRegistrationRequestDAO {
         return false;
     }
 
+    /**
+     * Checks if a registration request record exists.
+     *
+     * @param Name        the officer's name
+     * @param ProjectName the project name
+     * @return {@code true} if found, otherwise {@code false}
+     */
     public boolean RecordExists(String Name, String ProjectName){
 
         for (OfficerRegistrationRequest request : this.officerRegistrationRequests){
@@ -108,6 +147,13 @@ public class OfficerRegistrationRequestDAO {
         return false;
     }
 
+    /**
+     * Gets a registration request by officer NRIC and project name.
+     *
+     * @param NRIC        the NRIC of the officer
+     * @param projectName the name of the project
+     * @return matching {@link OfficerRegistrationRequest}, or {@code null} if not found
+     */
     public OfficerRegistrationRequest GetOfficerRegRequest(String NRIC,String projectName){
         for (OfficerRegistrationRequest request : this.officerRegistrationRequests){
             if (request.getNRIC().equals(NRIC) && request.getProjectName().equals(projectName)){
@@ -117,6 +163,12 @@ public class OfficerRegistrationRequestDAO {
         return null;
     }
 
+    /**
+     * Gets a registration request by officer NRIC.
+     *
+     * @param NRIC the NRIC of the officer
+     * @return matching {@link OfficerRegistrationRequest}, or {@code null} if not found
+     */
     public OfficerRegistrationRequest GetOfficerRegRequestByNRIC(String NRIC){
         for (OfficerRegistrationRequest request : this.officerRegistrationRequests){
             if (request.getNRIC().equals(NRIC)){
@@ -126,12 +178,19 @@ public class OfficerRegistrationRequestDAO {
         return null;
     }
 
+    /**
+     * Creates a new officer registration request and saves it.
+     *
+     * @param OfficerRegistrationRequest the request to add
+     */
     public void CreateOfficerRegistrationRequest(OfficerRegistrationRequest OfficerRegistrationRequest){
         this.officerRegistrationRequests.add(OfficerRegistrationRequest);
         updateDB();
     }
 
-
+    /**
+     * Saves all registration requests to the CSV file.
+     */
     public void updateDB(){
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
@@ -161,8 +220,11 @@ public class OfficerRegistrationRequestDAO {
 
     }
 
-
-
+    /**
+     * Returns all registration request rows in a list of string lists.
+     *
+     * @return list of rows from the CSV file
+     */
     public ArrayList<ArrayList<String>> ViewRequests(){
 
         ArrayList<ArrayList<String>> rows = new ArrayList<>();
@@ -183,6 +245,12 @@ public class OfficerRegistrationRequestDAO {
         return rows;
     }
 
+    /**
+     * Parses a CSV line into an array of strings, accounting for quoted commas.
+     *
+     * @param line the CSV line
+     * @return parsed values as a list
+     */
     private ArrayList<String> CSV_data_Parse(String line){
 
         ArrayList<String> formatted = new ArrayList<>();

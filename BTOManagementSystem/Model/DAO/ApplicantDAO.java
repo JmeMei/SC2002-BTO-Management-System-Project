@@ -14,11 +14,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * DAO (Data Access Object) class responsible for managing data related to Applicants.
+ * <p>
+ * Handles operations such as loading from CSV, retrieving users, updating profile details,
+ * and persisting changes back to file.
+ */
 public class ApplicantDAO {
 
     private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantList.csv"; // um what is the point of this line
     private static List<Applicant> applicants = new ArrayList<Applicant>();
+
 
     public ApplicantDAO(){
         applicants.clear();
@@ -41,14 +47,11 @@ public class ApplicantDAO {
 
     }
 
-    public void UpdateApplicantProfile(String applicantNRIC, String projectName, ApplicationStatus status, FlatType flatType) {
-        Applicant applicant = this.getUser(applicantNRIC);
-        applicant.setAppliedProject(projectName);
-        applicant.setApplicationStatus(status);
-        applicant.setBookedFlatType(flatType);
-        this.updateDB();
-    }
-
+    /**
+     * Retrieves all applicants loaded from the CSV file.
+     *
+     * @return a list of all {@link Applicant} objects
+     */
     public List<Applicant> getAllUsers(){
         return applicants;
     }
@@ -63,7 +66,12 @@ public class ApplicantDAO {
         return false;
     }
 
-
+    /**
+     * Checks if an applicant with the given NRIC exists.
+     *
+     * @param NRIC the NRIC to check
+     * @return {@code true} if the NRIC exists, {@code false} otherwise
+     */
     public String getPasswordOfUser(String NRIC){
 
         for (Applicant applicant : applicants){
@@ -75,6 +83,12 @@ public class ApplicantDAO {
         return null;
     }
 
+    /**
+     * Retrieves the password of a user given their NRIC.
+     *
+     * @param NRIC the NRIC of the applicant
+     * @return the password as a {@code String}, or {@code null} if not found
+     */
     public Applicant getUser(String NRIC){
         for (Applicant applicant : applicants){
             if(applicant.getNric().equals(NRIC)){
@@ -85,6 +99,11 @@ public class ApplicantDAO {
         return null;
     }
 
+    /**
+     * Persists all current applicants in memory back to the CSV file.
+     *
+     * @return {@code true} if the update was successful, {@code false} if an error occurred
+     */
     public boolean updateDB() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             // Write the header

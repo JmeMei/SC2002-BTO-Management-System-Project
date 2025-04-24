@@ -6,8 +6,23 @@ import BTOManagementSystem.Model.Roles.HDBOfficer;
 import BTOManagementSystem.Model.User;
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * View class that allows HDB Officers to manage enquiries within the BTO management system.
+ * <p>
+ * Officers may:
+ * <ul>
+ *     <li>View and manage their own enquiries as applicants</li>
+ *     <li>Reply to applicant enquiries as project officers</li>
+ * </ul>
+ * This class implements the {@link EnquiryView} interface.
+ */
 public class HDBOfficerEnquiryView implements EnquiryView{
+    /**
+     * Displays the enquiry management menu specific to HDB Officers.
+     * Allows handling both applicant-side and officer-side enquiry features.
+     *
+     * @param user The currently logged-in {@link User} (expected to be an HDB Officer)
+     */
         @Override
         public void showEnquiryMenu(User user) {
             
@@ -140,6 +155,12 @@ public class HDBOfficerEnquiryView implements EnquiryView{
 
         } while (choice != 6);
     }
+
+    /**
+     * Prints a list of enquiries in a formatted layout.
+     *
+     * @param enquiries The list of {@link Enquiry} to display.
+     */
     @Override
     public void printEnquiryList(List<Enquiry> enquiries){
         for (int i = 0; i < enquiries.size(); i++) {

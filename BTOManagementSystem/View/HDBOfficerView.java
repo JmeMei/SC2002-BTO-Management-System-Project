@@ -4,10 +4,27 @@ import BTOManagementSystem.App.App;
 import BTOManagementSystem.Controller.*;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
 import java.util.Scanner;
-
+/**
+ * The {@code HDBOfficerView} class represents the main dashboard and interface
+ * for an HDB Officer within the BTO Management System.
+ * <p>
+ * HDBOfficerView extends {@link ApplicantView} to inherit basic applicant-related
+ * features, and provides additional functionality specific to HDB Officers such as:
+ * <ul>
+ *   <li>Project registration and approval</li>
+ *   <li>Assigned project management</li>
+ *   <li>Viewing and replying to enquiries</li>
+ *   <li>Viewing bookings and managing passwords</li>
+ * </ul>
+ */
 public class HDBOfficerView extends ApplicantView{
      private static final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Displays the menu for the HDB Officer and handles user input for different actions.
+     *
+     * @param officer The currently logged-in HDB Officer.
+     */
     public void showOfficerMenu(HDBOfficer officer) {
         int option = 0;
 

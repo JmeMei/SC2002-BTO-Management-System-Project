@@ -13,7 +13,12 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+/**
+ * DAO (Data Access Object) for managing BTO Project data.
+ * <p>
+ * Handles loading, filtering, updating, and storing project details for
+ * managers, officers, and applicants. Data is persisted in a CSV file.
+ */
 public class ProjectListDAO {
 
     private String[] headers;
@@ -21,6 +26,9 @@ public class ProjectListDAO {
     private String filePath = "BTOManagementSystem/Data/ProjectList.csv";
     private static ArrayList<Project> ProjectsList = new ArrayList<>();
 
+    /**
+     * Initializes and loads all projects from the CSV file into a Project List.
+     */
     public ProjectListDAO() {
         ProjectsList.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -71,6 +79,11 @@ public class ProjectListDAO {
 
     }
 
+    /**
+     * Creates a new BTO project using the provided data and adds it to the system.
+     *
+     * @param Data a list of project attributes in the expected order
+     */
     public void CreateNewProject(ArrayList<String> Data){
 
         Project newProject = new Project(Data.get(0),Data.get(1),Data.get(2),Integer.parseInt(Data.get(3)),
@@ -81,11 +94,20 @@ public class ProjectListDAO {
 
     }
 
-
-    public ArrayList<Project> filterByNeightbourhood(ArrayList<Project> projects ,String value){
+    /**
+     * Filters a given list of projects by neighbourhood.
+     *
+     * @param projects the list of {@link Project} objects to filter
+     * @param value    the neighbourhood name to filter by
+     * @return a filtered list of projects located in the specified neighbourhood
+     */
+    public ArrayList<Project> filterByNeighbourhood(ArrayList<Project> projects ,String value){
         return projects.stream().filter( r -> value.equalsIgnoreCase(r.getNeighbourhood())).collect(Collectors.toCollection(ArrayList::new));
     }
 
+    /**
+     * Updates the CSV file with current project data in Project List
+     */
     public void UpdateDB(){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             // Write header
@@ -118,6 +140,12 @@ public class ProjectListDAO {
         }
     }
 
+    /**
+     * Decreases the number of available flat units of a given type in a project.
+     *
+     * @param project     the project to update
+     * @param appliedType the flat type whose unit count will be decreased
+     */
     public void decreaseFlatUnits(Project project, FlatType appliedType) {
         // Check Type 1 if 2 or 3 Room
         if (FlatType.fromString(project.getType1()) == appliedType) {
@@ -130,18 +158,13 @@ public class ProjectListDAO {
         this.UpdateDB();
     }
 
-    public void increaseFlatUnits(Project project, FlatType appliedType) {
-        // Check Type 1 if 2 or 3 Room
-        if (FlatType.fromString(project.getType1()) == appliedType) {
-            project.setType1_numofunits(project.getType1_numofunits() + 1);
-        }
-        // Check Type 2 if 2 or 3 Room
-        else if (FlatType.fromString(project.getType2()) == appliedType) {
-            project.setType2_numofunits(project.getType2_numofunits() + 1);
-        }
-        this.UpdateDB();
-    }
-
+    /**
+     * Edits a specific attribute of a project and updates the storage.
+     *
+     * @param project   the project to modify
+     * @param attribute the attribute index (1-based)
+     * @param value     the new value to assign
+     */
     public void editProjectDetails(Project project, int attribute, String value){
 
         switch (attribute){
@@ -196,6 +219,12 @@ public class ProjectListDAO {
 
     }
 
+    /**
+     * Retrieves a project object by its name.
+     *
+     * @param ProjectName the name of the project
+     * @return the matching {@link Project}, or {@code null} if not found
+     */
     public Project getProjectFromStringName(String ProjectName){
 
         for (Project p : ProjectsList) {
@@ -210,6 +239,13 @@ public class ProjectListDAO {
         return null;
     }
 
+    /**
+     * Adds an officer to a project if slots are available.
+     *
+     * @param officerName the name of the officer
+     * @param ProjectName the name of the project
+     * @return 1 if success, -1 if full, 0 if project not found
+     */
     public int AddOfficerToProject(String officerName, String ProjectName){
 
         for (Project p : ProjectsList) {
@@ -236,13 +272,20 @@ public class ProjectListDAO {
 
     }
 
-    public boolean IsManaging(String ProjectName, String MangerName){
+    /**
+     * Checks whether the given manager is managing the specified project.
+     *
+     * @param ProjectName the project name
+     * @param ManagerName the manager's name
+     * @return {@code true} if managing, otherwise {@code false}
+     */
+    public boolean IsManaging(String ProjectName, String ManagerName){
 
         for (Project p : ProjectsList) {
 
             if (p.getName().equalsIgnoreCase(ProjectName)) {
 
-                if (p.getManager().equalsIgnoreCase(MangerName)) {
+                if (p.getManager().equalsIgnoreCase(ManagerName)) {
 
                     return true;
                 }
@@ -256,8 +299,14 @@ public class ProjectListDAO {
         return false;
     }
 
-
-    public void editAProject(String projectName, int atrributeIndex, String NewValue){
+    /**
+     * Edits a project in the CSV file using the attribute index and a new value.
+     *
+     * @param projectName     the name of the project
+     * @param attributeIndex  the attribute to update
+     * @param NewValue        the new value to set
+     */
+    public void editAProject(String projectName, int attributeIndex, String NewValue){
 
         List<String[]> rows = new ArrayList<>();
 
@@ -270,19 +319,19 @@ public class ProjectListDAO {
                 if (aRow[0].compareTo(projectName) == 0){
 
                     String old_value = "";
-                    if (atrributeIndex <= 10){
+                    if (attributeIndex <= 10){
 
-                        old_value = aRow[atrributeIndex - 1];
-                        aRow[atrributeIndex - 1] = NewValue;
+                        old_value = aRow[attributeIndex - 1];
+                        aRow[attributeIndex - 1] = NewValue;
 
                     } else{
 
-                        if (atrributeIndex == 11){
+                        if (attributeIndex == 11){
                             old_value = aRow[11];
                             aRow[11] = NewValue;
                         }
 
-                        else if (atrributeIndex == 12){
+                        else if (attributeIndex == 12){
                             old_value = aRow[13];
                             aRow[13] = NewValue;
 
@@ -309,7 +358,12 @@ public class ProjectListDAO {
 
     }
 
-
+    /**
+     * Deletes a project by name from the system and updates the CSV.
+     *
+     * @param projectName the name of the project
+     * @return {@code true} if deleted, otherwise {@code false}
+     */
     public boolean DeleteProject(String projectName){
 
         for(Project p : ProjectsList){
@@ -327,10 +381,21 @@ public class ProjectListDAO {
         return false;
     }
 
+    /**
+     * Retrieves the CSV headers for project data.
+     *
+     * @return an array of column headers
+     */
     public String[] getHeaders(){
         return this.headers;
     }
 
+    /**
+     * Loads and optionally filters the list of projects for a manager or all.
+     *
+     * @param filter 1 = Manager's projects, else all
+     * @return a list of filtered {@link Project} objects
+     */
     public ArrayList<Project> LoadProjects (int filter){
 
         ArrayList<Project> projectsToReturn = new ArrayList<>();
@@ -363,6 +428,9 @@ public class ProjectListDAO {
         return projectsToReturn;
     }
 
+    /**
+     * Parses and filters a project based on manager/neighborhood/type filters.
+     */
     private boolean filterCheck(String code, Project p, String filterValue){
 
         if(code.charAt(0) == '1'){
@@ -393,7 +461,11 @@ public class ProjectListDAO {
         return true;
    }
 
-
+    /**
+     * Returns all projects as raw row data (used for CSV/table views).
+     *
+     * @return a list of project rows
+     */
     public ArrayList<ArrayList<String>> get_all_Projects(){
 
         ArrayList<ArrayList<String>> rows = new ArrayList<>();
@@ -414,6 +486,12 @@ public class ProjectListDAO {
         return rows;
     }
 
+    /**
+     * Parses a CSV line while handling quoted fields.
+     *
+     * @param line the CSV line
+     * @return a parsed list of column values
+     */
     private ArrayList<String> CSV_data_Parse(String line){
 
         ArrayList<String> formatted = new ArrayList<>();
@@ -462,6 +540,12 @@ public class ProjectListDAO {
 
     }
 
+    /**
+     * Gets all project rows where the given name is the manager.
+     *
+     * @param Name the manager's name
+     * @return list of project rows
+     */
     public ArrayList<ArrayList<String>> get_filtered_Projects(String Name){
 
         ArrayList<ArrayList<String>> rows = new ArrayList<>();
@@ -488,6 +572,11 @@ public class ProjectListDAO {
     }
 
     // get list of projectNames(enq)
+    /**
+     * Returns a list of all project names currently loaded in project List
+     *
+     * @return list of project names
+     */
     public List<String> getProjectNames() {
         List<String> projectNames = new ArrayList<>();
         for (Project project : ProjectsList) {
@@ -496,6 +585,12 @@ public class ProjectListDAO {
         return projectNames;
     }
 
+    /**
+     * Checks if the manager has any active (not closed) projects.
+     *
+     * @param ManagerName the manager's name
+     * @return {@code 1} if yes, {@code 0} if none
+     */
     public int ManagerHasActiveProject(String ManagerName){
 
         for (Project p : ProjectsList) {
@@ -513,6 +608,12 @@ public class ProjectListDAO {
 
     }
 
+    /**
+     * Gets the first officer's NRIC for a project.
+     *
+     * @param projectName the project name
+     * @return NRIC of the first officer, or {@code null} if not found
+     */
     public String getOfficerIC(String projectName){
         for (Project p: ProjectsList){
             if(p.getName().equals(projectName)){
@@ -522,7 +623,12 @@ public class ProjectListDAO {
         return null;
     }
 
-    
+    /**
+     * Returns the project name assigned to the given officer.
+     *
+     * @param officerName the name of the officer
+     * @return the project name, or {@code null} if not assigned
+     */
     // get officers in charge of the project(enq) 1 officer for now
     public String getProjectNamefromOfficerName(String officerName){
         for (Project p: ProjectsList){
@@ -538,6 +644,12 @@ public class ProjectListDAO {
 
 
     // get manager in charge of the project(enq)
+    /**
+     * Gets the name of the manager assigned to a specific project.
+     *
+     * @param projectName the name of the project
+     * @return the manager's name, or {@code null} if not found
+     */
     public String getManagerbyProject(String projectName){
         for (Project p : ProjectsList) {              
             if (p.getName().equalsIgnoreCase(projectName)) {
@@ -547,7 +659,13 @@ public class ProjectListDAO {
         return null;
     }
 
-    /////FOR APPLICANT/////
+
+    /**
+     * Loads all projects that offer 2-Room flats and are visible.
+     *
+     * @param user the user requesting available projects
+     * @return list of 2-Room {@link Project} objects
+     */
     public List<Project> loadAvailableTwoRooms(User user){
 
         List<Project> availableTwoRooms = new ArrayList<>();
@@ -565,6 +683,12 @@ public class ProjectListDAO {
         return availableTwoRooms;
     }
 
+    /**
+     * Loads all projects that offer 3-Room flats and are visible.
+     *
+     * @param user the user requesting available projects
+     * @return list of 3-Room {@link Project} objects
+     */
     public List<Project> loadAvailableThreeRooms(User user){
 
         List<Project> availableThreeRooms = new ArrayList<>();
@@ -581,101 +705,3 @@ public class ProjectListDAO {
         return availableThreeRooms;
     }
 }
-
-//    public List<Room> loadAvailableThreeRooms(User user){
-//        //final String FILE_PATH = "BTOManagementSystem/Data/ProjectList.csv";
-//
-//        List<Room> records = new ArrayList<>();
-//        List<String> projectNameAvailable = new ArrayList<>();
-//
-//        try(BufferedReader br = new BufferedReader(new FileReader(filePath))){
-//            String line;
-//            boolean isHeader = true; //skip the header
-//
-//            while((line = br.readLine()) != null){
-//                if(isHeader){
-//                    isHeader = false;
-//                    continue;
-//                }
-//                // Use regex to avoid splitting commas that are inside quotes.
-//                String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-//                //String[] values = line.split(",");
-//
-//                /*
-//                *
-//                    0 private String name;
-//                    1 private String Neighbourhood;
-//                    2 private String type1;
-//                    3 private int Type1_numofunits;
-//                    4 double Type1_sellingprice;
-//
-//                    5 String Type2;
-//                    6 int Type2_numofunits;
-//                    7 double type2_sellling_price;
-//
-//                    8 LocalDate openingDate;
-//                    9 LocalDate closingDate;
-//                    10 String manager;
-//                    11 int officerslots;
-//                    12 private List<String> officers;
-//                    13 private int visibility = 0;
-//                */
-//
-//                // Parse required columns (assuming columns are as described above)
-//                String projectName  = values[0].trim();
-//                String neighborhood = values[1].trim();
-//                String Type1 = values[2].trim();
-//                int Type1_numofunits = Integer.parseInt(values[3].trim());
-//                double Type1_sellingprice = Double.parseDouble(values[4].trim());
-//
-//                String Type2 = values[5].trim();
-//                int Type2_numofunits = Integer.parseInt(values[6].trim());
-//                double Type2_sellingprice = Double.parseDouble(values[7].trim());
-//
-//                LocalDate openingDate = null;
-//                LocalDate closingDate = null;
-//
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//                try {
-//                    openingDate = LocalDate.parse(values[8].trim(), formatter);
-//                    closingDate = LocalDate.parse(values[9].trim(), formatter);
-//
-//                    // You can now use openingDate and closingDate as LocalDate objects
-//                } catch (DateTimeParseException e) {
-//                    System.out.println("Invalid date format in CSV: " + e.getMessage());
-//                    continue; // Skip this row or handle differently
-//                }
-//
-//                String manager = values[10].trim();
-//                int officerSlot = Integer.parseInt(values[11].trim());
-//                String rawOfficerList = values[12].replaceAll("^\"|\"$", "").trim(); // remove surrounding quotes
-//                List<String> officers = Arrays.stream(rawOfficerList.split(","))
-//                                    .map(String::trim)
-//                                    .collect(Collectors.toList());
-//                int visibility = Integer.parseInt(values[13].trim());
-//
-//                //***FOR DEBUGGING, YOU CAN PRINT EVERYTHING FIRST***//
-//                //System.out.println(Arrays.toString(values));
-//
-//                /*
-//                private String projectName;
-//                private String neighborhood;
-//                private int numUnitsType;
-//                private double priceType;
-//                private LocalDate openingDate;
-//                private LocalDate closingDate;
-//                private FlatType flatType;
-//                */
-//                if(Type2_numofunits != 0 && visibility == 1 && !officers.contains(user.getName())) {
-//                    Room record = new Room(projectName, neighborhood, Type1_numofunits, Type1_sellingprice,
-//                                            //Type2, Type2_numofunits, Type2_sellingprice,
-//                                            openingDate, closingDate, FlatType.TWOROOM);
-//                    records.add(record);
-//                    projectNameAvailable.add(projectName);
-//                }
-//            }
-//        } catch(IOException e){
-//            System.err.println("Error loading Room.csv: " + e.getMessage());
-//        }
-//        return records; //return null i the tworrom csv is not found.
-//    }

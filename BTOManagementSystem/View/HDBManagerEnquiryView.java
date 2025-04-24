@@ -6,8 +6,25 @@ import BTOManagementSystem.Model.User;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * View class for HDB Managers to manage enquiries.
+ * <p>
+ * Allows managers to:
+ * <ul>
+ *     <li>View all enquiries</li>
+ *     <li>View unanswered enquiries for their managed projects</li>
+ *     <li>Reply to unanswered enquiries</li>
+ * </ul>
+ * Implements {@link EnquiryView}.
+ */
 public class HDBManagerEnquiryView implements EnquiryView {
-    
+
+
+    /**
+     * Displays the enquiry management menu for HDB Managers and handles user interaction.
+     *
+     * @param user the currently logged-in manager user.
+     */
     @Override
     public void showEnquiryMenu(User user){
         EnquiryController enquiryController = new EnquiryController();
@@ -77,6 +94,11 @@ public class HDBManagerEnquiryView implements EnquiryView {
         } while (choice != 4);
     }
 
+    /**
+     * Displays a formatted list of enquiries.
+     *
+     * @param enquiries the list of enquiries to be displayed.
+     */
     @Override
     public void printEnquiryList(List<Enquiry> enquiries){
         for (int i = 0; i < enquiries.size(); i++) {

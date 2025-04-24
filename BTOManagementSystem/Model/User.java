@@ -1,5 +1,12 @@
 package BTOManagementSystem.Model;
 
+/**
+ * Represents a generic user in the BTO Management System.
+ * <p>
+ * This class serves as a superclass for specific user roles such as
+ * Applicant, HDB Officer, and HDB Manager. It contains basic user
+ * information including name, NRIC, age, marital status, password, and role.
+ */
 public class User {
     protected String name;
     protected String nric;
@@ -8,6 +15,16 @@ public class User {
     protected String maritalStatus;
     protected String role;
 
+    /**
+     * Constructs a new {@code User} with the given details.
+     *
+     * @param name          the full name of the user
+     * @param nric          the NRIC of the user
+     * @param age           the user's age
+     * @param maritalStatus the user's marital status
+     * @param password      the user's password
+     * @param role          the role of the user (e.g., "Applicant", "Officer", "Manager")
+     */
     public User(String name, String nric, int age, String maritalStatus, String password, String role) {
         this.name = name;
         this.nric = nric;
@@ -18,29 +35,54 @@ public class User {
 
     }
 
-    public String getName(){
+    /**
+     * @return the user's full name
+     */
+    public String getName() {
         return name;
     }
-    
+
+    /**
+     * @return the user's NRIC
+     */
     public String getNric() {
         return nric;
     }
 
+    /**
+     * @return the user's age
+     */
     public int getAge() {
         return age;
     }
 
+    /**
+     * @return the user's marital status
+     */
     public String getMaritalStatus() {
         return maritalStatus;
     }
 
-    public String getRole(){
+    /**
+     * @return the role of the user (e.g., "Applicant", "Manager", "Officer")
+     */
+    public String getRole() {
         return role;
     }
 
-    public String getPassword(){return password;}
+    /**
+     * @return the user's password
+     */
+    public String getPassword() {
+        return password;
+    }
 
-    public void setPassword(String password)  {
+    /**
+     * Sets a new password for the user.
+     *
+     * @param password the new password to set
+     */
+    public void setPassword(String password) {
         this.password = password;
     }
 

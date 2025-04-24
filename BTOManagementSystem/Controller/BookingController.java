@@ -8,18 +8,41 @@ import BTOManagementSystem.Model.DAO.ProjectListDAO;
 import BTOManagementSystem.Model.DAO.ReceiptsDAO;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.View.HDBOfficerAssignedProjectView;
-
+/**
+ * Controller class responsible for handling the booking of flats for applicants
+ * who have been successfully approved for a BTO project.
+ */
 public class BookingController {
     private ApplicationProjectStatusDAO applicantProjectStatusDAO;
     private ProjectListDAO projectListDAO;
     private ApplicantDAO applicantDAO;
 
+    /**
+     * Constructs a new {@code BookingController} and initializes the required DAOs.
+     */
     public BookingController() {
         this.applicantProjectStatusDAO = new ApplicationProjectStatusDAO();
         this.projectListDAO = new ProjectListDAO();
         this.applicantDAO = new ApplicantDAO();
     }
 
+    /**
+     * Processes the flat booking for a specific applicant under a specific project.
+     * <p>The method performs the following steps:</p>
+     * <ul>
+     *     <li>Validates if the applicant has an existing application for the project.</li>
+     *     <li>Checks if the application status is {@code SUCCESSFUL}.</li>
+     *     <li>Displays application details and prompts the officer for booking confirmation.</li>
+     *     <li>Checks flat availability based on flat type and project data.</li>
+     *     <li>If confirmed and available, updates the application status and reduces the unit count.</li>
+     * </ul>
+     *
+     *
+     * @param projectView   the view used by the HDB officer to interact with booking options
+     * @param applicantNRIC the NRIC of the applicant booking the flat
+     * @param projectName   the name of the project the applicant is booking under
+     * @return {@code true} if booking was successful, {@code false} otherwise
+     */
     public boolean bookFlatForApplicant(HDBOfficerAssignedProjectView projectView, String applicantNRIC, String projectName) {
 
         // Check if application exists

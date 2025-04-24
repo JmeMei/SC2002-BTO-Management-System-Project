@@ -8,12 +8,21 @@ import BTOManagementSystem.Model.WithdrawalRequest;
 
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * Provides the view layer for applicants to manage their BTO applications.
+ * <p>
+ * This includes displaying application statuses, handling withdrawal requests,
+ * and showing relevant confirmation or error messages.
+ */
 public class ApplicantManageApplicationView {
 
     private Scanner scanner = new Scanner(System.in);
 
-
+    /**
+     * Displays the list of current application statuses for the applicant.
+     *
+     * @param statusList a list of {@link ApplicantProjectStatus} representing applications
+     */
     public void DisplayApplicationStatus(List<ApplicantProjectStatus> statusList) {
         System.out.println("\n=== Your Application Details ===");
 
@@ -27,22 +36,39 @@ public class ApplicantManageApplicationView {
         }
     }
 
+    /**
+     * Informs the applicant that no application was found.
+     */
     public void ApplicationNotFoundMessage(){
         System.out.println("You have not applied for a project yet.");
     }
 
+    /**
+     * Confirms that a withdrawal request was successfully submitted.
+     */
     public void ReqWithdrawalSuccessMessage() {
         System.out.println("Your withdrawal request has been submitted successfully.");
     }
 
+    /**
+     * Informs the applicant that there are no eligible applications to withdraw from.
+     */
     public void ApplicationsToWithdrawNotFoundMessage(){
         System.out.println("You do not have any projects to withdraw from.");
     }
 
+    /**
+     * Informs the applicant that a withdrawal request has already been submitted and is being processed.
+     */
     public void RequestedBeforeMessage() {
         System.out.println("Your withdrawal request is currently being processed. Please wait for approval.");
     }
 
+    /**
+     * Prompts the applicant for confirmation to withdraw from a project.
+     *
+     * @return {@code true} if the applicant confirms withdrawal, {@code false} otherwise
+     */
     public boolean PromptWithdrawConfirmation() {
         String confirm;
         do {
