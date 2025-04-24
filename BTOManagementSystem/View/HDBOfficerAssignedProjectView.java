@@ -8,6 +8,7 @@ import BTOManagementSystem.Model.Enquiry;
 import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.HDBOfficer;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class HDBOfficerAssignedProjectView {
@@ -26,7 +27,7 @@ public class HDBOfficerAssignedProjectView {
         do {
             System.out.println("\n=== Assigned Project Management ===");
             System.out.println("1. View Project Details");
-            System.out.println("2. View Applicant Status by NRIC");
+            System.out.println("2. View All Applicant Status");
             System.out.println("3. Book Flat for Applicant");
             System.out.println("4. Back to Main Menu");
             System.out.print("Enter your option: ");
@@ -45,12 +46,8 @@ public class HDBOfficerAssignedProjectView {
                     this.showProjectDetails(project);
                     break;
                 case 2:
-                    // View Applicant Status by NRIC
-                    System.out.print("Enter Applicant NRIC:");
-                    String applicantNRIC = scanner.nextLine();
-
-                    applicationController.getApplicantProjectStatus(applicantNRIC,projectName,officer);
-
+                    // View All Applicant Status
+                    applicationController.getApplicantProjectStatus(this,projectName,officer);
                     break;
                 case 3:
                     // Get the Applicant's application
@@ -104,12 +101,25 @@ public class HDBOfficerAssignedProjectView {
         System.out.println("Application Status: " + status.getApplicationStatus());
     }
 
+    public void DisplayAllApplicationStatus(List<ApplicantProjectStatus> statusList) {
+        System.out.println("\n=== All Application Details for Project ===");
+
+        for (ApplicantProjectStatus status : statusList) {
+            System.out.println("--------------------------------------------------");
+            System.out.println("Name: " + status.getName());
+            System.out.println("NRIC: " + status.getNric());
+            System.out.println("Project Name: " + status.getProjectName());
+            System.out.println("Flat Type: " + status.getFlatType().getDisplayName());
+            System.out.println("Application Status: " + status.getApplicationStatus());
+        }
+    }
+
     public void AssignedProjectNotFoundMessage(){
         System.out.println("You don't have an approved project assigned.");
     }
 
     public void ApplicationNotFoundMessage(){
-        System.out.println("No applications found for this applicant");
+        System.out.println("No applications found for this project.");
     }
 
     public void AssignedApplicantNotFoundMessage(){

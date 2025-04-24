@@ -27,6 +27,7 @@ public class HDBManagerView {
         System.out.println("11. Approve BTO application");
         System.out.println("12. Change Password");
         System.out.println("13. Logout");
+        System.out.println("14. Exit");
 
         System.out.print("Enter your option: ");
         int option = scanner.nextInt();
@@ -122,6 +123,12 @@ public class HDBManagerView {
             case 13:
                 System.out.println("logging out...");
                 App.main(null);
+                break;
+            case 14:
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid option. Please try again.");
         }
 
 

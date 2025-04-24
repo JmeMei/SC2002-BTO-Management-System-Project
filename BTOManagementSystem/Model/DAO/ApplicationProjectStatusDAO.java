@@ -99,7 +99,7 @@ public class ApplicationProjectStatusDAO {
         return null;
     }
 
-    public List<ApplicantProjectStatus> getApplications(String applicantNRIC) {
+    public List<ApplicantProjectStatus> getApplicationsByNRIC(String applicantNRIC) {
         List<ApplicantProjectStatus> applicantstatusList = new ArrayList<>();
         for (ApplicantProjectStatus status : statusList) {
             if (status.getNric().equals(applicantNRIC)) {
@@ -107,6 +107,10 @@ public class ApplicationProjectStatusDAO {
             }
         }
         return applicantstatusList;
+    }
+
+    public List<ApplicantProjectStatus> getApplications() {
+        return statusList;
     }
 
     public ApplicantProjectStatus getAnApplication(String applicantNRIC,String projectName) {
