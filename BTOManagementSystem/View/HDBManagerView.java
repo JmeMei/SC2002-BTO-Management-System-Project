@@ -18,7 +18,7 @@ public class HDBManagerView {
         System.out.println("2. Edit");
         System.out.println("3. Delete a Project");
         System.out.println("4. View Projects");
-        System.out.println("5. View officer ALL registration requests");
+        System.out.println("5. View officer registration requests");
         System.out.println("6. Approve Officer Registrations");
         System.out.println("7. Enquiry Management"); // for testing
         System.out.println("8. View Receipts");
@@ -30,12 +30,14 @@ public class HDBManagerView {
 
         System.out.print("Enter your option: ");
         int option = scanner.nextInt();
+        scanner.nextLine();
 
         ProjectListController controller = new ProjectListController();
         OfficerRegistrationController officerRegistrationController = new OfficerRegistrationController();
         ReceiptController receiptController = new ReceiptController();
         WithdrawalRequestController  withdrawalRequestController = new WithdrawalRequestController();
         ApplicationStatusController applicationStatusController = new ApplicationStatusController();
+        PasswordController passwordController = new PasswordController();
 
         //views
         HDBManagerCreateProjectView createView = new HDBManagerCreateProjectView();
@@ -86,19 +88,23 @@ public class HDBManagerView {
             
             case 7:
                 enquiryView.showEnquiryMenu(App.userSession);
+                break;
 
             case 8:
                 receiptController.ViewReceipts(this, receiptsView);
+                break;
 
             case 9:
                 withdrawalRequestController.HandleWithdrawalRequest(this, withdrawalRequestView);
+                break;
 
             case 10:
                 applicationStatusController.ViewApplication(this, approveBTOApplicationView);
+                break;
 
             case 11:
                 applicationStatusController.approveApplication(this, approveBTOApplicationView);
-
+                break;
             case 12:
                 System.out.print("Enter the new password: ");
                 String newPassword = scanner.nextLine();

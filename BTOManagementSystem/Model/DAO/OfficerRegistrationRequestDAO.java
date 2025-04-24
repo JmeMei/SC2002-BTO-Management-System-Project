@@ -83,7 +83,7 @@ public class OfficerRegistrationRequestDAO {
 
         for (OfficerRegistrationRequest request : this.officerRegistrationRequests){
 
-            if (request.getOfficerName().equals(Name) && request.getProjectName().equals(ProjectName)){
+            if (request.getOfficerName().equalsIgnoreCase(Name) && request.getProjectName().equalsIgnoreCase(ProjectName)){
 
                 request.setStatus("Approved");
                 updateDB();
@@ -99,7 +99,7 @@ public class OfficerRegistrationRequestDAO {
 
         for (OfficerRegistrationRequest request : this.officerRegistrationRequests){
 
-            if (request.getOfficerName().equals(Name) && request.getProjectName().equals(ProjectName)){
+            if (request.getOfficerName().equalsIgnoreCase(Name) && request.getProjectName().equalsIgnoreCase(ProjectName)){
 
                 return true;
             }

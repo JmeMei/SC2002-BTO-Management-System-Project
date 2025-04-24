@@ -57,7 +57,13 @@ public class Project {
 
 
         String[] officer_arr = officers.split(",");
-        this.officers = new ArrayList<>(Arrays.asList(officer_arr));
+
+        if (officer_arr[0].matches("[a-zA-Z]+")){
+            this.officers = new ArrayList<>(Arrays.asList(officer_arr));}
+        else{
+            this.officers = new ArrayList<>();
+        }
+
 
 
         this.visibility = visibility;
@@ -144,7 +150,7 @@ public class Project {
 
     public void setOpeningDate(String openingDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        this.openingDate = LocalDate.parse(openingDate);
+        this.openingDate = LocalDate.parse(openingDate,formatter);
     }
 
 
@@ -164,7 +170,7 @@ public class Project {
     public void setClosingDate(String closingDate) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        this.closingDate = LocalDate.parse(closingDate);
+        this.closingDate = LocalDate.parse(closingDate,formatter);
 
     }
 
@@ -192,7 +198,16 @@ public class Project {
 
         StringBuilder sb = new StringBuilder();
         sb.append('"');
-        sb.append(String.join(",",officers));
+
+        if (this.officers.size() > 0){
+            for (int i = 0; i < this.officers.size() - 1; i++) {
+                sb.append(officers.get(i));
+                sb.append(",");
+            }
+            sb.append(officers.get(this.officers.size() - 1));
+        }
+
+
         sb.append('"');
 
         return sb.toString();
@@ -200,12 +215,14 @@ public class Project {
 
     public void add_Officer(String officer){
 
-        this.officers.add(officer);
+        if (!officer.equalsIgnoreCase("")){
+            this.officers.add(officer);
+        }
 
     }
 
     public int getNumberofCurrentOfficers(){
-        return  this.officers.size();
+        return  this.officerslots;
     }
 
     public int getVisibility() {

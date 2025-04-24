@@ -25,11 +25,11 @@ public class HDBManagerViewProjectsView {
 
             default:
                 System.out.print("Enter Y or N only! ");
-                this.prompt();
+                return this.prompt();
         }
 
 
-        return -1;
+
     }
 
     public int prompt_wantneightbourhoodfilter(){
@@ -47,10 +47,10 @@ public class HDBManagerViewProjectsView {
 
             default:
                 System.out.print("Enter Y or N only! ");
-                this.prompt();
+                return this.prompt_wantneightbourhoodfilter();
         }
 
-        return -1;
+
 
     }
 

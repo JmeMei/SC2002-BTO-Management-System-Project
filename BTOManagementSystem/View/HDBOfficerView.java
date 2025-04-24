@@ -13,7 +13,7 @@ public class HDBOfficerView extends ApplicantView{
 
         while (option != 9) {
             System.out.println("\n=== HDB Officer Dashboard ===");
-            System.out.println("Welcome, Officer " + officer.getName());
+            System.out.println("Welcome, Officer " + officer.getName() +  "[" + officer.getAge()  + "," + officer.getMaritalStatus() +"]");
             System.out.println("1. View Available Projects");
             System.out.println("2. Apply for a Project");
             System.out.println("3. View My Application");

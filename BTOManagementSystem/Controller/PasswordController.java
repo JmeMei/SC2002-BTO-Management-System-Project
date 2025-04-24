@@ -44,7 +44,7 @@ public class PasswordController {
             for (HDBOfficer o : officers) {
                 if (o.getNric().equals(user.getNric())) {
                     o.setPassword(newPassword);
-                    updated = ApplicantDAO.updateDB();
+                    updated = OfficerDAO.updateDB();
                     break;
                 }
             }
@@ -53,7 +53,7 @@ public class PasswordController {
             for (HDBManager m : managers) {
                 if (m.getNric().equals(user.getNric())) {
                     m.setPassword(newPassword);
-                    updated = ApplicantDAO.updateDB();
+                    updated = ManagerDAO.updateDB();
                     break;
                 }
             }
