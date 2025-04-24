@@ -69,8 +69,8 @@ public class ApplicantEnquiryView implements EnquiryView {
                         String question = scanner.nextLine();
 
                     // submit enquiry for user
-                    enquiryController.submitEnquiry(user.getNric(), selectedProject, question);// let controller get officer name
-                    System.out.println("Enquiry submitted successfully!");
+                    String result = enquiryController.submitEnquiry(user.getNric(), selectedProject, question);// let controller get officer name
+                    System.out.println(result);
                     }
                 }
 
