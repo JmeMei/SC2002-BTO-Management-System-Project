@@ -17,6 +17,7 @@ public class ReceiptsView {
             + "\n2. Flat Type"
         + "\n3. Age Range"
         + "\n4. Project Name"
+                        + "\n5. Show ALL"
         + "\nEnter choice:");
 
         int option = sc.nextInt();

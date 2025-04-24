@@ -18,6 +18,7 @@ public class ProjectListController {
         if (dao.ManagerHasActiveProject(App.userSession.getName()) == 0){
             ArrayList<String> Data = createProjectView.Prompt();
             dao.CreateNewProject(Data);
+            System.out.println("Project created successfully!");
 
         }else{
             createProjectView.AlreadyManagingProjectMessage();
