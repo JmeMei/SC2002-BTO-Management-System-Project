@@ -10,12 +10,26 @@ import BTOManagementSystem.Model.Roles.HDBOfficer;
 
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * View class for HDB Officers to manage operations related to their assigned project.
+ * <p>
+ * Features include:
+ * <ul>
+ *     <li>Viewing project details</li>
+ *     <li>Viewing all applicant statuses for the project</li>
+ *     <li>Booking flats for applicants and generating receipts</li>
+ * </ul>
+ */
 public class HDBOfficerAssignedProjectView {
 
     private Scanner scanner = new Scanner(System.in);
 
-
+    /**
+     * Displays the main menu for the officer's assigned project and handles user interactions.
+     *
+     * @param officer     The logged-in HDB Officer
+     * @param projectName The name of the project assigned to the officer
+     */
     public void showMenu(HDBOfficer officer, String projectName) {
         // Init controllers
         ProjectListController projectListController = new ProjectListController();
@@ -78,6 +92,11 @@ public class HDBOfficerAssignedProjectView {
         } while (option != 6);
     }
 
+    /**
+     * Displays detailed information about a specific project.
+     *
+     * @param project The {@link Project} to display details of.
+     */
     public void showProjectDetails(Project project) {
         System.out.println("========== Project Details ==========");
         System.out.println("Project Name       : " + project.getName());
@@ -92,6 +111,11 @@ public class HDBOfficerAssignedProjectView {
         System.out.println("Visibility         : " + (project.getVisibility() == 1 ? "Visible" : "Not Visible"));
     }
 
+    /**
+     * Displays a single applicant's application status.
+     *
+     * @param status The {@link ApplicantProjectStatus} of the applicant.
+     */
     public void DisplayApplicationStatus(ApplicantProjectStatus status) {
         System.out.println("\n=== Application Details for Applicant ===");
         System.out.println("Name: " + status.getName());
@@ -101,6 +125,11 @@ public class HDBOfficerAssignedProjectView {
         System.out.println("Application Status: " + status.getApplicationStatus());
     }
 
+    /**
+     * Displays the list of all application statuses for the assigned project.
+     *
+     * @param statusList List of {@link ApplicantProjectStatus} objects.
+     */
     public void DisplayAllApplicationStatus(List<ApplicantProjectStatus> statusList) {
         System.out.println("\n=== All Application Details for Project ===");
 
@@ -113,31 +142,45 @@ public class HDBOfficerAssignedProjectView {
             System.out.println("Application Status: " + status.getApplicationStatus());
         }
     }
-
+    /** Displays a message when the assigned project cannot be found. */
     public void AssignedProjectNotFoundMessage(){
         System.out.println("You don't have an approved project assigned.");
     }
 
+    /** Displays a message when no applications are found for a project. */
     public void ApplicationNotFoundMessage(){
         System.out.println("No applications found for this project.");
     }
 
+    /** Displays a message when no applications are found for an applicant. */
     public void AssignedApplicantNotFoundMessage(){
         System.out.println("No applications found for this applicant in this project.");
     }
 
+    /**
+     * Displays a message when booking is not allowed due to an application status.
+     *
+     * @param status Current application status that prevents booking.
+     */
     public void BookingNotAllowedMessage(String status){
         System.out.println("Booking not allowed. The applicant's application status is " + status + ".");
     }
 
+    /** Displays a message when a booking update fails. */
     public void BookingFailedMessage(){
         System.out.println("An error occurred while trying to update the application status of an applicant");
     }
 
+    /** Displays a message when there are no units available for a given flat type. */
     public void NoUnitsAvailable(){
         System.out.println("There are no units available for this flat type in this project");
     }
 
+    /**
+     * Prompts the officer to confirm the booking of a flat for an applicant.
+     *
+     * @return {@code true} if confirmed, {@code false} otherwise.
+     */
     public boolean PromptBookingConfirmation() {
         String confirm;
         do {

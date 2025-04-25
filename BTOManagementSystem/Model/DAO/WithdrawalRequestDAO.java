@@ -8,7 +8,13 @@ import BTOManagementSystem.Model.WithdrawalRequest;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * DAO (Data Access Object) class responsible for managing BTO withdrawal requests.
+ * <p>
+ * Provides methods to load, create, retrieve, and update {@link WithdrawalRequest} objects from a CSV file.
+ */
 public class WithdrawalRequestDAO {
+
 
     private static ArrayList<WithdrawalRequest> withdrawalRequests = new ArrayList<WithdrawalRequest>();
 
@@ -16,6 +22,9 @@ public class WithdrawalRequestDAO {
     private String filePath = "BTOManagementSystem/Data/WithdrawalRequests.csv";
     private String[] Headers;
 
+    /**
+     * Constructs the DAO and loads withdrawal requests from the CSV file into withdrawalRequests List
+     */
     public WithdrawalRequestDAO() {
        withdrawalRequests.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -39,6 +48,13 @@ public class WithdrawalRequestDAO {
 
     }
 
+    /**
+     * Creates a new withdrawal request for the user if one doesn't already exist.
+     *
+     * @param user        the user submitting the withdrawal
+     * @param projectName the project to withdraw from
+     * @return {@code true} if created successfully, {@code false} if already exists
+     */
     public boolean CreateWithdrawalRequest(User user, String projectName) {
         // Check if Request was already made
         for (WithdrawalRequest wReq : withdrawalRequests) {
@@ -55,7 +71,12 @@ public class WithdrawalRequestDAO {
     }
 
 
-
+    /**
+     * Parses a line of CSV data while considering quoted fields.
+     *
+     * @param line the line from the CSV file
+     * @return a list of parsed strings
+     */
     private ArrayList<String> CSV_data_Parse(String line){
 
         ArrayList<String> formatted = new ArrayList<>();
@@ -104,6 +125,11 @@ public class WithdrawalRequestDAO {
 
     }
 
+    /**
+     * Returns all withdrawal requests that are not yet processed.
+     *
+     * @return list of unprocessed {@link WithdrawalRequest}
+     */
     public ArrayList<WithdrawalRequest> getUnhandledWithdrawalRequests() {
 
         ArrayList<WithdrawalRequest> requests = new ArrayList<>();
@@ -119,10 +145,18 @@ public class WithdrawalRequestDAO {
         return requests;
     }
 
+    /**
+     * Gets the headers from the Withdrawal Request CSV file.
+     *
+     * @return array of header names
+     */
     public String[] getHeaders() {
         return Headers;
     }
 
+    /**
+     * Updates the CSV file with all current withdrawal requests.
+     */
     public void UpdateDB(){
 
 
@@ -152,6 +186,11 @@ public class WithdrawalRequestDAO {
 
     }
 
+    /**
+     * adds a new {@link WithdrawalRequest} and updates the database (csv).
+     *
+     * @param request the request to add
+     */
     public void CreateNewWithdrawalRequest(WithdrawalRequest request){
 
         this.withdrawalRequests.add(request);
@@ -159,7 +198,13 @@ public class WithdrawalRequestDAO {
 
     }
 
-
+    /**
+     * Updates a withdrawal request to mark it as processed (status = 1).
+     *
+     * @param ApplicantNRIC the NRIC of the applicant
+     * @param ProjectName   the name of the project to withdraw from
+     * @return {@code 1} if updated, {@code 0} if not found
+     */
     public int UpdateWithdrawalRequest(String ApplicantNRIC,  String ProjectName){
 
         for (WithdrawalRequest wReq : withdrawalRequests) {
@@ -178,16 +223,4 @@ public class WithdrawalRequestDAO {
         }
         return 0;
     }
-
-    public static void main(String[] args) {
-
-        WithdrawalRequest r = new WithdrawalRequest("John","S1234567A","Acacia Breeze","0");
-        WithdrawalRequestDAO dao = new WithdrawalRequestDAO();
-        dao.CreateNewWithdrawalRequest(r);
-
-
-    }
-
-
-
 }

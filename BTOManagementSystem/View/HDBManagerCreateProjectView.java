@@ -10,13 +10,31 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * View class that handles the user interface for HDB Managers to create a new BTO project.
+ * <p>
+ * Provides prompts to gather necessary project details from the manager and displays messages related to project creation.
+ */
 public class HDBManagerCreateProjectView {
 
 
     Scanner sc = new Scanner(System.in);
 
-
+    /**
+     * Prompts the HDB Manager to enter all required project creation details.
+     * <p>
+     * The prompts include:
+     * <ul>
+     *     <li>Project name</li>
+     *     <li>Neighbourhood</li>
+     *     <li>Room type 1 and its unit count and price</li>
+     *     <li>Room type 2 and its unit count and price</li>
+     *     <li>Application opening and closing dates</li>
+     *     <li>Number of officer slots</li>
+     * </ul>
+     *
+     * @return an {@link ArrayList} of strings containing the project data in the order prompted.
+     */
     public ArrayList<String> Prompt(){
 
         ArrayList<String> Data = new ArrayList<>();
@@ -48,64 +66,12 @@ public class HDBManagerCreateProjectView {
 
         return Data;
 
-        /*
-        System.out.print("Enter Project Name: ");
-        String ProjectName = scanner.nextLine();
-
-        System.out.print("Enter Neighbourhood: ");
-        String Neighbourhood = scanner.nextLine();
-
-        System.out.print("Enter Room Type 1: ");
-        String RoomType1 = scanner.nextLine();
-
-        System.out.print("Enter Number of units for Type 1: ");
-        int NumberOfUnitsType1 = scanner.nextInt();
-
-        System.out.print("Enter Selling price for Type 1: ");
-        double sellingPriceType1 = scanner.nextDouble();
-
-        scanner.nextLine();
-
-        System.out.print("Enter Room Type 2: ");
-        String RoomType2 = scanner.nextLine();
-
-        System.out.print("Enter Number of units for Type 2: ");
-        int NumberOfUnitsType2 = scanner.nextInt();
-
-        System.out.print("Enter Selling price for Type 2: ");
-        double sellingPriceType2 = scanner.nextDouble();
-
-        scanner.nextLine();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        System.out.print("Enter opening date (dd-MM-yyyy): ");
-        String openingDateString = scanner.nextLine();
-        LocalDate OpeningDateObj =  LocalDate.parse(openingDateString, formatter);
-
-        System.out.print("Enter closing date (dd-MM-yyyy): ");
-        String closingDateString = scanner.nextLine();
-
-        LocalDate closingDateObj = LocalDate.parse(closingDateString, formatter);
-
-
-        System.out.print("Enter number of officer slots: ");
-        int OfficerSlots = scanner.nextInt();
-
-
-        Project newProject = new Project(ProjectName,Neighbourhood,RoomType1,
-                NumberOfUnitsType1,sellingPriceType1, RoomType2, NumberOfUnitsType2 , sellingPriceType2, OpeningDateObj,
-                closingDateObj,((HDBManager) App.userSession).getName(), OfficerSlots);
-
-
-        ProjectListDAO dao = new ProjectListDAO();
-        dao.writeANewProjectEntry(newProject);
-
-
-         */
-
     }
 
+    /**
+     * Displays a message to indicate that the manager is already managing an active project
+     * and therefore cannot create another.
+     */
     public void AlreadyManagingProjectMessage(){
         System.out.println("You are already currently managing a project! Unable to create!");
     }

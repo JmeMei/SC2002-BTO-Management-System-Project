@@ -5,6 +5,18 @@ import BTOManagementSystem.Model.Enquiry;
 import BTOManagementSystem.Model.User;
 import java.util.*;
 
+/**
+ * Represents the applicant view for managing enquiries.
+ * <p>
+ * Provides a menu interface for applicants to:
+ * <ul>
+ *     <li>View submitted enquiries</li>
+ *     <li>Submit a new enquiry</li>
+ *     <li>Edit an existing enquiry</li>
+ *     <li>Delete an enquiry</li>
+ * </ul>
+ * This class interacts with the {@code EnquiryController} to perform backend operations.
+ */
 public class ApplicantEnquiryView implements EnquiryView {
 
     @Override

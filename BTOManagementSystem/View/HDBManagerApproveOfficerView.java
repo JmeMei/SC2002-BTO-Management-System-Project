@@ -5,10 +5,26 @@ import BTOManagementSystem.Model.OfficerRegistrationRequest;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * View class used by HDB Managers to handle officer registration requests.
+ * <p>
+ * Allows viewing, filtering, and approving officer project registration requests.
+ */
 public class HDBManagerApproveOfficerView {
 
     private Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Prompts the user to select a filter option for viewing officer registration requests.
+     * <p>The options include:</p>
+     * <ul>
+     *   <li>1 - View Approved Requests</li>
+     *   <li>2 - View Pending Requests</li>
+     *   <li>3 - View All Requests</li>
+     * </ul>
+     *
+     * @return an integer representing the user's chosen filter option.
+     */
     public int Prompt(){
 
 
@@ -23,6 +39,12 @@ public class HDBManagerApproveOfficerView {
 
     }
 
+    /**
+     * Displays a list of officer registration requests in a tabular format.
+     *
+     * @param requests the list of {@link OfficerRegistrationRequest} to display
+     * @param headers  the column headers for the display
+     */
     public void DisplayRequests(ArrayList<OfficerRegistrationRequest> requests, String[] headers){
 
         for (String header : headers){
@@ -43,6 +65,16 @@ public class HDBManagerApproveOfficerView {
 
     }
 
+    /**
+     * Prompts the manager to enter the officer name and corresponding project name
+     * for approval of a registration request.
+     *
+     * @return a String array containing:
+     *         <ul>
+     *             <li>[0] Officer name</li>
+     *             <li>[1] Project name</li>
+     *         </ul>
+     */
     public String[] PromptNameOfOfficerToApprove(){
 
         System.out.println("Enter Name of officer to approve: ");
@@ -54,18 +86,31 @@ public class HDBManagerApproveOfficerView {
         return Data;
     }
 
+    /**
+     * Displays a message indicating that the registration request was not found.
+     */
     public void RequestDoesNotExistMessage(){
         System.out.println("Error! Record does not exist! ");
     }
 
+    /**
+     * Displays a success message after a successful approval.
+     */
     public void SuccessMessage(){
         System.out.println("Successfully Approved! ");
     }
 
+    /**
+     * Displays an error message indicating that officer slots for the project are full.
+     */
     public void SlotFullErrorMessage(){
         System.out.println("Officer Slots are full!");
     }
 
+    /**
+     * Displays a message indicating that the user is not the manager for the project,
+     * hence cannot approve the registration.
+     */
     public void NotManagerErrorMessage(){
         System.out.println("You are not the manager for the project! unable to approve");
     }

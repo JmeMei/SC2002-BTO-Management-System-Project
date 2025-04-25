@@ -14,18 +14,33 @@ import BTOManagementSystem.Model.User;
 import BTOManagementSystem.Model.DAO.Enum.ApplicationStatus;
 import BTOManagementSystem.Model.DAO.Enum.FlatType;
 
+/**
+ * DAO class that manages application records for applicants applying to BTO projects.
+ * <p>
+ * Handles reading from and writing to the ApplicantProjectStatus CSV file.
+ * Supports CRUD operations on application statuses, and filters for use by HDB officers and managers.
+ */
 public class ApplicationProjectStatusDAO {
     private static final String FILE_PATH = "BTOManagementSystem/Data/ApplicantProjectStatus.csv";
     private static ArrayList<ApplicantProjectStatus> statusList = new ArrayList<>();
 
+    /**
+     * Constructs the DAO and initializes application records from the CSV file.
+     */
     public ApplicationProjectStatusDAO() {
         this.LoadAllApplicantProjectStatuses();
     }
 
+    /**
+     * Reloads the in-memory list of applications from the CSV file.
+     */
     public void reloadFromFile() {
         this.LoadAllApplicantProjectStatuses();
     }
 
+    /**
+     * Loads all application records from the CSV file into memory.
+     */
     public void LoadAllApplicantProjectStatuses(){
        statusList.clear();
         //init Applicants from CSV
@@ -55,6 +70,14 @@ public class ApplicationProjectStatusDAO {
         }
     }
 
+    /**
+     * Attempts to apply a user to a project with a given flat type.
+     *
+     * @param user        the user applying
+     * @param projectName the name of the project
+     * @param flatType    the desired flat type
+     * @return {@code true} if application is successful, {@code false} if already applied or previously rejected
+     */
     public boolean applyForProject(User user, String projectName, FlatType flatType) {
         for (ApplicantProjectStatus status : statusList) {
             // If current project exists or past project is either PENDING, SUCCESSFUL, BOOKED
@@ -81,6 +104,14 @@ public class ApplicationProjectStatusDAO {
         return true;
     }
 
+    /**
+     * Gets the application status of a user for a specific project and flat type.
+     *
+     * @param applicantNRIC the NRIC of the applicant
+     * @param projectName   the name of the project
+     * @param flatType      the flat type
+     * @return the current {@link ApplicationStatus}, or {@code null} if not found
+     */
     public ApplicationStatus getApplicationStatus(String applicantNRIC, String projectName, FlatType flatType) {
         for (ApplicantProjectStatus status : statusList) {
             if (status.getNric().equals(applicantNRIC) && status.getProjectName().equals(projectName) && flatType.equals(status.getFlatType())) {
@@ -90,6 +121,12 @@ public class ApplicationProjectStatusDAO {
         return null;
     }
 
+    /**
+     * Retrieves the project name associated with the user's application.
+     *
+     * @param user the user whose project name is to be fetched
+     * @return project name if found, {@code null} otherwise
+     */
     public String getProjectNameforApplicant(User user) {
         for (ApplicantProjectStatus status : statusList) {
             if (status.getNric().equals(user.getNric())) {
@@ -99,6 +136,12 @@ public class ApplicationProjectStatusDAO {
         return null;
     }
 
+    /**
+     * Retrieves all applications made by a user.
+     *
+     * @param applicantNRIC the NRIC of the applicant
+     * @return a list of {@link ApplicantProjectStatus} entries
+     */
     public List<ApplicantProjectStatus> getApplicationsByNRIC(String applicantNRIC) {
         List<ApplicantProjectStatus> applicantstatusList = new ArrayList<>();
         for (ApplicantProjectStatus status : statusList) {
@@ -109,10 +152,22 @@ public class ApplicationProjectStatusDAO {
         return applicantstatusList;
     }
 
+    /**
+     * Retrieves the full list of application records.
+     *
+     * @return list of all {@link ApplicantProjectStatus}
+     */
     public List<ApplicantProjectStatus> getApplications() {
         return statusList;
     }
 
+    /**
+     * Gets a specific application record based on applicant NRIC and project name.
+     *
+     * @param applicantNRIC the NRIC of the applicant
+     * @param projectName   the project name
+     * @return the matching {@link ApplicantProjectStatus}, or {@code null} if not found
+     */
     public ApplicantProjectStatus getAnApplication(String applicantNRIC,String projectName) {
         for (ApplicantProjectStatus status : statusList) {
             if (status.getNric().equals(applicantNRIC) && status.getProjectName().equals(projectName)) {
@@ -122,6 +177,12 @@ public class ApplicationProjectStatusDAO {
         return null;
     }
 
+    /**
+     * Updates an application's status to {@code BOOKED} if it is currently {@code SUCCESSFUL}.
+     *
+     * @param applicantNRIC the NRIC of the applicant
+     * @return {@code true} if status was updated, {@code false} otherwise
+     */
     public boolean updateApplicationStatus(String applicantNRIC){
         for (ApplicantProjectStatus status : statusList) {
             if (status.getNric().equals(applicantNRIC) && status.getApplicationStatus().equals(ApplicationStatus.SUCCESSFUL)) {
@@ -133,6 +194,11 @@ public class ApplicationProjectStatusDAO {
         return false;
     }
 
+    /**
+     * Persists the project application list to the CSV file.
+     *
+     * @return {@code true} if the update succeeded, {@code false} if an error occurred
+     */
     public boolean updateDB() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             // Write the header
@@ -162,7 +228,12 @@ public class ApplicationProjectStatusDAO {
     }
 
     //HDB manager
-
+    /**
+     * Marks an application as {@code UNSUCCESSFUL} for the given applicant and project.
+     *
+     * @param nric        the NRIC of the applicant
+     * @param projectName the name of the project
+     */
     public void mark_unsuccessful(String nric, String projectName) {
 
         for(ApplicantProjectStatus s : statusList){
@@ -180,6 +251,13 @@ public class ApplicationProjectStatusDAO {
 
     }
 
+    /**
+     * Marks an application as {@code SUCCESSFUL} for the given applicant and project.
+     *
+     * @param nric        the NRIC of the applicant
+     * @param projectName the name of the project
+     * @return {@code 1} if successful, {@code 0} if not found
+     */
     public int mark_successful(String nric, String projectName) {
 
         for(ApplicantProjectStatus s : statusList){
@@ -198,6 +276,12 @@ public class ApplicationProjectStatusDAO {
         return 0;
     }
 
+    /**
+     * Loads and filters application records based on filter data.
+     *
+     * @param FilterData an array containing [projectName, ageRange, status]
+     * @return a list of applications matching the given filters
+     */
     public ArrayList<ApplicantProjectStatus> LoadApplications(String[] FilterData){
 
         String ProjectName = FilterData[0];
@@ -238,10 +322,7 @@ public class ApplicationProjectStatusDAO {
 
             }
 
-            //System.out.println("HELLOOOOOO");
             filteredList.add(s);
-
-
         }
         return filteredList;
     }

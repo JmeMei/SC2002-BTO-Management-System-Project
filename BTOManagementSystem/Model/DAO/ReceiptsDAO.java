@@ -6,7 +6,11 @@ import BTOManagementSystem.Model.Receipt;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-
+/**
+ * DAO (Data Access Object) class for managing receipt records related to successful BTO applications.
+ * <p>
+ * Provides functionality to load, filter, and persist {@link Receipt} objects from/to a CSV file.
+ */
 public class ReceiptsDAO {
 
     private String filePath = "BTOManagementSystem/Data/Receipts.csv";
@@ -14,6 +18,9 @@ public class ReceiptsDAO {
 
     private static ArrayList<Receipt> receipts = new ArrayList<>();
 
+    /**
+     * Constructs the {@code ReceiptsDAO} and loads all receipt records from the CSV file.
+     */
     public ReceiptsDAO() {
         receipts.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -46,10 +53,21 @@ public class ReceiptsDAO {
 
     }
 
+    /**
+     * Returns the headers of the receipt CSV file.
+     *
+     * @return an array of column names
+     */
     public String[] getHeaders() {
         return Headers;
     }
 
+    /**
+     * Parses a single line of CSV data, accounting for quoted fields and commas.
+     *
+     * @param line the raw CSV line
+     * @return a list of parsed values
+     */
     private ArrayList<String> CSV_data_Parse(String line){
 
         ArrayList<String> formatted = new ArrayList<>();
@@ -98,6 +116,13 @@ public class ReceiptsDAO {
 
     }
 
+    /**
+     * Loads and filters receipts based on the selected filter type and value.
+     *
+     * @param filter the filter type (1 = marital status, 2 = flat type, 3 = age range, 4 = project name)
+     * @param value  the filter value (e.g., "Married", "2-Room", "2540" for ages 25–40)
+     * @return a list of filtered {@link Receipt} objects
+     */
     public ArrayList<Receipt> LoadReciepts(int filter, String value){
 
         ArrayList<Receipt> filtered = new ArrayList<>();
@@ -127,11 +152,19 @@ public class ReceiptsDAO {
         return filtered;
     }
 
+    /**
+     * Adds a new {@link Receipt} to the in-memory list and persists it to the CSV file.
+     *
+     * @param receipt the receipt to add
+     */
     public void AddReceipt(Receipt receipt){
         receipts.add(receipt);
         updateDb();
     }
 
+    /**
+     * Updates the CSV file with the current list of receipts.
+     */
     private void updateDb(){
 
 

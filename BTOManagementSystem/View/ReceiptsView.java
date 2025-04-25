@@ -4,11 +4,22 @@ import BTOManagementSystem.Model.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * The {@code ReceiptsView} class handles the presentation layer for viewing
+ * and filtering receipt records in the BTO Management System.
+ * <p>
+ * It provides methods for prompting the user for various filter options
+ * and displaying formatted receipt data.
+ */
 public class ReceiptsView {
 
     private static Scanner sc = new Scanner(System.in);
 
+    /**
+     * Prompts the user to select a filter type for viewing receipts.
+     *
+     * @return an integer representing the user's selected filter option.
+     */
     public int PromptFilters(){
 
         System.out.print(
@@ -26,6 +37,11 @@ public class ReceiptsView {
         return option;
     }
 
+    /**
+     * Prompts the user to select a marital status filter.
+     *
+     * @return the selected marital status as a string ("Married" or "Single").
+     */
     public String promptFilterValueForMartialStatus() {
 
         System.out.print("1. Married\n" +
@@ -44,6 +60,11 @@ public class ReceiptsView {
         return null;
     }
 
+    /**
+     * Prompts the user to select a flat type filter.
+     *
+     * @return the selected flat type as a string ("2-Room" or "3-Room").
+     */
     public String promptFilterValueForFlatType() {
 
         System.out.print("1. Two-Room\n"
@@ -62,6 +83,11 @@ public class ReceiptsView {
         return null;
     }
 
+    /**
+     * Prompts the user to enter an age range filter.
+     *
+     * @return a string representing the concatenated lower and upper bounds.
+     */
     public  String promptFilterValueForAgeRange() {
 
         System.out.print("Enter LowerBound: ");
@@ -73,12 +99,23 @@ public class ReceiptsView {
         return lowerBound + upperBound;
     }
 
+    /**
+     * Prompts the user to enter a project name filter.
+     *
+     * @return the entered project name as a string.
+     */
     public String promptFilterValueForProjectName() {
         System.out.print("Enter Project Name: ");
         String projectName = sc.nextLine();
         return projectName;
     }
 
+    /**
+     * Displays a list of receipts in a formatted table view.
+     *
+     * @param receipts the list of receipts to display.
+     * @param headers the headers to use for table columns.
+     */
     public void DisplayReceipts(ArrayList<Receipt> receipts, String[] headers) {
 
         for (String header : headers){
@@ -100,6 +137,9 @@ public class ReceiptsView {
 
     }
 
+    /**
+     * Displays an error message for invalid input.
+     */
     public void invalid_input_message(){
         System.out.print("Invalid option! ");
     }

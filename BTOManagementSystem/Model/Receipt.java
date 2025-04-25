@@ -1,5 +1,11 @@
 package BTOManagementSystem.Model;
 
+/**
+ * Represents a receipt issued to an applicant after a successful BTO flat booking.
+ * <p>
+ * This model captures relevant information including the applicant’s personal
+ * and application details, such as name, NRIC, flat type, project, and age.
+ */
 public class Receipt {
 
     private String applicantName;
@@ -9,6 +15,16 @@ public class Receipt {
     private int Age;
     private String projectName;
 
+    /**
+     * Constructs a new {@code Receipt} object with all necessary information.
+     *
+     * @param applicantName  the name of the applicant
+     * @param applicantNRIC  the NRIC of the applicant
+     * @param maritalStatus  the marital status of the applicant
+     * @param flatType       the type of flat booked
+     * @param Age            the age of the applicant
+     * @param projectName    the name of the project the flat was booked from
+     */
     public Receipt(String applicantName, String applicantNRIC, String maritalStatus, String flatType, int Age, String projectName) {
         this.applicantName = applicantName;
         this.applicantNRIC = applicantNRIC;
@@ -19,55 +35,99 @@ public class Receipt {
     }
 
     // Getter and Setter for applicantName
+    /**
+     * @return the full name of the applicant
+     */
     public String getApplicantName() {
         return applicantName;
     }
 
+    /**
+     * Sets the applicant’s name.
+     *
+     * @param applicantName the full name to set
+     */
     public void setApplicantName(String applicantName) {
         this.applicantName = applicantName;
     }
 
-    // Getter and Setter for applicantNRIC
+    /**
+     * @return the NRIC of the applicant
+     */
     public String getApplicantNRIC() {
         return applicantNRIC;
     }
 
+    /**
+     * Sets the NRIC of the applicant.
+     *
+     * @param applicantNRIC the NRIC to set
+     */
     public void setApplicantNRIC(String applicantNRIC) {
         this.applicantNRIC = applicantNRIC;
     }
 
-    // Getter and Setter for maritalStatus
+    /**
+     * @return the marital status of the applicant
+     */
     public String getMaritalStatus() {
         return maritalStatus;
     }
 
+    /**
+     * Sets the marital status of the applicant.
+     *
+     * @param maritalStatus the marital status to set
+     */
     public void setMaritalStatus(String maritalStatus) {
         this.maritalStatus = maritalStatus;
     }
 
-    // Getter and Setter for flatType
+    /**
+     * @return the type of flat booked by the applicant
+     */
     public String getFlatType() {
         return flatType;
     }
 
-    public int getAge() {
-        return Age;
-    }
-
+    /**
+     * Sets the type of flat booked.
+     *
+     * @param flatType the flat type (e.g., "2-Room", "3-Room")
+     */
     public void setFlatType(String flatType) {
         this.flatType = flatType;
     }
 
-    // Getter and Setter for projectName
+    /**
+     * @return the age of the applicant
+     */
+    public int getAge() {
+        return Age;
+    }
+
+    /**
+     * Sets the age of the applicant.
+     *
+     * @param age the age to set
+     */
+    public void setAge(int age) {
+        this.Age = age;
+    }
+
+    /**
+     * @return the name of the project where the flat was booked
+     */
     public String getProjectName() {
         return projectName;
     }
 
+    /**
+     * Sets the name of the project.
+     *
+     * @param projectName the name of the project
+     */
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public void setAge(int age) {
-        Age = age;
     }
 }

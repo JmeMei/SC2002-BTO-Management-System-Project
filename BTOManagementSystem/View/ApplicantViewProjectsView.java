@@ -5,9 +5,20 @@ import BTOManagementSystem.Model.Project;
 import BTOManagementSystem.Model.Roles.Applicant;
 
 import java.util.List;
-
+/**
+ * View class responsible for displaying project listings and eligibility messages
+ * to applicants in the BTO Management System.
+ */
 public class ApplicantViewProjectsView {
 
+    /**
+     * Displays a list of available projects and their details,
+     * including neighborhood, available flat types, number of units, prices,
+     * and opening/closing dates.
+     *
+     * @param projects       the list of {@link Project} objects to display
+     * @param availableTypes the list of flat types the applicant is eligible for
+     */
     public void DisplayProjects(List<Project> projects,List<FlatType> availableTypes) {
 
         System.out.println("Available Projects");
@@ -45,8 +56,10 @@ public class ApplicantViewProjectsView {
 
     }
 
-
-
+    /**
+     * Displays a message indicating that the applicant is not eligible for any flat types.
+     * The message includes eligibility requirements based on age and marital status.
+     */
     public void NotEligibleForProjectsMessage(){
         System.out.println("You are not eligible for any flat types at this time.");
         System.out.println("Singles must be 35 years or older to apply for 2-Room flats.");
